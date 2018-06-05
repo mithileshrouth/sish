@@ -29,6 +29,7 @@ public function __construct()
          }
      } else {
          $roleId = (int)$id;
+         
      }
      
     $json = json_encode($result);
