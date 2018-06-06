@@ -12,3 +12,7 @@ CREATE TABLE `keys` (
 
 //
 CREATE TABLE `sish_db`.`project`( `id` INT NOT NULL AUTO_INCREMENT, `project` VARCHAR(255) NOT NULL, `apikey` VARCHAR(255), PRIMARY KEY (`id`) ) ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci; 
+
+
+///
+ALTER TABLE `sish_db`.`user_master` ADD COLUMN `role_id` INT(20) NULL AFTER `full_address`; 

@@ -3,7 +3,7 @@
 class roleAPI extends CI_Controller{
 public function __construct()
  {
-   parent::__construct();
+    parent::__construct();
     $this->load->model('rolemastermodel','role',TRUE);
     $this->load->model('apimodel','apimodel',TRUE);
     $this->load->library('session');
