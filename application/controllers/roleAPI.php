@@ -11,16 +11,16 @@ public function __construct()
  
  public function getrole($id=""){
 
-     $result = array();
+     $result = [];
      if($id=="all"){
          $data["role"]= $this->role->getActiveRole();
          if(!empty($data["role"])){
-             $result=array(
+             $result=[
                  "status"=>200,
                  "statuscode"=>"OK",
                  "roles"=>$data["role"]
-             );
-         }else{
+             ];
+		 }else{
              $result=array(
                  "status"=>400,
                  "statuscode"=>"NOK",
