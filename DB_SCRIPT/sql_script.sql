@@ -9,3 +9,6 @@ CREATE TABLE `keys` (
  `date_created` DATETIME NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+//
+CREATE TABLE `sish_db`.`project`( `id` INT NOT NULL AUTO_INCREMENT, `project` VARCHAR(255) NOT NULL, `apikey` VARCHAR(255), PRIMARY KEY (`id`) ) ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci; 
