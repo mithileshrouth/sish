@@ -16,3 +16,6 @@ CREATE TABLE `sish_db`.`project`( `id` INT NOT NULL AUTO_INCREMENT, `project` VA
 
 ///
 ALTER TABLE `sish_db`.`user_master` ADD COLUMN `role_id` INT(20) NULL AFTER `full_address`; 
+///
+ ALTER TABLE `sish_db`.`user_master` ADD COLUMN `is_active` ENUM('Y','N') DEFAULT 'Y' NULL AFTER `role_id`, ADD COLUMN `date_of_creation` TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP()' NULL AFTER `is_active`; 
+ ALTER TABLE `sish_db`.`user_master` ADD COLUMN `is_active` ENUM('Y','N') DEFAULT 'Y' NULL AFTER `role_id`, ADD COLUMN `date_of_creation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL AFTER `is_active`; 
