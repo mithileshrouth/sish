@@ -33,7 +33,7 @@ class verifyAPI {
                  "user"=>"NULL"
              );
          }else{
-             $userId = $this->apimodel->verifymobilelogin();
+             $userId = $this->apimodel->verifymobilelogin($mobile,$password,$roleid,$projectid);
              if($userId>0){
                  $user = $this->user->getUserById($userId);
                  if(!empty($user)){

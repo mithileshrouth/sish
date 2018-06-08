@@ -1,11 +1,12 @@
-    <section class="content-header">
+<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/block.js"></script>     
+   <section class="content-header">
       <h1>
         Dashboard
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">District List</li>
+        <li class="active">Block List</li>
       </ol>
     </section>
 
@@ -14,8 +15,8 @@
 
 		    <div class="box">
             <div class="box-header">
-              <h3 class="box-title">District List</h3>
-              <a href="<?php echo base_url();?>district/adddistrict" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
+              <h3 class="box-title">Block List</h3>
+              <a href="<?php echo base_url();?>block/addblock" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -23,9 +24,8 @@
                 <thead>
                 <tr>
                   <th style="width:10%;">Sl</th>
+                  <th>Block</th>
                   <th>District</th>
-                  <th>State</th>
-                  <th>Country</th>
                   <th style="width:10%;">Status</th>
                   <th style="text-align:right;width:5%;">Action</th>
                 </tr>
@@ -33,28 +33,29 @@
                 <tbody>
                
               	<?php 
+				
               		$i = 1;
-              		foreach ($bodycontent['districtLists'] as $key => $value) { 
+              		foreach ($bodycontent['blockList'] as $value) { 
               			$status = "";
-              			if($value->distStatus=="Y")
+              			if($value->is_active=="1")
               			{
-              				$status = '<div class="status_dv "><span class="label label-success status_tag diststatus" data-setstatus="N" data-distid="'.$value->distID.'"><span class="glyphicon glyphicon-ok"></span> Active</span></div>';
+              				$status = '<div class="status_dv "><span class="label label-success status_tag blockstatus" data-setstatus="0" data-blockid="'.$value->blockid.'"><span class="glyphicon glyphicon-ok"></span> Active</span></div>';
               			}
               			else
               			{
-              				$status = '<div class="status_dv"><span class="label label-danger status_tag diststatus" data-setstatus="Y" 
-              				data-distid="'.$value->distID.'"><span class="glyphicon glyphicon-remove"></span> Inactive</span></div>';
+              				$status = '<div class="status_dv"><span class="label label-danger status_tag blockstatus" data-setstatus="1" 
+              				data-blockid="'.$value->blockid.'"><span class="glyphicon glyphicon-remove"></span> Inactive</span></div>';
               			}
               		?>
 
 					<tr>
 						<td><?php echo $i++; ?></td>
+						<td><?php echo $value->blockname; ?></td>
 						<td><?php echo $value->districtname; ?></td>
-            <td><?php echo $value->statename; ?></td>
-						<td><?php echo $value->countryname; ?></td>
+						
 						<td><?php echo $status; ?></td>
 						<td align="center"> 
-							<a href="<?php echo base_url(); ?>district/adddistrict/<?php echo $value->distID; ?>" class="btn btn-primary btn-xs" data-title="Edit">
+							<a href="<?php echo base_url(); ?>block/addblock/<?php echo $value->blockid; ?>" class="btn btn-primary btn-xs" data-title="Edit">
 								<span class="glyphicon glyphicon-pencil"></span>
 							</a>
 						

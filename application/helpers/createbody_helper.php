@@ -13,7 +13,7 @@ if ( ! function_exists('createbody_method'))
 	 $CI->load->library('template');
 	 /* leftmenu */
 	 $left_menu = "";//$CI->leftmenumodel->getLeftmenu($data['user_id'],$data['role_id']);
-	 $left_menu = $CI->menumodel->getAllAdministrativeMenu('administartor_menu_master');
+	 $left_menu = $CI->menumodel->getAllAdministrativeMenu('admin_menu_master');
 		 
 	 $data['bodyview'] = $body_content_page;
 	 $data['leftmenusidebar'] = '';

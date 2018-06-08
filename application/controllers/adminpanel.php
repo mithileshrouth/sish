@@ -4,8 +4,10 @@ class adminpanel extends CI_Controller {
  public function __construct()
  {
    parent::__construct();
-	$this->load->model('loginmodel','',TRUE);
+	
 	$this->load->model('rolemastermodel','role',TRUE);
+	$this->load->model('apimodel','apimodel',TRUE);
+	$this->load->model('usermastermodel','user',TRUE);
     $this->load->library('session');
 	
  }
@@ -14,7 +16,6 @@ class adminpanel extends CI_Controller {
  {
     $page = 'loginpanel/admin_login';
 	$result['roles'] = $this->role->getActiveRole();
-	//print_r($result['roles']);
 	$this->load->view($page,$result);
  }
 
@@ -28,12 +29,7 @@ class adminpanel extends CI_Controller {
 	$password =  htmlspecialchars($dataArry['password']);
 	$role =  htmlspecialchars($dataArry['role']);
 	
-	$verify_data = array(
-		"mobileno" => $username,
-		"password" => $password,
-		"role" => $role
-		
-	);
+	
 	
 	if($mobileno=="" OR $password=="")
 	{
@@ -45,27 +41,34 @@ class adminpanel extends CI_Controller {
 	}
 	else
 	{
-		$result = $this->loginmodel->verifyLogin($verify_data);
-		if(sizeof($result)>0 && !empty($result))
+		$userID = 0;
+		$userID = $this->apimodel->verifymobilelogin($mobileno,$password,$role,1); // 1== will change later dyanamically
+		if($userID>0)
 		{
-			$sessionData = array(
-				"username" => $result['username'],
-				"userid" => $result['userid'],
-				"logintime" => date("Y-m-d H:i:s"),
-				"security_token" => $this->getSecureToken()
-			);
+			$userdata = $this->user->getUserById($userID);
+			
+			
+			
+			$sessionData = [
+				"mobileno" => $userdata->mobile_no,
+				"fname" => $userdata->first_name,
+				"lname" => $userdata->last_name,
+				"userid" => $userdata->userid,
+				"roleid" => $userdata->roleid,
+				"token" => $this->getSecureToken()
+			];
 			
 			
 			
 			$this->setSessionData($sessionData);
 			$session = $this->session->userdata('user_data');
 			
-			
+			/*
 			$update_array  = array(
 				"last_login" => date("Y-m-d H:i:s"),
 				"is_looged_in" => TRUE
 				);
-				
+			
 			$where_admin_user = array(
 				"administrator_user_master.id" => $session['userid']
 				);
@@ -84,17 +87,17 @@ class adminpanel extends CI_Controller {
 					"logout_time" => NULL
 					
 				);
+				*/
 			
-			$update = $this->commondatamodel->updateData_WithUserActivity('administrator_user_master',$update_array,$where_admin_user,'user_activity_report',$user_activity);
+			//$update = $this->commondatamodel->updateData_WithUserActivity('administrator_user_master',$update_array,$where_admin_user,'user_activity_report',$user_activity);
 			
 			
-			if($update)
-			{
+			
 				$json_response = array(
 					"msg_status" => 1,
 					"msg_data" => "Logged in successfully..."
 				);
-			}
+			
 			
 		}
 		else

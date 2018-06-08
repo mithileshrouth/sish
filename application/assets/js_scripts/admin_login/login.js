@@ -20,7 +20,7 @@ $(document).ready(function () {
 				{
 					if(result.msg_status == 1)
 					{
-						window.location=baseurl + 'administratordashboard';
+						window.location=baseurl + 'dashboard';
 					}
 					else
 					{
