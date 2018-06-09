@@ -127,3 +127,20 @@ CREATE TABLE `tu_unit` (
   `is_active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- Abhik Ghosh
+-- 08-06-2018
+CREATE TABLE `sish_db`.`coordinator`
+( 
+`coordinatorId` INT(20) NOT NULL AUTO_INCREMENT, 
+`name` VARCHAR(255), 
+`address` VARCHAR(255), 
+`blockid` INT(20), 
+`userid` INT(20),
+ PRIMARY KEY (`coordinatorId`) )
+ ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_general_ci; 
+ 
+ALTER TABLE `sish_db`.`coordinator` 
+ADD COLUMN `state_id` INT(20) NULL AFTER `userid`, 
+ADD COLUMN `country_id` INT(20) NULL AFTER `state_id`, 
+ADD COLUMN `district_id` INT(20) NULL AFTER `country_id`, 
+ADD COLUMN `tu_id` INT(20) NULL AFTER `district_id`; 
