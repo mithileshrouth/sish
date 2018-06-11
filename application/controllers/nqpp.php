@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class coordinator extends CI_Controller {
+class nqpp extends CI_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
 		$this->load->library('session');
-		$this->load->model('coordinatormodel','coordinator',TRUE);
+		$this->load->model('nqppmodel','nqpp',TRUE);
 	}
 	
 	
@@ -15,8 +15,8 @@ class coordinator extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['coordinatorList'] = $this->coordinator->getAllCoordinator(); 
-			$page = "dashboard/adminpanel_dashboard/coordinator/coordinator_list_view";
+			$result['nqppList'] = $this->nqpp->getAllNQPP(); 
+			$page = "dashboard/adminpanel_dashboard/nqpp/nqpp_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
 		else
@@ -25,7 +25,7 @@ class coordinator extends CI_Controller {
 		}
 	}
 
-	public function addcoordinator()
+	public function addnqpp()
 	{
 		$session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data') && isset($session['token']))
@@ -35,8 +35,8 @@ class coordinator extends CI_Controller {
 				$result['mode'] = "ADD";
 				$result['btnText'] = "Save";
 				$result['btnTextLoader'] = "Saving...";
-				$cordID = 0;
-				$result['cordEditdata'] = [];
+				$nqppID = 0;
+				$result['nqppEditdata'] = [];
 				
 			}
 			else
@@ -44,12 +44,12 @@ class coordinator extends CI_Controller {
 				$result['mode'] = "EDIT";
 				$result['btnText'] = "Update";
 				$result['btnTextLoader'] = "Updating...";
-				$cordID = $this->uri->segment(3);
+				$nqppID = $this->uri->segment(3);
 				$whereAry = array(
-					'coordinator.id' => $cordID
+					'nqpp.id' => $nqppID
 				);
 				// getSingleRowByWhereCls(tablename,where params)
-				$result['cordEditdata'] = $this->coordinator->getCoordinatorEditDataByID($cordID); 
+				$result['nqppEditdata'] = $this->nqpp->getNQPPEditDataByID($nqppID); 
 				
 			
 				
@@ -62,7 +62,12 @@ class coordinator extends CI_Controller {
 				];
 			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
 			
-			$page = "dashboard/adminpanel_dashboard/coordinator/coordinator_add_edit_view";
+			$coordinatorwhere = [
+				"coordinator.is_active" => 1 
+				];
+			$result['coordinatorList'] = $this->commondatamodel->getAllRecordWhereOrderBy('coordinator',$coordinatorwhere,'coordinator.name'); 
+			
+			$page = "dashboard/adminpanel_dashboard/nqpp/nqpp_add_edit_view";
 			createbody_method($result, $page, $header,$session);
 		}
 		else
@@ -71,7 +76,7 @@ class coordinator extends CI_Controller {
 		}
 	}
 
-	public function coordinator_action()
+	public function nqpp_action()
 	{
 		
 		$session = $this->session->userdata('user_data');
@@ -82,30 +87,28 @@ class coordinator extends CI_Controller {
 			parse_str($formData, $dataArry);
 			
 			
-			$cordID = trim(htmlspecialchars($dataArry['cordID']));
+			$nqppID = trim(htmlspecialchars($dataArry['nqppID']));
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 
-			$cordname = trim(htmlspecialchars($dataArry['cordname']));
-			$cordmobile = trim(htmlspecialchars($dataArry['cordmobile']));
-			$cordadd = trim(htmlspecialchars($dataArry['cordadd']));
-			$cordpin = trim(htmlspecialchars($dataArry['cordpin']));
-			$cordpassword = trim(htmlspecialchars($dataArry['cordpassword']));
+			$nqppname = trim(htmlspecialchars($dataArry['nqppname']));
+			$nqppmobile = trim(htmlspecialchars($dataArry['nqppmobile']));
+			$nqppadd = trim(htmlspecialchars($dataArry['nqppadd']));
+			$nqpppin = trim(htmlspecialchars($dataArry['nqpppin']));
+			$nqpppassword = trim(htmlspecialchars($dataArry['nqpppassword']));
 
 			
 
 
-			if($cordname!="" && $cordmobile!="" &&  $cordadd!="" &&  $cordpin!="" && $cordpassword!="")
+			if($nqppname!="" && $nqppmobile!="" &&  $nqppadd!="" &&  $nqpppin!="" && $nqpppassword!="")
 			{
 	
-				
-				
-				if($cordID>0 && $mode=="EDIT")
+				if($nqppID>0 && $mode=="EDIT")
 				{
 					/*  EDIT MODE
 					 *	-----------------
 					*/
 
-					$update = $this->coordinator->updateCoordinator($dataArry,$session);
+					$update =  $this->nqpp->updateNqpp($dataArry,$session);
 					if($update)
 					{
 						$json_response = array(
@@ -132,7 +135,7 @@ class coordinator extends CI_Controller {
 					*/
 
 			
-					$insertData = $this->coordinator->insertIntoCoordinator($dataArry,$session);
+					$insertData = $this->nqpp->insertIntoNqpp($dataArry,$session);
 					if($insertData)
 					{
 						$json_response = array(
@@ -191,20 +194,20 @@ class coordinator extends CI_Controller {
 				);
 				
 			$where = array(
-				"coordinator.id" => $updID
+				"nqpp.id" => $updID
 				);
 			
 			
 			$user_activity = array(
-					"activity_module" => 'Coordinator',
+					"activity_module" => 'NQPP',
 					"action" => "Update",
-					"from_method" => "coordinator/setStatus",
+					"from_method" => "nqpp/setStatus",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
 					"user_platform" => getUserPlatform()
 				);
-				$update = $this->commondatamodel->updateData_WithUserActivity('coordinator',$update_array,$where,'activity_log',$user_activity);
+				$update = $this->commondatamodel->updateData_WithUserActivity('nqpp',$update_array,$where,'activity_log',$user_activity);
 			if($update)
 			{
 				$json_response = array(

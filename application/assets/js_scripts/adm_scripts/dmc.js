@@ -2,21 +2,19 @@ $(document).ready(function(){
 	var basepath = $("#basepath").val();
 	
 	
-	$(document).on('submit','#TUForm',function(e){
+	$(document).on('submit','#dmcForm',function(e){
 		e.preventDefault();
-		
-		if(validateTU())
+
+		if(validateDMC())
 		{
-			
-		
-            var formDataserialize = $("#TUForm").serialize();
+            var formDataserialize = $("#dmcForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
-            var urlpath = basepath + 'tuberculosisunit/tuunit_action';
-            $("#tusavebtn").css('display', 'none');
+            var urlpath = basepath + 'dmc/dmc_action';
+            $("#dmcsavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'block');
 
             $.ajax({
@@ -33,20 +31,20 @@ $(document).ready(function(){
                             "keyboard": true,
                             "show": true
                         });
-                        var addurl = basepath + "tuberculosisunit/addtuunit";
-                        var listurl = basepath + "tuberculosisunit";
+                        var addurl = basepath + "dmc/adddmc";
+                        var listurl = basepath + "dmc";
                         $("#responsemsg").text(result.msg_data);
                         $("#response_add_more").attr("href", addurl);
                         $("#response_list_view").attr("href", listurl);
 
                     } 
 					else {
-                        $("#tu_response_msg").text(result.msg_data);
+                        $("#dmc_response_msg").text(result.msg_data);
                     }
 					
                     $("#loaderbtn").css('display', 'none');
 					
-                    $("#tusavebtn").css({
+                    $("#dmcsavebtn").css({
                         "display": "block",
                         "margin": "0 auto"
                     });
@@ -64,10 +62,10 @@ $(document).ready(function(){
 	
 
 	// Set Status
-    $(document).on("click", ".tustatus", function() {
-		var uid = $(this).data("tuid");
+    $(document).on("click", ".dmcstatus", function() {
+		var uid = $(this).data("dmcid");
         var status = $(this).data("setstatus");
-        var url = basepath + 'tuberculosisunit/setStatus';
+        var url = basepath + 'dmc/setStatus';
         setActiveStatus(uid, status, url);
 
     });
@@ -76,18 +74,52 @@ $(document).ready(function(){
 
 });
 
-function validateTU()
+function validateDMC()
 {
-	var tuunitname = $("#tuunitname").val();
-	$("#tumsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(tuunitname=="")
+    var dmcname = $("#dmcname").val();
+    var ltname = $("#ltname").val();
+    var mobile = $("#mobile").val();
+    var ltpass = $("#ltpass").val();
+
+    $("#dmcmsg").text("").css("dispaly", "none").removeClass("form_error");
+	if(dmcname=="")
 	{
-		$("#tuunitname").focus();
-		$("#tumsg")
-		.text("Error : Enter Name")
+		$("#dmcname").focus();
+		$("#dmcmsg")
+		.text("Error : Enter Organization Name")
 		.addClass("form_error")
         .css("display", "block");
 		return false;
 	}
+
+    if(ltname=="")
+    {
+        $("#ltname").focus();
+        $("#dmcmsg")
+        .text("Error : Enter Name of LT")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+	
+	if(mobile=="")
+    {
+        $("#mobile").focus();
+        $("#dmcmsg")
+        .text("Error : Enter Mobile No")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+	
+	if(ltpass=="")
+    {
+        $("#ltpass").focus();
+        $("#dmcmsg")
+        .text("Error : Enter Password")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	return true;
 }

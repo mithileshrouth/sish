@@ -5,8 +5,7 @@ class adminpanel extends CI_Controller {
  {
    parent::__construct();
 	
-	$this->load->model('rolemastermodel','role',TRUE);
-	$this->load->model('apimodel','apimodel',TRUE);
+	$this->load->model('loginmodel','login',TRUE);
 	$this->load->model('usermastermodel','user',TRUE);
     $this->load->library('session');
 	
@@ -15,7 +14,8 @@ class adminpanel extends CI_Controller {
  public function index()
  {
     $page = 'loginpanel/admin_login';
-	$result['roles'] = $this->role->getActiveRole();
+	//$result['roles'] = $this->role->getActiveRole();
+	$result = NULL;
 	$this->load->view($page,$result);
  }
 
@@ -27,7 +27,7 @@ class adminpanel extends CI_Controller {
 	parse_str($formData, $dataArry);
 	$mobileno =  htmlspecialchars($dataArry['mobileno']);
 	$password =  htmlspecialchars($dataArry['password']);
-	$role =  htmlspecialchars($dataArry['role']);
+	//$role =  htmlspecialchars($dataArry['role']);
 	
 	
 	
@@ -42,7 +42,7 @@ class adminpanel extends CI_Controller {
 	else
 	{
 		$userID = 0;
-		$userID = $this->apimodel->verifymobilelogin($mobileno,$password,$role,1); // 1== will change later dyanamically
+		$userID = $this->login->verifymobilelogin($mobileno,$password,1); // 1== will change later dyanamically
 		if($userID>0)
 		{
 			$userdata = $this->user->getUserById($userID);
@@ -51,8 +51,6 @@ class adminpanel extends CI_Controller {
 			
 			$sessionData = [
 				"mobileno" => $userdata->mobile_no,
-				"fname" => $userdata->first_name,
-				"lname" => $userdata->last_name,
 				"userid" => $userdata->userid,
 				"roleid" => $userdata->roleid,
 				"token" => $this->getSecureToken()
@@ -132,6 +130,11 @@ class adminpanel extends CI_Controller {
    { 
         $this->session->set_userdata("user_data",$result);
    }
+ }
+ 
+ public function logmeout(){
+	 $this->session->sess_destroy();
+	 redirect("adminpanel","refresh");
  }
  
 

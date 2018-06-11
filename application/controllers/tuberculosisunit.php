@@ -17,8 +17,8 @@ class tuberculosisunit extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['blockList'] = $this->locations->getAllBlockList(); 
-			$page = "dashboard/adminpanel_dashboard/block/block_list_view";
+			$result['tuList'] = $this->tuunit->getAllTUList(); 
+			$page = "dashboard/adminpanel_dashboard/tu_unit/tuunit_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
 		else
@@ -37,7 +37,7 @@ class tuberculosisunit extends CI_Controller {
 				$result['mode'] = "ADD";
 				$result['btnText'] = "Save";
 				$result['btnTextLoader'] = "Saving...";
-				$blockID = 0;
+				$TUID = 0;
 				$result['TuEditdata'] = [];
 				
 				//getAllRecordWhereOrderBy($table,$where,$orderby)
@@ -50,12 +50,12 @@ class tuberculosisunit extends CI_Controller {
 				$result['mode'] = "EDIT";
 				$result['btnText'] = "Update";
 				$result['btnTextLoader'] = "Updating...";
-				$blockID = $this->uri->segment(3);
+				$TUID = $this->uri->segment(3);
 				$whereAry = array(
-					'block.id' => $blockID
+					'tu_unit.id' => $TUID
 				);
 				// getSingleRowByWhereCls(tablename,where params)
-				$result['TuEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('block',$whereAry); 
+				$result['TuEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('tu_unit',$whereAry); 
 				
 			}
 
@@ -74,7 +74,7 @@ class tuberculosisunit extends CI_Controller {
 		}
 	}
 
-	public function block_action()
+	public function tuunit_action()
 	{
 		
 		$session = $this->session->userdata('user_data');
@@ -86,38 +86,39 @@ class tuberculosisunit extends CI_Controller {
 			
 			
 			
-			$blockID = trim(htmlspecialchars($dataArry['blockID']));
-			$districtID = trim(htmlspecialchars($dataArry['district']));
+			$tuID = trim(htmlspecialchars($dataArry['TUID']));
 			$mode = trim(htmlspecialchars($dataArry['mode']));
-			$block = trim(htmlspecialchars($dataArry['blockname']));
+			
+			$blockID = trim(htmlspecialchars($dataArry['block']));
+			$tuname = trim(htmlspecialchars($dataArry['tuunitname']));
 
 
-			if($districtID!="0" && $block!="")
+			if($blockID!="0" && $tuname!="")
 			{
 	
 				
 				
-				if($blockID>0 && $mode=="EDIT")
+				if($tuID>0 && $mode=="EDIT")
 				{
 					/*  EDIT MODE
 					 *	-----------------
 					*/
 
 					$array_upd = array(
-						"name" => $block,
-						"district_id" => $districtID,
-						"is_active" => 1
+						"name" => $tuname,
+						"block_id" => $blockID
+						
 					
 					);
 
 					$where_upd = array(
-						"block.id" => $blockID
+						"tu_unit.id" => $tuID
 					);
 
 					$user_activity = array(
-						"activity_module" => 'Block',
+						"activity_module" => 'TU',
 						"action" => 'Update',
-						"from_method" => 'block/block_action',
+						"from_method" => 'tuberculosisunit/tuunit_action',
 						"user_id" => $session['userid'],
 						"ip_address" => getUserIPAddress(),
 						"user_browser" => getUserBrowserName(),
@@ -128,7 +129,7 @@ class tuberculosisunit extends CI_Controller {
 					/*
 					@updateData_WithUserActivity('update table name','update table data','update table where condition','user activity table name','user activity table data');
 					*/
-					$update = $this->commondatamodel->updateData_WithUserActivity('block',$array_upd,$where_upd,'activity_log',$user_activity);
+					$update = $this->commondatamodel->updateData_WithUserActivity('tu_unit',$array_upd,$where_upd,'activity_log',$user_activity);
 					
 					
 					if($update)
@@ -158,8 +159,9 @@ class tuberculosisunit extends CI_Controller {
 
 
 					$array_insert = array(
-						"name" => $block,
-						"district_id" => $districtID,
+						"name" => $tuname,
+						"block_id" => $blockID,
+						"project_id" => 1,
 						"is_active" => 1,
 						"created_by" => $session['userid']
 					);
@@ -167,9 +169,9 @@ class tuberculosisunit extends CI_Controller {
 					
 	
 					$user_activity = array(
-						"activity_module" => 'Block',
+						"activity_module" => 'TU',
 						"action" => 'Insert',
-						"from_method" => 'block/block_action',
+						"from_method" => 'tuberculosisunit/tuunit_action',
 						"user_id" => $session['userid'],
 						"ip_address" => getUserIPAddress(),
 						"user_browser" => getUserBrowserName(),
@@ -178,7 +180,7 @@ class tuberculosisunit extends CI_Controller {
 					 );
 
 						
-					$tbl_name = array('block','activity_log');
+					$tbl_name = array('tu_unit','activity_log');
 					$insert_array = array($array_insert,$user_activity);
 					$insertData = $this->commondatamodel->insertMultiTableData($tbl_name,$insert_array);
 
@@ -240,14 +242,14 @@ class tuberculosisunit extends CI_Controller {
 				);
 				
 			$where = array(
-				"block.id" => $updID
+				"tu_unit.id" => $updID
 				);
 			
 			
 			$user_activity = array(
-					"activity_module" => 'Block',
+					"activity_module" => 'TU',
 					"action" => "Update",
-					"from_method" => "block/setStatus",
+					"from_method" => "tuberculosisunit/setStatus",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
@@ -255,7 +257,7 @@ class tuberculosisunit extends CI_Controller {
 					
 					
 				);
-				$update = $this->commondatamodel->updateData_WithUserActivity('block',$update_array,$where,'activity_log',$user_activity);
+				$update = $this->commondatamodel->updateData_WithUserActivity('tu_unit',$update_array,$where,'activity_log',$user_activity);
 			if($update)
 			{
 				$json_response = array(
@@ -279,7 +281,7 @@ class tuberculosisunit extends CI_Controller {
 		}
 		else
 		{
-			redirect('administratorpanel','refresh');
+			redirect('adminpanel','refresh');
 		}
 	}
 

@@ -18,4 +18,36 @@ class rolemastermodel extends CI_Model{
 		}
 		   return $data;
 	}
+	
+	
+	
+	public function getRoleIDByRoleType($roletype){
+		$roleid = 0;
+		$query = $this->db->select("*")
+				->from("role_master")
+				->where('role_master.role_code', $roletype)
+				->limit(1)
+				->get();
+				
+		if ($query->num_rows() > 0) 
+		{
+		   $roledata = $query->row();
+		   $roleid = $roledata->id;
+		}
+		
+		return $roleid;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

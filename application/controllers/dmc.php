@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class coordinator extends CI_Controller {
+class dmc extends CI_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
 		$this->load->library('session');
-		$this->load->model('coordinatormodel','coordinator',TRUE);
+		$this->load->model('dmcmodel','dmc',TRUE);
 	}
 	
 	
@@ -15,8 +15,8 @@ class coordinator extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['coordinatorList'] = $this->coordinator->getAllCoordinator(); 
-			$page = "dashboard/adminpanel_dashboard/coordinator/coordinator_list_view";
+			$result['dmcList'] = $this->dmc->getAllDMC(); 
+			$page = "dashboard/adminpanel_dashboard/dmc/dmc_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
 		else
@@ -25,7 +25,7 @@ class coordinator extends CI_Controller {
 		}
 	}
 
-	public function addcoordinator()
+	public function adddmc()
 	{
 		$session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data') && isset($session['token']))
@@ -35,34 +35,38 @@ class coordinator extends CI_Controller {
 				$result['mode'] = "ADD";
 				$result['btnText'] = "Save";
 				$result['btnTextLoader'] = "Saving...";
-				$cordID = 0;
-				$result['cordEditdata'] = [];
+				$dmcID = 0;
+				$result['dmcEditdata'] = [];
 				
+				//getAllRecordWhereOrderBy($table,$where,$orderby)
+				
+				
+			
 			}
 			else
 			{
 				$result['mode'] = "EDIT";
 				$result['btnText'] = "Update";
 				$result['btnTextLoader'] = "Updating...";
-				$cordID = $this->uri->segment(3);
+				$dmcID = $this->uri->segment(3);
 				$whereAry = array(
-					'coordinator.id' => $cordID
+					'dmc.id' => $dmcID
 				);
 				// getSingleRowByWhereCls(tablename,where params)
-				$result['cordEditdata'] = $this->coordinator->getCoordinatorEditDataByID($cordID); 
+				$result['dmcEditdata'] = $this->dmc->getDMCEditDataByID($dmcID); 
 				
 			
 				
 			}
 
 			$header = "";
-			
-			$blockwhere = [
-				"block.is_active" => 1 
+			$tuwhere = [
+				"tu_unit.is_active" => 1 
 				];
-			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
+			//getAllRecordWhereOrderBy($table,$where,$orderby)
+			$result['tuList'] = $this->commondatamodel->getAllRecordWhereOrderBy('tu_unit',$tuwhere,'tu_unit.name'); 
 			
-			$page = "dashboard/adminpanel_dashboard/coordinator/coordinator_add_edit_view";
+			$page = "dashboard/adminpanel_dashboard/dmc/dmc_add_edit_view";
 			createbody_method($result, $page, $header,$session);
 		}
 		else
@@ -71,7 +75,7 @@ class coordinator extends CI_Controller {
 		}
 	}
 
-	public function coordinator_action()
+	public function dmc_action()
 	{
 		
 		$session = $this->session->userdata('user_data');
@@ -82,30 +86,35 @@ class coordinator extends CI_Controller {
 			parse_str($formData, $dataArry);
 			
 			
-			$cordID = trim(htmlspecialchars($dataArry['cordID']));
+			
+			$dmcID = trim(htmlspecialchars($dataArry['dmcID']));
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 
-			$cordname = trim(htmlspecialchars($dataArry['cordname']));
-			$cordmobile = trim(htmlspecialchars($dataArry['cordmobile']));
-			$cordadd = trim(htmlspecialchars($dataArry['cordadd']));
-			$cordpin = trim(htmlspecialchars($dataArry['cordpin']));
-			$cordpassword = trim(htmlspecialchars($dataArry['cordpassword']));
-
+			$tuID = trim(htmlspecialchars($dataArry['seltu']));
+			$dmcname = trim(htmlspecialchars($dataArry['dmcname']));
+			$dmcadd = trim(htmlspecialchars($dataArry['dmcadd']));
+			$ltname = trim(htmlspecialchars($dataArry['ltname']));
+			$mobile = trim(htmlspecialchars($dataArry['mobile']));
+			$ltpass = trim(htmlspecialchars($dataArry['ltpass']));
 			
 
 
-			if($cordname!="" && $cordmobile!="" &&  $cordadd!="" &&  $cordpin!="" && $cordpassword!="")
+			if($tuID!="0" && $dmcname!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
 			{
 	
 				
 				
-				if($cordID>0 && $mode=="EDIT")
+				if($dmcID>0 && $mode=="EDIT")
 				{
 					/*  EDIT MODE
 					 *	-----------------
 					*/
 
-					$update = $this->coordinator->updateCoordinator($dataArry,$session);
+					
+
+					$update = $this->dmc->updateDMC($dataArry,$session);
+					
+					
 					if($update)
 					{
 						$json_response = array(
@@ -132,7 +141,9 @@ class coordinator extends CI_Controller {
 					*/
 
 			
-					$insertData = $this->coordinator->insertIntoCoordinator($dataArry,$session);
+					$insertData = $this->dmc->insertIntoDMC($dataArry,$session);
+					
+
 					if($insertData)
 					{
 						$json_response = array(
@@ -191,20 +202,22 @@ class coordinator extends CI_Controller {
 				);
 				
 			$where = array(
-				"coordinator.id" => $updID
+				"dmc.id" => $updID
 				);
 			
 			
 			$user_activity = array(
-					"activity_module" => 'Coordinator',
+					"activity_module" => 'DMC',
 					"action" => "Update",
-					"from_method" => "coordinator/setStatus",
+					"from_method" => "dmc/setStatus",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
 					"user_platform" => getUserPlatform()
+					
+					
 				);
-				$update = $this->commondatamodel->updateData_WithUserActivity('coordinator',$update_array,$where,'activity_log',$user_activity);
+				$update = $this->commondatamodel->updateData_WithUserActivity('dmc',$update_array,$where,'activity_log',$user_activity);
 			if($update)
 			{
 				$json_response = array(

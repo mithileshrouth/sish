@@ -1,4 +1,4 @@
-<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/tuunitjs.js"></script>     
+<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/stls.js"></script>    
    <section class="content-header">
       <h1>
         Dashboard
@@ -6,7 +6,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">TU List</li>
+        <li class="active">STLS List</li>
       </ol>
     </section>
 
@@ -15,8 +15,8 @@
 
 		    <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Block List</h3>
-              <a href="<?php echo base_url();?>tuberculosisunit/addtuunit" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
+              <h3 class="box-title">STLS List</h3>
+              <a href="<?php echo base_url();?>stls/addstls" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -24,8 +24,9 @@
                 <thead>
                 <tr>
                   <th style="width:10%;">Sl</th>
+                  <th>STLS</th>
+                  <th>Mobile</th>
                   <th>TU</th>
-                  <th>Block</th>
                   <th style="width:10%;">Status</th>
                   <th style="text-align:right;width:5%;">Action</th>
                 </tr>
@@ -35,27 +36,27 @@
               	<?php 
 				
               		$i = 1;
-              		foreach ($bodycontent['tuList'] as $value) { 
+              		foreach ($bodycontent['stlsList'] as $value) { 
               			$status = "";
               			if($value->active=="1")
               			{
-              				$status = '<div class="status_dv "><span class="label label-success status_tag tustatus" data-setstatus="0" data-tuid="'.$value->tuid.'"><span class="glyphicon glyphicon-ok"></span> Active</span></div>';
+              				$status = '<div class="status_dv "><span class="label label-success status_tag stlsstatus" data-setstatus="0" data-stlsid="'.$value->stlsid.'"><span class="glyphicon glyphicon-ok"></span> Active</span></div>';
               			}
               			else
               			{
-              				$status = '<div class="status_dv"><span class="label label-danger status_tag tustatus" data-setstatus="1" 
-              				data-tuid="'.$value->tuid.'"><span class="glyphicon glyphicon-remove"></span> Inactive</span></div>';
+              				$status = '<div class="status_dv"><span class="label label-danger status_tag stlsstatus" data-setstatus="1" 
+              				data-stlsid="'.$value->stlsid.'"><span class="glyphicon glyphicon-remove"></span> Inactive</span></div>';
               			}
               		?>
 
 					<tr>
 						<td><?php echo $i++; ?></td>
+            <td><?php echo $value->stlsname; ?></td>
+						<td><?php echo $value->stlsmobile; ?></td>
 						<td><?php echo $value->tuname; ?></td>
-						<td><?php echo $value->blockname; ?></td>
-						
 						<td><?php echo $status; ?></td>
 						<td align="center"> 
-							<a href="<?php echo base_url(); ?>tuberculosisunit/addtuunit/<?php echo $value->tuid; ?>" class="btn btn-primary btn-xs" data-title="Edit">
+							<a href="<?php echo base_url(); ?>stls/addstls/<?php echo $value->stlsid; ?>" class="btn btn-primary btn-xs" data-title="Edit">
 								<span class="glyphicon glyphicon-pencil"></span>
 							</a>
 						

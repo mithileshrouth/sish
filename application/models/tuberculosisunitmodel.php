@@ -3,23 +3,19 @@
 class tuberculosisunitmodel extends CI_Model{
 	
 	
-	
-	/****************************************************************************/
-	/*******************************BLOCK AREA**********************************/
-	/**************************************************************************/
-	
-	public function getAllBlockList(){
+
+	public function getAllTUList(){
 		$data = [];
 		$query = $this->db->select("
-					block.id as blockid,
-					block.name as blockname,
-					block.is_active,
-					district.name as districtname
+					tu_unit.id as tuid,
+					tu_unit.name as tuname,
+					tu_unit.is_active as active,
+					block.name as blockname
 					
 					")
-				->from('block')
-				->join('district','district.id = block.district_id','INNER')
-			    ->order_by('block.name')
+				->from('tu_unit')
+				->join('block','block.id = tu_unit.block_id','INNER')
+			    ->order_by('tu_unit.name')
 				->get();
 			
 			if($query->num_rows()> 0)
@@ -38,47 +34,6 @@ class tuberculosisunitmodel extends CI_Model{
 
 
 
-	 public function getLocationDetailByPin($pincode)
-	 {
-	 	$where = array(
-	 		"pincode_master.pincode" => $pincode,
-	 		"pincode_master.is_active" => 'Y'
-	 	);
-	 	$data = [];
-		try
-	 	{
-			$this->db->select("pincode_master.`id` AS pincodeID,
-								pincode_master.pincode,
-								district.`name` AS districtname,
-								district.`id` AS districtID,
-								states.`name` AS statename,
-								states.`id` AS stateID,
-								countries.`name` AS countryname,
-								countries.`id` AS countryID")
-				->from('pincode_master')
-				->join('district','district.id = pincode_master.district_id','INNER')
-				->join('states','states.id = district.state_id','INNER')
-				->join('countries','countries.id = states.country_id','INNER')
-				->where($where);
-
-			$query = $this->db->get();
-			if($query->num_rows()> 0)
-			{
-	           $row = $query->row();
-	           return $data = $row;
-	             
-	        }
-			else
-			{
-	            return $data;
-	        }
-		}
-	 	catch(Exception $err)
-	 	{
-	 		 echo $err->getTraceAsString();
-	 	}
-
-	 }
 	
 	
 

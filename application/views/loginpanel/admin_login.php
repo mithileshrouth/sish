@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SISH | Log in</title>
+  <title>SHIS | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -32,7 +32,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="javascript:;"><b><span style="color: #1394c8;">SISH</span></b> ADMIN</a>
+    <a href="javascript:;"><b><span style="color: #1394c8;">SHIS</span></b> ADMIN</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -44,7 +44,7 @@
 	echo form_open('adminpanel/verifyLogin',$attr); ?>
       <div class="form-group has-feedback">
         <input type="hidden" id="baseurl" value="<?php echo base_url(); ?>"/>
-        <input type="text" class="form-control " placeholder="Mobile No" name="mobileno" id="mobileno" autocomplete="off" required="true" maxlength="10"/>
+        <input type="text" class="form-control " placeholder="Mobile No" name="mobileno" id="mobileno" autocomplete="off" required="true" maxlength="10"  />
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -52,16 +52,7 @@
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
 	 
-		<div class="form-group has-feedback">
-        <select class="form-control" id="role" name="role">
-			<?php 
-				foreach($roles as $role){ ?>
-					<option value="<?php echo $role->id; ?>"><?php echo $role->name; ?></option>
-				<?php
-				}
-			?>
-        </select>
-      </div>
+		
 	  
 	  <div class="row">
 		<div class="col-xs-12">

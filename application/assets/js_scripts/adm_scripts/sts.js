@@ -2,21 +2,19 @@ $(document).ready(function(){
 	var basepath = $("#basepath").val();
 	
 	
-	$(document).on('submit','#TUForm',function(e){
+	$(document).on('submit','#stsForm',function(e){
 		e.preventDefault();
-		
-		if(validateTU())
+
+		if(validateSTS())
 		{
-			
-		
-            var formDataserialize = $("#TUForm").serialize();
+            var formDataserialize = $("#stsForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
-            var urlpath = basepath + 'tuberculosisunit/tuunit_action';
-            $("#tusavebtn").css('display', 'none');
+            var urlpath = basepath + 'sts/sts_action';
+            $("#stssavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'block');
 
             $.ajax({
@@ -33,20 +31,20 @@ $(document).ready(function(){
                             "keyboard": true,
                             "show": true
                         });
-                        var addurl = basepath + "tuberculosisunit/addtuunit";
-                        var listurl = basepath + "tuberculosisunit";
+                        var addurl = basepath + "sts/addsts";
+                        var listurl = basepath + "sts";
                         $("#responsemsg").text(result.msg_data);
                         $("#response_add_more").attr("href", addurl);
                         $("#response_list_view").attr("href", listurl);
 
                     } 
 					else {
-                        $("#tu_response_msg").text(result.msg_data);
+                        $("#sts_response_msg").text(result.msg_data);
                     }
 					
                     $("#loaderbtn").css('display', 'none');
 					
-                    $("#tusavebtn").css({
+                    $("#stssavebtn").css({
                         "display": "block",
                         "margin": "0 auto"
                     });
@@ -64,10 +62,10 @@ $(document).ready(function(){
 	
 
 	// Set Status
-    $(document).on("click", ".tustatus", function() {
-		var uid = $(this).data("tuid");
+    $(document).on("click", ".stsstatus", function() {
+		var uid = $(this).data("stsid");
         var status = $(this).data("setstatus");
-        var url = basepath + 'tuberculosisunit/setStatus';
+        var url = basepath + 'sts/setStatus';
         setActiveStatus(uid, status, url);
 
     });
@@ -76,18 +74,29 @@ $(document).ready(function(){
 
 });
 
-function validateTU()
+function validateSTS()
 {
-	var tuunitname = $("#tuunitname").val();
-	$("#tumsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(tuunitname=="")
+    var stlsname = $("#stsname").val();
+	var stsmobile = $("#stsmobile").val();
+    $("#stsmsg").text("").css("dispaly", "none").removeClass("form_error");
+	if(stlsname=="")
 	{
-		$("#tuunitname").focus();
-		$("#tumsg")
+		$("#stsname").focus();
+		$("#stsmsg")
 		.text("Error : Enter Name")
 		.addClass("form_error")
         .css("display", "block");
 		return false;
 	}
+
+    if(stsmobile=="")
+    {
+        $("#stsmobile").focus();
+        $("#stsmsg")
+        .text("Error : Enter Mobile No")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	return true;
 }
