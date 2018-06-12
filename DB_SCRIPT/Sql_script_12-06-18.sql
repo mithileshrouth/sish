@@ -43,3 +43,23 @@ CREATE TABLE `sish_db`.`patient` (
   PRIMARY KEY (`patient_id`)
 ) ENGINE = INNODB CHARSET = utf8 COLLATE = utf8_general_ci ;
 
+===================================
+CREATE TABLE `ptb_phase_master` (
+  `phase_id` int(20) NOT NULL AUTO_INCREMENT,
+  `phase_name` varchar(255) DEFAULT NULL,
+  `phase_des` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`phase_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+===========================
+INSERT INTO `ptb_phase_master` (
+  `phase_id`,
+  `phase_name`,
+  `phase_des`
+) 
+VALUES
+  (1, 'Registration', 'Registration'),
+  (2,'Sputum for DMC','Sputum for DMC'),
+  (3, 'X-Ray', 'X-Ray'),
+  (4, 'CBNAAT', 'CBNAAT') ;
+=========================================
+ALTER TABLE `sish_db`.`patient` ADD COLUMN `patient_phase` INT(20) NULL AFTER `group_cord_id`;
