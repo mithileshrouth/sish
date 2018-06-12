@@ -4,7 +4,7 @@ class apimodel extends CI_Model {
         $key ="";
         $query = $this->db->select("*")
 			  ->from("project")
-			  ->where('project.project', 'SHISH')
+			  ->where('project.project', 'SHIS')
 			  ->get();
         if($query->num_rows()>0){
             $row = $query->row();
