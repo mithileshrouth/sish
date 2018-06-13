@@ -297,6 +297,78 @@ public function __construct()
     exit();
  }
  
+ public function verifyLogin(){
+	header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		
+		
+		
+		$logindata = $request->data;
+		
+		$mobile = $logindata->lgnmobileno;
+		$password = $logindata->lgnpass;
+		$roleid = $logindata->lgnrole;
+		$projectid = $logindata->prjid;
+		
+		$key = $request->key;
+	
+			if(!empty($key) && $apikey == trim($key)){
+			
+			if(!$this->validation($mobile,$password,$roleid)){
+				 $result=array(
+					 "status"=>401,
+					 "statuscode"=>"FIELD_EMPTY",
+					 "user"=>"NULL"
+				 );
+			}
+			else{
+             $userId = $this->apimodel->verifymobilelogin($mobile,$password,$roleid,$projectid);
+             if($userId>0){
+                 $user = $this->user->getUserById($userId);
+                 if(!empty($user)){
+                     $result=array(
+                        "status"=>200,
+                        "statuscode"=>"SUCCESS",
+                        "user"=>array($user)
+                    );
+                 }else{
+                     $result=array(
+                        "status"=>420,
+                        "statuscode"=>"IN_ACTIVE",
+                        "user"=>"NULL"
+                    );
+                 }
+                 
+             }else{
+               $result=array(
+                 "status"=>402,
+                 "statuscode"=>"INVALID_AUTH",
+                 "user"=>"NULL"
+                );  
+             }
+             
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	
+ }
+ 
  
  public function registerPTB(){
 	header('Access-Control-Allow-Origin: *');  
