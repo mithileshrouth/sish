@@ -205,6 +205,79 @@ class coordinatormodel extends CI_Model{
             echo $exc->getTraceAsString();
         }
 	}
+	
+	
+	/*-----------For API------------*/
+	
+	public function getCoordinatorByPM(){
+		$data = [];
+		$where = [
+			"is_active"=>1
+		
+		];
+		$query = $this->db->select("coordinator.id,coordinator.name")
+				->from('coordinator')
+				->where($where)
+				->get();
+			
+			//echo $this->db->last_query();
+			if($query->num_rows()> 0)
+			{
+				$data = $query->row();
+	        }
+			
+	        return $data;
+	}
+	
+	public function getCoordinatorBYId($corduserid){
+		$data = [];
+		$where = [
+			"is_active"=>1,
+			"coordinator.userid"=>$corduserid
+		];
+		$query = $this->db->select("coordinator.id,coordinator.name")
+				->from('coordinator')
+				->where($where)
+				->get();
+			
+			//echo $this->db->last_query();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	
+	public function getCoordinatorOfNQPP($nqppid){
+		$data = [];
+		$where = [
+			"coordinator.is_active"=>1,
+			"nqpp.userid"=>$nqppid
+		];
+		$query = $this->db->select("coordinator.id,coordinator.name")
+				->from('coordinator')
+				->join('nqpp','nqpp.coordinator_id = coordinator.id','INNER')
+				->where($where)
+				->get();
+			
+			//echo $this->db->last_query();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	
 
 	
 	

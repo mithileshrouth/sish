@@ -214,6 +214,53 @@ class nqppmodel extends CI_Model{
         }
 	}
 
+	/*-----------For API------------*/
+	public function getNQPPbyCoordinator($corduserid){
+		$data = [];
+		$where = [
+			"nqpp.is_active"=>1,
+			"coordinator.userid"=>$corduserid
+		];
+		$query = $this->db->select("nqpp.id,nqpp.name")
+				->from('nqpp')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id')
+				->where($where)
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	
+	public function getNQPPbyUserID($userid){
+		$data = [];
+		$where = [
+			"nqpp.is_active"=>1,
+			"nqpp.userid"=>$userid
+		];
+		$query = $this->db->select("nqpp.id,nqpp.name")
+				->from('nqpp')
+				->where($where)
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
 	
 	
 }

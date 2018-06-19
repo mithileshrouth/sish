@@ -35,3 +35,13 @@ insert  into `ptb_phase_master`(`phase_id`,`phase_name`,`phase_des`) values (1,'
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+
+
+
+/*-------------------------------Mithilesh-------------13.06.2018-------------------*/
+ALTER TABLE `sish_db`.`patient` ADD COLUMN `patient_uniq_id` VARCHAR(255) NULL AFTER `patient_id`; 
+
+ALTER TABLE `sish_db`.`patient` CHANGE `patient_mobile_primary` `patient_mobile_primary` VARCHAR(255) NULL; 
+
+ALTER TABLE `sish_db`.`patient` CHANGE `patient_mobile_primary` `patient_mobile_primary` VARCHAR(25) CHARSET utf8 COLLATE utf8_general_ci NULL, CHANGE `patient_mobile_alternative` `patient_mobile_alternative` VARCHAR(25) NULL; 
