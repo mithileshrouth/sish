@@ -2,19 +2,20 @@ $(document).ready(function(){
 	var basepath = $("#basepath").val();
 	
 	
-	$(document).on('submit','#dmcForm',function(e){
+	$(document).on('submit','#xraycenterForm',function(e){
 		e.preventDefault();
 
-		if(validateDMC())
+		if(validateXRAY())
 		{
-            var formDataserialize = $("#dmcForm").serialize();
+           
+            var formDataserialize = $("#xraycenterForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
-            var urlpath = basepath + 'dmc/dmc_action';
-            $("#dmcsavebtn").css('display', 'none');
+            var urlpath = basepath + 'xraycenter/xray_action';
+            $("#xraysavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'block');
 
             $.ajax({
@@ -31,20 +32,20 @@ $(document).ready(function(){
                             "keyboard": true,
                             "show": true
                         });
-                        var addurl = basepath + "dmc/adddmc";
-                        var listurl = basepath + "dmc";
+                        var addurl = basepath + "xraycenter/addxray";
+                        var listurl = basepath + "xraycenter";
                         $("#responsemsg").text(result.msg_data);
                         $("#response_add_more").attr("href", addurl);
                         $("#response_list_view").attr("href", listurl);
 
                     } 
 					else {
-                        $("#dmc_response_msg").text(result.msg_data);
+                        $("#xray_response_msg").text(result.msg_data);
                     }
 					
                     $("#loaderbtn").css('display', 'none');
 					
-                    $("#dmcsavebtn").css({
+                    $("#xraysavebtn").css({
                         "display": "block",
                         "margin": "0 auto"
                     });
@@ -62,10 +63,10 @@ $(document).ready(function(){
 	
 
 	// Set Status
-    $(document).on("click", ".dmcstatus", function() {
-		var uid = $(this).data("dmcid");
+    $(document).on("click", ".xraystatus", function() {
+		var uid = $(this).data("xraycntid");
         var status = $(this).data("setstatus");
-        var url = basepath + 'dmc/setStatus';
+        var url = basepath + 'xraycenter/setStatus';
         setActiveStatus(uid, status, url);
 
     });
@@ -74,52 +75,74 @@ $(document).ready(function(){
 
 });
 
-function validateDMC()
+function validateXRAY()
 {
-    var dmcname = $("#dmcname").val();
+    var seltu = $("#seltu").val();
+    var xraycntrname = $("#xraycntrname").val();
+    var xraycntradd = $("#xraycntradd").val();
     var ltname = $("#ltname").val();
     var mobile = $("#mobile").val();
     var ltpass = $("#ltpass").val();
 
-    $("#dmcmsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(dmcname=="")
+    $("#xraymsg").text("").css("dispaly", "none").removeClass("form_error");
+	if(seltu=="")
 	{
-		$("#dmcname").focus();
-		$("#dmcmsg")
-		.text("Error : Enter Organization Name")
+		$("#seltu").focus();
+		$("#xraymsg")
+		.text("Error : Select TU")
 		.addClass("form_error")
         .css("display", "block");
 		return false;
 	}
 
-    if(ltname=="")
+    if(xraycntrname=="")
     {
-        $("#ltname").focus();
-        $("#dmcmsg")
-        .text("Error : Enter Name of LT")
+        $("#xraycntrname").focus();
+        $("#xraymsg")
+        .text("Error : Enter Name Organization Name")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+     if(xraycntradd=="")
+    {
+        $("#xraycntradd").focus();
+        $("#xraymsg")
+        .text("Error : Enter Organization Address")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
 	
+    if(ltname=="")
+    {
+        $("#ltname").focus();
+        $("#xraymsg")
+        .text("Error : Enter LT Name")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	if(mobile=="")
     {
         $("#mobile").focus();
-        $("#dmcmsg")
+        $("#xraymsg")
         .text("Error : Enter Mobile No")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
-	
-	if(ltpass=="")
+
+    if(ltpass=="")
     {
         $("#ltpass").focus();
-        $("#dmcmsg")
+        $("#xraymsg")
         .text("Error : Enter Password")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
+	
+	
 	return true;
 }
