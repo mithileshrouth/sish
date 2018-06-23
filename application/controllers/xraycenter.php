@@ -75,7 +75,7 @@ class xraycenter extends CI_Controller {
 		}
 	}
 
-	public function dmc_action()
+	public function xray_action()
 	{
 		
 		$session = $this->session->userdata('user_data');
@@ -85,26 +85,28 @@ class xraycenter extends CI_Controller {
 			$formData = $this->input->post('formDatas');
 			parse_str($formData, $dataArry);
 			
+
 			
-			
-			$dmcID = trim(htmlspecialchars($dataArry['dmcID']));
+		
+			$xraycntrId = trim(htmlspecialchars($dataArry['xraycntrId']));
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 
-			$tuID = trim(htmlspecialchars($dataArry['seltu']));
-			$dmcname = trim(htmlspecialchars($dataArry['dmcname']));
-			$dmcadd = trim(htmlspecialchars($dataArry['dmcadd']));
+			
+			$seltu = trim(htmlspecialchars($dataArry['seltu']));
+			$xraycntrname = trim(htmlspecialchars($dataArry['xraycntrname']));
+			$xraycntradd = trim(htmlspecialchars($dataArry['xraycntradd']));
 			$ltname = trim(htmlspecialchars($dataArry['ltname']));
 			$mobile = trim(htmlspecialchars($dataArry['mobile']));
 			$ltpass = trim(htmlspecialchars($dataArry['ltpass']));
 			
 
 
-			if($tuID!="0" && $dmcname!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
+			if($seltu!="0" && $xraycntrname!="" && $xraycntradd!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
 			{
 	
 				
 				
-				if($dmcID>0 && $mode=="EDIT")
+				if($xraycntrId>0 && $mode=="EDIT")
 				{
 					/*  EDIT MODE
 					 *	-----------------
@@ -112,7 +114,7 @@ class xraycenter extends CI_Controller {
 
 					
 
-					$update = $this->dmc->updateDMC($dataArry,$session);
+					$update = $this->xray->updateXrayCenter($dataArry,$session);
 					
 					
 					if($update)
@@ -141,7 +143,7 @@ class xraycenter extends CI_Controller {
 					*/
 
 			
-					$insertData = $this->dmc->insertIntoDMC($dataArry,$session);
+					$insertData = $this->xray->insertIntoXrayCenter($dataArry,$session);
 					
 
 					if($insertData)
@@ -202,14 +204,14 @@ class xraycenter extends CI_Controller {
 				);
 				
 			$where = array(
-				"dmc.id" => $updID
+				"xray_center.id" => $updID
 				);
 			
 			
 			$user_activity = array(
-					"activity_module" => 'DMC',
+					"activity_module" => 'X-Ray Center',
 					"action" => "Update",
-					"from_method" => "dmc/setStatus",
+					"from_method" => "xraycenter/setStatus",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
@@ -217,7 +219,7 @@ class xraycenter extends CI_Controller {
 					
 					
 				);
-				$update = $this->commondatamodel->updateData_WithUserActivity('dmc',$update_array,$where,'activity_log',$user_activity);
+				$update = $this->commondatamodel->updateData_WithUserActivity('xray_center',$update_array,$where,'activity_log',$user_activity);
 			if($update)
 			{
 				$json_response = array(

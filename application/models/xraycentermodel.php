@@ -76,7 +76,7 @@ class xraycentermodel extends CI_Model{
 			$user_activity = array(
 					"activity_module" => 'X-Ray Center',
 					"action" => "Insert",
-					"from_method" => "dmc/dmc_action/insertIntoXray",
+					"from_method" => "xraycenter/xray_action/insertIntoXray",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),

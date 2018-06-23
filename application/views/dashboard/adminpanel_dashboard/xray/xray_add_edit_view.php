@@ -1,4 +1,5 @@
-<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/dmc.js"></script>   
+<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/xray.js"></script>   
+<link rel="stylesheet" href="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/bootstrap/dist/css/bootstrap.min.css">
    <section class="content-header">
       <h1>
         Dashboard
@@ -30,13 +31,13 @@
                   <div class="form-group">
                     
                     <input type="hidden" name="xraycntrId" id="xraycntrId" 
-                           value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->dmcid;}else{echo "0";}?>" />
+                           value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->xraycntrId;}else{echo "0";}?>" />
 		    <input type="hidden" name="uid" id="uid" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->userid;}else{echo "0";}?>" />
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
 
                     <label for="seltu">TU</label> 
                     <select id="seltu" name="seltu" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
-                   
+                  
                       <?php 
                       if($bodycontent['tuList'])
                       {
@@ -54,12 +55,12 @@
 
                   <div class="form-group">
                     <label for="dmcname">Organization Name</label>
-                    <input type="text" class="form-control forminputs typeahead" id="dmcname" name="dmcname" placeholder="Enter Name" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->dmcname;}?>" >
+                    <input type="text" class="form-control forminputs typeahead" id="xraycntrname" name="xraycntrname" placeholder="Enter Name" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->xraycentername;}?>" >
                   </div>
 				  
 				   <div class="form-group">
                     <label for="dmcadd">Organization Address</label>
-                    <textarea class="form-control forminputs typeahead" id="dmcadd" name="dmcadd" style="resize:none;"><?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->dmcadd;}?></textarea>
+                    <textarea class="form-control forminputs typeahead" id="xraycntradd" name="xraycntradd" style="resize:none;"><?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->xraycntradd;}?></textarea>
                   </div>
 				  
 				   <div class="form-group">
@@ -77,10 +78,10 @@
                     <input type="password" class="form-control forminputs typeahead " id="ltpass" name="ltpass" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->userpass;}?>" >
                   </div>
 
-                  <p id="dmcmsg" class="form_error"></p>
+                  <p id="xraymsg" class="form_error"></p>
 
                   <div class="btnDiv">
-                      <button type="submit" class="btn btn-primary formBtn" id="dmcsavebtn"><?php echo $bodycontent['btnText']; ?></button>
+                      <button type="submit" class="btn btn-primary formBtn" id="xraysavebtn"><?php echo $bodycontent['btnText']; ?></button>
                     
 					  <span class="btn btn-primary formBtn loaderbtn" id="loaderbtn" style="display:none;"><i class="fa fa-spinner rotating" aria-hidden="true"></i> <?php echo $bodycontent['btnTextLoader']; ?></span>
                   </div>
@@ -93,7 +94,7 @@
                 </div> -->
               <?php echo form_close(); ?>
 
-              <div class="response_msg" id="dmc_response_msg">
+              <div class="response_msg" id="xray_response_msg">
                
               </div>
 

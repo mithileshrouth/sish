@@ -43,12 +43,12 @@
               			$status = "";
               			if($value->active=="1")
               			{
-              				$status = '<div class="status_dv "><span class="label label-success status_tag dmcstatus" data-setstatus="0" data-dmcid="'.$value->xraycenter_id.'"><span class="glyphicon glyphicon-ok"></span> Active</span></div>';
+              				$status = '<div class="status_dv "><span class="label label-success status_tag xraystatus" data-setstatus="0" data-xraycntid="'.$value->xraycenter_id.'"><span class="glyphicon glyphicon-ok"></span> Active</span></div>';
               			}
               			else
               			{
-              				$status = '<div class="status_dv"><span class="label label-danger status_tag dmcstatus" data-setstatus="1" 
-              				data-dmcid="'.$value->xraycenter_id.'"><span class="glyphicon glyphicon-remove"></span> Inactive</span></div>';
+              				$status = '<div class="status_dv"><span class="label label-danger status_tag xraystatus" data-setstatus="1" 
+              				data-xraycntid="'.$value->xraycenter_id.'"><span class="glyphicon glyphicon-remove"></span> Inactive</span></div>';
               			}
               		?>
 
