@@ -196,6 +196,34 @@ class xraycentermodel extends CI_Model{
         }
 	}
 
-	
+	public function getAllActiveXrayCenter(){
+		$data = [];
+		$query = $this->db->select("
+					xray_center.id as xraycenter_id,
+                                        xray_center.name as xray_center_name,
+                                        xray_center.address as xray_center_add,
+                                        xray_center.lt_name,
+                                        xray_center.mobile_no as ltmobile,
+                                        xray_center.is_active as active
+					
+					")
+				->from('xray_center')
+				
+				->where('xray_center.is_active',1)
+				->order_by('xray_center.tuid')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+                            foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+                        }
+			
+	        return $data;
+	       
+	}
 	
 }

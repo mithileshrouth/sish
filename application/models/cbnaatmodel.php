@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class dmcmodel extends CI_Model{
+class cbnaatmodel extends CI_Model{
 	public function __construct()
 	{
 	   // parent::__construct();
@@ -9,74 +9,49 @@ class dmcmodel extends CI_Model{
 	}
 	
 	
-	public function getAllDMC(){
+	public function getAllXrayCenter(){
 		$data = [];
 		$query = $this->db->select("
-					dmc.id as dmcid,
-					dmc.name as dmcname,
-					dmc.address as dmcadd,
-					dmc.mobile_no as ltmobile,
-					dmc.lt_name ,
-					dmc.is_active as active,
+					xray_center.id as xraycenter_id,
+                                        xray_center.name as xray_center_name,
+                                        xray_center.address as xray_center_add,
+                                        xray_center.lt_name,
+                                        xray_center.mobile_no as ltmobile,
+                                        xray_center.is_active as active,
 					tu_unit.name AS tuname,
 					block.name as blockname
 					")
-				->from('dmc')
-				->join('tu_unit','tu_unit.id = dmc.tuid','INNER')
+				->from('xray_center')
+				->join('tu_unit','tu_unit.id = xray_center.tuid','INNER')
 				->join('block','block.id = tu_unit.block_id','INNER')
-				->order_by('dmc.name')
+				->order_by('xray_center.tuid')
 				->get();
 			
-			//echo $this->db->last_query();
 			if($query->num_rows()> 0)
 			{
-	          foreach($query->result() as $rows)
+                            foreach($query->result() as $rows)
 				{
 					$data[] = $rows;
 				}
 	             
-	        }
+                        }
 			
 	        return $data;
 	       
 	}
 	
 	
-	
-	public function getAllActiveDMC(){
-		$data = [];
-		$query = $this->db->select("*")
-				->from('dmc')
-				->where('dmc.is_active',1)
-				->order_by('dmc.name')
-				->get();
-			
-			//echo $this->db->last_query();
-			if($query->num_rows()> 0)
-			{
-	          foreach($query->result() as $rows)
-				{
-					$data[] = $rows;
-				}
-	             
-	        }
-			
-	        return $data;
-	       
-	}
-	
-	
-	public function insertIntoDMC($data,$session){
+	public function insertIntoXrayCenter($data,$session){
 		try {
             $this->db->trans_begin();
 			
-			$dmc_data = [];
+			$xraycntr_data = [];
 			$user_data = [];
 			
 			$user_data = [
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
 				"password" => trim(htmlspecialchars($data['ltpass'])),
-				"role_id" => $this->rolemodel->getRoleIDByRoleType("DMC"),
+				"role_id" => $this->rolemodel->getRoleIDByRoleType("XRAY"),
 				"project_id" => 1,
 				"is_active" => 1
 			];
@@ -84,9 +59,9 @@ class dmcmodel extends CI_Model{
 			$this->db->insert('user_master', $user_data);
 			$user_id = $this->db->insert_id();
 			
-			$dmc_data = [
-				"name" => trim(htmlspecialchars($data['dmcname'])),
-				"address" => trim(htmlspecialchars($data['dmcadd'])),
+			$xraycntr_data = [
+				"name" => trim(htmlspecialchars($data['xraycntrname'])),
+				"address" => trim(htmlspecialchars($data['xraycntradd'])),
 				"tuid" => trim(htmlspecialchars($data['seltu'])),
 				"lt_name" => trim(htmlspecialchars($data['ltname'])),
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
@@ -96,12 +71,12 @@ class dmcmodel extends CI_Model{
 				"created_by" => $session['userid']
 			];
 			
-			$this->db->insert('dmc', $dmc_data);
+			$this->db->insert('xray_center', $xraycntr_data);
 			
 			$user_activity = array(
-					"activity_module" => 'DMC',
+					"activity_module" => 'X-Ray Center',
 					"action" => "Insert",
-					"from_method" => "dmc/dmc_action/insertIntoDMC",
+					"from_method" => "dmc/dmc_action/insertIntoXray",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
@@ -125,24 +100,24 @@ class dmcmodel extends CI_Model{
 	}
 	
 	
-	public function getDMCEditDataByID($id){
+	public function getXrayCenterEditDataByID($id){
 		$data = [];
 		$query = $this->db->select("
-					dmc.id as dmcid,
-					dmc.name as dmcname,
-					dmc.address as dmcadd,
-					dmc.mobile_no as ltmobile,
-					dmc.tuid ,
-					dmc.lt_name ,
+					xray_center.id as xraycntrId,
+					xray_center.name as xraycentername,
+					xray_center.address as xraycntradd,
+					xray_center.mobile_no as ltmobile,
+					xray_center.tuid ,
+					xray_center.lt_name ,
 					user_master.id as userid,
 					user_master.password as userpass
 					
 				   ")
-				->from('dmc')
+				->from('xray_center')
 			
-				->join('user_master','user_master.id = dmc.userid','INNER')
-				->where('dmc.id',$id)
-				->order_by('dmc.name')
+				->join('user_master','user_master.id = xray_center.userid','INNER')
+				->where('xray_center.id',$id)
+				->order_by('xray_center.name')
 				->get();
 			
 			//echo $this->db->last_query();
@@ -154,11 +129,11 @@ class dmcmodel extends CI_Model{
 	        return $data;
 	}
 	
-	public function updateDMC($data,$session){
+	public function updateXrayCenter($data,$session){
 		try {
             $this->db->trans_begin();
 			
-			$dmc_data = [];
+			$xraycenter_data = [];
 			$user_data = [];
 			
 			$user_data = [
@@ -167,31 +142,38 @@ class dmcmodel extends CI_Model{
 			];
 			
 			$userid = trim(htmlspecialchars($data['uid']));
-			$dmcId = trim(htmlspecialchars($data['dmcID']));
+			$xraycenterId = trim(htmlspecialchars($data['xraycntrId']));
 			
 			$this->db->where('user_master.id', $userid);
 			$this->db->update('user_master', $user_data); 
 			
 			
 			
-			$dmc_data = [
-				"name" => trim(htmlspecialchars($data['dmcname'])),
-				"address" => trim(htmlspecialchars($data['dmcadd'])),
+			$xraycenter_data = [
+				"name" => trim(htmlspecialchars($data['xraycntrname'])),
+				"address" => trim(htmlspecialchars($data['xraycntradd'])),
 				"tuid" => trim(htmlspecialchars($data['seltu'])),
 				"lt_name" => trim(htmlspecialchars($data['ltname'])),
 				"mobile_no" => trim(htmlspecialchars($data['mobile']))
 				
 			];
+                        
+                        
+
+                        
+                        
+                        
+                        
 			
-			$this->db->where('dmc.id', $dmcId);
-			$this->db->update('dmc', $dmc_data); 
+			$this->db->where('xray_center.id', $xraycenterId);
+			$this->db->update('xray_center', $xraycenter_data); 
 			
 		
 			
 			$user_activity = array(
-					"activity_module" => 'DMC',
+					"activity_module" => 'X-Ray Center',
 					"action" => "Update",
-					"from_method" => "dmc/dmc_action/updateDMC",
+					"from_method" => "dmc/dmc_action/updateXray",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
@@ -213,9 +195,29 @@ class dmcmodel extends CI_Model{
             echo $exc->getTraceAsString();
         }
 	}
+	
+	
+	public function getAllActiveCbnaatCenter(){
+		$data = [];
+		$query = $this->db->select("*")
+				->from('cbnaat')
+				->where('cbnaat.is_active',1)
+				->order_by('cbnaat.name')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+                 foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+                        }
+			
+	        return $data;
+	       
+	}
 
-	
-	
 	
 	
 }

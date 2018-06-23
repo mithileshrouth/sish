@@ -12,6 +12,9 @@ public function __construct()
     $this->load->model('locationmodel','location',TRUE);
     $this->load->model('coordinatormodel','coordinator',TRUE);
     $this->load->model('nqppmodel','nqpp',TRUE);
+    $this->load->model('dmcmodel','dmc',TRUE);
+    $this->load->model('xraycentermodel','xray',TRUE);
+    $this->load->model('cbnaatmodel','cbnaat',TRUE);
  }
 
  
@@ -451,6 +454,144 @@ public function __construct()
  }
  
  
+   public function getDMCCenter(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		$key = $request->key;
+		
+	
+		if(!empty($key) && $apikey == trim($key)){
+			
+			
+			$resultset = $this->dmc->getAllActiveDMC();
+			
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
+    public function getXrayCenter(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		$key = $request->key;
+		
+	
+		if(!empty($key) && $apikey == trim($key)){
+			
+			
+			$resultset = $this->xray->getAllActiveXrayCenter();
+			
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
+  public function geCbnaatCenter(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		$key = $request->key;
+		
+	
+		if(!empty($key) && $apikey == trim($key)){
+			
+			
+			$resultset = $this->cbnaat->getAllActiveCbnaatCenter();
+			
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
  public function getOutCome(){
 	header('Access-Control-Allow-Origin: *');  
 	header('Content-Type: application/json');
@@ -573,6 +714,8 @@ public function __construct()
 		exit;
 	
  }
+ 
+ 
  
  
 
@@ -791,6 +934,49 @@ public function __construct()
  }
  
  
+ public function getActiveUserData(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$sessiondata = $request->session;
+
+		
+	if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->user->getActiveUserData($sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
   private function generateToken()
  {
 	$token="";
@@ -816,6 +1002,76 @@ public function __construct()
      
      return true;
  }
+ 
+ 
+ 
+ 
+ 
+	public function sendSMSTest(){
+		$phone = 8017486320;
+		$message = "Test Message From SHISAP";
+		$this->sendSMS($phone,$message);
+	}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+	private function sendSMS($phone,$sms_text){
+		//$mantra_url = "http://myvaluefirst.com/smpp/sendsms?";
+		$mantra_url = "http://203.212.70.200/smpp/sendsms?";
+		$message = $sms_text;
+		$feed=$this->mantraSend($phone,$message);
+		return $feed;
+	}
+	
+	private function mantraSend($phone,$msg){
+		$mantra_user = "mantraapi1";
+		$mantra_password = "mantraapi1";
+		$mantra_url = "http://myvaluefirst.com/smpp/sendsms?";
+		$mantra_from = "MANTRA";
+		$mantra_udh = 0;
+		
+		/*$mantra_user = "shisapi";
+		$mantra_password = "shisapi";
+		$mantra_url = "http://203.212.70.200/smpp/sendsms?";
+		$mantra_from = "SHISAP";
+		$mantra_udh = 0;*/
+
+      $url = 'username='.$mantra_user;
+      $url.= '&password='.$mantra_password;
+      $url.= '&to='.urlencode($phone);
+      $url.= '&from='.$mantra_from;
+      $url.= '&udh='.$mantra_udh;
+      $url.= '&text='.urlencode($msg);
+      $url.= '&dlr-mask=19&dlr-url*';
+
+      echo $urltouse =  $mantra_url.$url;
+		exit;
+	  
+	 $file = file_get_contents($urltouse);
+      if ($file=="Sent.")
+	  {
+		  $response="Y";
+	  }
+	  else
+	  {
+          $response="N";
+	  }
+
+      return($response);
+	}
+	
+ 
+ 
+ 
+ 
+ 
+ 
  
  
 }
