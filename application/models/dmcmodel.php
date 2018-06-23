@@ -42,6 +42,30 @@ class dmcmodel extends CI_Model{
 	}
 	
 	
+	
+	public function getAllActiveDMC(){
+		$data = [];
+		$query = $this->db->select("*")
+				->from('dmc')
+				->where('dmc.is_active',1)
+				->order_by('dmc.name')
+				->get();
+			
+			//echo $this->db->last_query();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+	}
+	
+	
 	public function insertIntoDMC($data,$session){
 		try {
             $this->db->trans_begin();
@@ -190,6 +214,8 @@ class dmcmodel extends CI_Model{
         }
 	}
 
+	
+	
 	
 	
 }

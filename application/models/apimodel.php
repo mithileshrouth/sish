@@ -174,9 +174,11 @@ class apimodel extends CI_Model {
 				"group_cord_id" =>  $refferedbycord
 			];
 			
-			
+			$message = "Hello ".$name." your Registeration successfully done";
 			$this->db->insert('patient', $reg_data);
-		
+			$this->sendSMS($mobile,$message);
+			
+			
 		
 			
 			$user_activity = array(
@@ -209,7 +211,7 @@ class apimodel extends CI_Model {
 			$where = [
 				"coordinator.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("*")
+			$query = $this->db->select("patient.*, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->where($where)
@@ -219,14 +221,14 @@ class apimodel extends CI_Model {
 			$where = [
 				"nqpp.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("*")
+			$query = $this->db->select("patient.*, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
 					->from("patient")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
 		else{
-			$query = $this->db->select("*")
+			$query = $this->db->select("patient.*, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
 					->from("patient")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
@@ -257,7 +259,7 @@ class apimodel extends CI_Model {
 						DATE_FORMAT(ptb_treatment_detail.`second_followup_dt`, '%d/%m%/%Y') AS second_followup_dt
 						",FALSE)
 					->from("patient")
-					->join("ptb_treatment_detail","ptb_treatment_detail.patient_id = patient.patient_id","INNER")
+					->join("ptb_treatment_detail","ptb_treatment_detail.patient_id = patient.patient_id","LEFT")
 					->where($where)
 					->get();
 				
@@ -436,4 +438,52 @@ class apimodel extends CI_Model {
 		return date("d/m/Y",strtotime($newDate));
 
 	}
+	
+	
+	private function sendSMS($phone,$sms_text){
+		//$mantra_url = "http://myvaluefirst.com/smpp/sendsms?";
+		$mantra_url = "http://203.212.70.200/smpp/sendsms?";
+		$message = $sms_text;
+		$feed=$this->mantraSend($phone,$message);
+		return $feed;
+	}
+	
+	private function mantraSend($phone,$msg){
+		$mantra_user = "mantraapi1";
+		$mantra_password = "mantraapi1";
+		$mantra_url = "http://myvaluefirst.com/smpp/sendsms?";
+		$mantra_from = "MANTRA";
+		$mantra_udh = 0;
+		
+		/*$mantra_user = "shisapi";
+		$mantra_password = "shisapi";
+		$mantra_url = "http://203.212.70.200/smpp/sendsms?";
+		$mantra_from = "SHISAP";
+		$mantra_udh = 0;*/
+
+      $url = 'username='.$mantra_user;
+      $url.= '&password='.$mantra_password;
+      $url.= '&to='.urlencode($phone);
+      $url.= '&from='.$mantra_from;
+      $url.= '&udh='.$mantra_udh;
+      $url.= '&text='.urlencode($msg);
+      $url.= '&dlr-mask=19&dlr-url*';
+
+      echo $urltouse =  $mantra_url.$url;
+		exit;
+	  
+	 $file = file_get_contents($urltouse);
+      if ($file=="Sent.")
+	  {
+		  $response="Y";
+	  }
+	  else
+	  {
+          $response="N";
+	  }
+
+      return($response);
+	}
+	
+	
 }
