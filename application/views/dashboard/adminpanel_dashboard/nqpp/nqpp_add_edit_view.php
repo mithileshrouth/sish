@@ -130,6 +130,12 @@
                             <textarea id="nqppadd" name="nqppadd" class="form-control forminputs txtareastyle removeerr"><?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['nqppEditdata']->full_address; } ?></textarea>
                         </div>
                       </div>
+                      <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                          <label for="nqpppanchayat">Panchayat</label>
+                          <input type="text" class="form-control forminputs" id="nqpppanchayat" name="nqpppanchayat" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['nqppEditdata']->panchayat; } ?>"  />
+                        </div>
+                      </div>
 					</div>
 
                     <p class="formSubTitle"><span class="glyphicon glyphicon-pencil"></span> Document Info</p>

@@ -31,10 +31,12 @@
                   <th>Mobile</th>
                   <th>Coordinator</th>
                   <th>Block</th>
+                  <th>Village</th>
+                  <th>Panchayat</th>
                   <th style="width:30%;">Address</th>
-                  <th>Pin</th>
+                  <!-- <th>Pin</th> -->
                   <th>Aadhar No.</th>
-                  <th>Voter No</th>
+                  <!-- <th>Voter No</th> -->
                   <th style="width:10%;">Status</th>
                   <th style="text-align:right;width:5%;">Action</th>
                 </tr>
@@ -61,11 +63,13 @@
 						<td><?php echo $value->nqppname; ?></td>
 						<td><?php echo $value->nqppmobile; ?></td>
 						<td><?php echo $value->cordinatorname; ?></td>
-						<td><?php echo $value->blockname; ?></td>
+            <td><?php echo $value->blockname; ?></td>
+            <td><?php echo $value->village; ?></td>
+						<td><?php echo $value->panchayat; ?></td>
 						<td style="width:30%;"><?php echo $value->full_address; ?></td>
-						<td><?php echo $value->pin_code; ?></td>
+						<!-- <td><?php echo $value->pin_code; ?></td> -->
 						<td><?php echo $value->aadhar_no; ?></td>
-						<td><?php echo $value->voter_id; ?></td>
+						<!-- <td><?php echo $value->voter_id; ?></td> -->
 						<td><?php echo $status; ?></td>
 						<td align="center"> 
 							<a href="<?php echo base_url(); ?>nqpp/addnqpp/<?php echo $value->nqppid; ?>" class="btn btn-primary btn-xs" data-title="Edit">

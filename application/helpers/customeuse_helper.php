@@ -11,3 +11,13 @@ if(!function_exists('pre'))
 		echo "</pre>";
 	}
 }
+
+if(!function_exists('q'))
+{
+	
+	function q(){
+		$CI =& get_instance();
+        $CI->load->database();
+        echo $CI->db->last_query();
+	}
+}

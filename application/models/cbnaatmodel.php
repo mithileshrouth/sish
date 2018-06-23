@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class xraycentermodel extends CI_Model{
+class cbnaatmodel extends CI_Model{
 	public function __construct()
 	{
 	   // parent::__construct();
@@ -9,23 +9,24 @@ class xraycentermodel extends CI_Model{
 	}
 	
 	
-	public function getAllXrayCenter(){
+	public function getAllCbnaat(){
 		$data = [];
 		$query = $this->db->select("
-					xray_center.id as xraycenter_id,
-                                        xray_center.name as xray_center_name,
-                                        xray_center.address as xray_center_add,
-                                        xray_center.lt_name,
-                                        xray_center.mobile_no as ltmobile,
-                                        xray_center.is_active as active,
-					tu_unit.name AS tuname,
-					block.name as blockname
-					")
-				->from('xray_center')
-				->join('tu_unit','tu_unit.id = xray_center.tuid','INNER')
+					`cbnaat`.`id` AS cbnat_id,
+					`cbnaat`.`name` AS cbnat_name,
+					`cbnaat`.`address` AS cbnat_add,
+					`cbnaat`.`lt_name`,
+					`cbnaat`.`mobile_no` AS ltmobile,
+					`cbnaat`.`is_active` AS active,
+						tu_unit.name AS tuname,
+						block.name as blockname
+						")
+				->from('cbnaat')
+				->join('tu_unit','tu_unit.id = cbnaat.tuid','INNER')
 				->join('block','block.id = tu_unit.block_id','INNER')
-				->order_by('xray_center.tuid')
+				->order_by('cbnaat.tuid')
 				->get();
+				 //q();
 			
 			if($query->num_rows()> 0)
 			{
@@ -41,17 +42,17 @@ class xraycentermodel extends CI_Model{
 	}
 	
 	
-	public function insertIntoXrayCenter($data,$session){
+	public function insertIntoCbnaatCenter($data,$session){
 		try {
             $this->db->trans_begin();
 			
-			$xraycntr_data = [];
+			$cbnaatcntr_data = [];
 			$user_data = [];
 			
 			$user_data = [
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
 				"password" => trim(htmlspecialchars($data['ltpass'])),
-				"role_id" => $this->rolemodel->getRoleIDByRoleType("XRAY"),
+				"role_id" => $this->rolemodel->getRoleIDByRoleType("CBNAAT"),
 				"project_id" => 1,
 				"is_active" => 1
 			];
@@ -59,9 +60,9 @@ class xraycentermodel extends CI_Model{
 			$this->db->insert('user_master', $user_data);
 			$user_id = $this->db->insert_id();
 			
-			$xraycntr_data = [
-				"name" => trim(htmlspecialchars($data['xraycntrname'])),
-				"address" => trim(htmlspecialchars($data['xraycntradd'])),
+			$cbnaatcntr_data = [
+				"name" => trim(htmlspecialchars($data['cbnatcntrname'])),
+				"address" => trim(htmlspecialchars($data['cbnatcntradd'])),
 				"tuid" => trim(htmlspecialchars($data['seltu'])),
 				"lt_name" => trim(htmlspecialchars($data['ltname'])),
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
@@ -71,12 +72,12 @@ class xraycentermodel extends CI_Model{
 				"created_by" => $session['userid']
 			];
 			
-			$this->db->insert('xray_center', $xraycntr_data);
+			$this->db->insert('cbnaat', $cbnaatcntr_data);
 			
 			$user_activity = array(
-					"activity_module" => 'X-Ray Center',
+					"activity_module" => 'CB-NAAT Center',
 					"action" => "Insert",
-					"from_method" => "xraycenter/xray_action/insertIntoXray",
+					"from_method" => "cbnaat/cbnaat_action/insertIntoCbnaat",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
@@ -100,26 +101,28 @@ class xraycentermodel extends CI_Model{
 	}
 	
 	
-	public function getXrayCenterEditDataByID($id){
+	public function getCbnaatEditDataByID($id){
 		$data = [];
 		$query = $this->db->select("
-					xray_center.id as xraycntrId,
-					xray_center.name as xraycentername,
-					xray_center.address as xraycntradd,
-					xray_center.mobile_no as ltmobile,
-					xray_center.tuid ,
-					xray_center.lt_name ,
+
+			`cbnaat`.`id` AS cbnatId,
+					`cbnaat`.`name` AS cbnat_name,
+					`cbnaat`.`address` AS cbnat_add,
+					`cbnaat`.`lt_name`,
+					`cbnaat`.`mobile_no` AS ltmobile,
+					`cbnaat`.tuid,
 					user_master.id as userid,
 					user_master.password as userpass
 					
 				   ")
-				->from('xray_center')
+
+				->from('cbnaat')
 			
-				->join('user_master','user_master.id = xray_center.userid','INNER')
-				->where('xray_center.id',$id)
-				->order_by('xray_center.name')
+				->join('user_master','user_master.id = cbnaat.userid','INNER')
+				->where('cbnaat.id',$id)
+				->order_by('cbnaat.name')
 				->get();
-			
+			//q();
 			//echo $this->db->last_query();
 			if($query->num_rows()> 0)
 			{
@@ -129,11 +132,11 @@ class xraycentermodel extends CI_Model{
 	        return $data;
 	}
 	
-	public function updateXrayCenter($data,$session){
+	public function updateCbnaatCenter($data,$session){
 		try {
             $this->db->trans_begin();
 			
-			$xraycenter_data = [];
+			$cbnaatcntr_data = [];
 			$user_data = [];
 			
 			$user_data = [
@@ -142,43 +145,36 @@ class xraycentermodel extends CI_Model{
 			];
 			
 			$userid = trim(htmlspecialchars($data['uid']));
-			$xraycenterId = trim(htmlspecialchars($data['xraycntrId']));
+			$cbnatId = trim(htmlspecialchars($data['cbnatId']));
 			
 			$this->db->where('user_master.id', $userid);
 			$this->db->update('user_master', $user_data); 
 			
 			
 			
-			$xraycenter_data = [
-				"name" => trim(htmlspecialchars($data['xraycntrname'])),
-				"address" => trim(htmlspecialchars($data['xraycntradd'])),
+			$cbnaatcntr_data = [
+				"name" => trim(htmlspecialchars($data['cbnatcntrname'])),
+				"address" => trim(htmlspecialchars($data['cbnatcntradd'])),
 				"tuid" => trim(htmlspecialchars($data['seltu'])),
 				"lt_name" => trim(htmlspecialchars($data['ltname'])),
 				"mobile_no" => trim(htmlspecialchars($data['mobile']))
 				
 			];
                         
-                        
-
-                        
-                        
-                        
-                        
-			
-			$this->db->where('xray_center.id', $xraycenterId);
-			$this->db->update('xray_center', $xraycenter_data); 
+                 
+			$this->db->where('cbnaat.id', $cbnatId);
+			$this->db->update('cbnaat', $cbnaatcntr_data); 
 			
 		
 			
 			$user_activity = array(
-					"activity_module" => 'X-Ray Center',
+					"activity_module" => 'CB-NAAT',
 					"action" => "Update",
-					"from_method" => "xraycenter/xray_action/updateXray",
+					"from_method" => "cbnaat/cbnaat_action/updateCbnaat",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
 					"user_platform" => getUserPlatform()
-					
 					
 				);
 			

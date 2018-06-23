@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class xraycenter extends CI_Controller {
+class cbnaat extends CI_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
 		$this->load->library('session');
-		$this->load->model('xraycentermodel','xray',TRUE);
+		$this->load->model('cbnaatmodel','cbnaat',TRUE);
 	}
 	
 	
@@ -15,8 +15,8 @@ class xraycenter extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['xraycntrlist'] = $this->xray->getAllXrayCenter(); 
-			$page = "dashboard/adminpanel_dashboard/xray/xraylist_view";
+			$result['cbnaatlist'] = $this->cbnaat->getAllCbnaat(); 
+			$page = "dashboard/adminpanel_dashboard/cbnaat/cbnaatlist_view";
 			createbody_method($result, $page, $header, $session);
 		}
 		else
@@ -25,7 +25,7 @@ class xraycenter extends CI_Controller {
 		}
 	}
 
-	public function addxray()
+	public function addcbnaat()
 	{
 		$session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data') && isset($session['token']))
@@ -36,7 +36,7 @@ class xraycenter extends CI_Controller {
 				$result['btnText'] = "Save";
 				$result['btnTextLoader'] = "Saving...";
 				$dmcID = 0;
-				$result['xrayEditdata'] = [];
+				$result['cbnaatEditdata'] = [];
 				
 				//getAllRecordWhereOrderBy($table,$where,$orderby)
 				
@@ -48,14 +48,14 @@ class xraycenter extends CI_Controller {
 				$result['mode'] = "EDIT";
 				$result['btnText'] = "Update";
 				$result['btnTextLoader'] = "Updating...";
-				$xrayCenterId = $this->uri->segment(3);
+				$cbnatId = $this->uri->segment(3);
 				$whereAry = array(
-					'xray_center.id' => $xrayCenterId
+					'cbnaat.id' => $cbnatId
 				);
 				// getSingleRowByWhereCls(tablename,where params)
-				$result['xrayEditdata'] = $this->xray->getXrayCenterEditDataByID($xrayCenterId); 
+				$result['cbnaatEditdata'] = $this->cbnaat->getCbnaatEditDataByID($cbnatId); 
 				
-			
+		//	pre($result['cbnaatEditdata']);exit;
 				
 			}
 
@@ -66,7 +66,7 @@ class xraycenter extends CI_Controller {
 			//getAllRecordWhereOrderBy($table,$where,$orderby)
 			$result['tuList'] = $this->commondatamodel->getAllRecordWhereOrderBy('tu_unit',$tuwhere,'tu_unit.name'); 
 			
-			$page = "dashboard/adminpanel_dashboard/xray/xray_add_edit_view";
+			$page = "dashboard/adminpanel_dashboard/cbnaat/cbnaat_add_edit_view";
 			createbody_method($result, $page, $header,$session);
 		}
 		else
@@ -75,7 +75,7 @@ class xraycenter extends CI_Controller {
 		}
 	}
 
-	public function xray_action()
+	public function cbnaat_action()
 	{
 		
 		$session = $this->session->userdata('user_data');
@@ -88,25 +88,25 @@ class xraycenter extends CI_Controller {
 
 			
 		
-			$xraycntrId = trim(htmlspecialchars($dataArry['xraycntrId']));
+			$cbnatId = trim(htmlspecialchars($dataArry['cbnatId']));
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 
 			
 			$seltu = trim(htmlspecialchars($dataArry['seltu']));
-			$xraycntrname = trim(htmlspecialchars($dataArry['xraycntrname']));
-			$xraycntradd = trim(htmlspecialchars($dataArry['xraycntradd']));
+			$cbnatcntrname = trim(htmlspecialchars($dataArry['cbnatcntrname']));
+			$cbnatcntradd = trim(htmlspecialchars($dataArry['cbnatcntradd']));
 			$ltname = trim(htmlspecialchars($dataArry['ltname']));
 			$mobile = trim(htmlspecialchars($dataArry['mobile']));
 			$ltpass = trim(htmlspecialchars($dataArry['ltpass']));
 			
 
 
-			if($seltu!="0" && $xraycntrname!="" && $xraycntradd!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
+			if($seltu!="0" && $cbnatcntrname!="" && $cbnatcntradd!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
 			{
 	
 				
 				
-				if($xraycntrId>0 && $mode=="EDIT")
+				if($cbnatId>0 && $mode=="EDIT")
 				{
 					/*  EDIT MODE
 					 *	-----------------
@@ -114,7 +114,7 @@ class xraycenter extends CI_Controller {
 
 					
 
-					$update = $this->xray->updateXrayCenter($dataArry,$session);
+					$update = $this->cbnaat->updateCbnaatCenter($dataArry,$session);
 					
 					
 					if($update)
@@ -143,7 +143,7 @@ class xraycenter extends CI_Controller {
 					*/
 
 			
-					$insertData = $this->xray->insertIntoXrayCenter($dataArry,$session);
+					$insertData = $this->cbnaat->insertIntoCbnaatCenter($dataArry,$session);
 					
 
 					if($insertData)
@@ -204,14 +204,14 @@ class xraycenter extends CI_Controller {
 				);
 				
 			$where = array(
-				"xray_center.id" => $updID
+				"cbnaat.id" => $updID
 				);
 			
 			
 			$user_activity = array(
-					"activity_module" => 'X-Ray Center',
+					"activity_module" => 'CB-NAAT',
 					"action" => "Update",
-					"from_method" => "xraycenter/setStatus",
+					"from_method" => "cbnaat/setStatus",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),
@@ -219,7 +219,7 @@ class xraycenter extends CI_Controller {
 					
 					
 				);
-				$update = $this->commondatamodel->updateData_WithUserActivity('xray_center',$update_array,$where,'activity_log',$user_activity);
+				$update = $this->commondatamodel->updateData_WithUserActivity('cbnaat',$update_array,$where,'activity_log',$user_activity);
 			if($update)
 			{
 				$json_response = array(
