@@ -29,8 +29,7 @@
                   <th>Village</th>
                   <th>Symptom</th>
                   <th>Adhar</th>
-                  
-
+                  <th style="width:10%;">view</th>
                   <th style="text-align:right;width:5%;">Action</th>
                 </tr>
                 </thead>
@@ -49,7 +48,10 @@
             <td><?php echo $value->patient_mobile_primary; ?></td>
             <td><?php echo $value->patient_village; ?></td>
             <td><?php echo $value->patient_symptom; ?></td>
-						<td><?php echo $value->patient_adhar; ?></td>
+            <td><?php echo $value->patient_adhar; ?></td>
+						<td align="center"><a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="View">View
+               
+              </a></td>
 
 						<td align="center"> 
 							<a href="<?php echo base_url(); ?>patient<?php //echo $value->patient_id; ?>" class="btn btn-primary btn-xs" data-title="Edit">
