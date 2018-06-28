@@ -49,7 +49,7 @@ element {
                 if ($value->patient_sex=="M") {
                    $profilepic="male.jpg";
                   }else{
-                   $value->patient_sex="female.jpg"; 
+                   $profilepic="female.jpg"; 
                   }
                   $trtmnt_start_date=$value->trtmnt_start_date;
                   $trtmnt_duration=$value->trtmnt_duration;
@@ -238,6 +238,10 @@ element {
                   <!-- timeline item -->
 
 
+
+
+
+
                     <li class="time-label">
                         <span class="bg-yellow">
                           &nbsp;&nbsp;&nbsp;X-RAY&nbsp;&nbsp;&nbsp;
@@ -392,7 +396,13 @@ element {
                   </li>
 
 
-                <?php if ($value->is_ptb_trtmnt_done=='Y') {?>
+                <?php 
+
+                    if($value->cbnaat_pstv=='Y'){
+
+                      if ($value->is_ptb_trtmnt_done=='Y') {
+
+                        ?>
 
                   <li class="time-label">
                         <span class="bg-red">
@@ -438,14 +448,27 @@ element {
                     </div>
                   </li>
               <?php }
-            }
+                 }
 
                 } //end of treatment start check
+
+
+              }else if($value->cbnaat_pstv=='N') { 
+
+              ?>
+              <li class="time-label">
+                        <span class="bg-green">
+                          Patient is Okay 
+                        </span>
+                  </li>
+
+            <?php
+              }
 
               ?>
 
 
-<?php } ?>
+<?php } //end of mail for loop?>
 
 
                   <!-- END timeline item -->

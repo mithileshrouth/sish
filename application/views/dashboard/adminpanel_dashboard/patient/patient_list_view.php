@@ -111,7 +111,7 @@ tfoot input {
               <table class="table table-bordered table-striped" id="patient_list" >
                 <thead>
                 <tr>
-                  <!-- <th style="width:5%;">Sl</th> -->
+                   <th style="width:5%;">&nbsp;</th> 
                   <th style="text-align:right;width:5%;">Action</th>
                    <th style="width:10%;">view</th>
                   <th style="width:20%;">Patient</th>
@@ -131,11 +131,33 @@ tfoot input {
 				
               		$i = 1;
               		foreach ($bodycontent['patientList'] as $value) { 
-              		
+                      $process_state="";
+                      if($value->dmc_sputum_done=='Y'){
+                        $process_state='<span class="bg-green"> &nbsp;&nbsp;&nbsp;DMC&nbsp;&nbsp;&nbsp;</span>';
+                      }else{
+                        $process_state='<span class="bg-green" style="background-color: #98a74c!important;">&nbsp;&nbsp;&nbsp;REG.&nbsp;&nbsp;&nbsp;</span>';
+                      }
+                     
+                      if ($value->xray_is_done=="Y") {
+                      $process_state='<span class="bg-yellow">&nbsp;&nbsp;X-RAY&nbsp;&nbsp;</span>';
+                      }
+                     
+              		    if ($value->is_cbnaat_done=="Y") {
+                        $process_state='<span class="bg-purple">&nbsp;CBNAAT&nbsp;</span>';
+                      }
+
+                      if($value->cbnaat_pstv=='Y'){
+                        if ($value->is_ptb_trtmnt_done=='Y') {
+                          $process_state='<span class="bg-red">&nbsp;TREAT.&nbsp;</span>';
+                        }
+
+                      }else if ($value->cbnaat_pstv=='N') {
+                        $process_state=' <span class="bg-green">&nbsp;&nbsp;Okay&nbsp;&nbsp;</span>';
+                      }
               		?>
 
 					<tr>
-						<!-- <td><?php echo $i++; ?></td> -->
+						 <td align="center"><?php echo $process_state;?></td> 
             <td align="center"> 
               <a href="<?php echo base_url(); ?>patient<?php //echo $value->patient_id; ?>" class="btn btn-primary btn-xs" data-title="Edit">
                 <span class="glyphicon glyphicon-pencil"></span>
@@ -145,7 +167,9 @@ tfoot input {
               <td align="center"><a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="View">View
                
               </a></td>
-						<td><?php echo $value->patient_name; ?></td>
+						<td><?php echo $value->patient_name; ?>
+              
+            </td>
             <td><?php echo $value->patient_mobile_primary; ?></td>
             <td><?php echo $value->coordinator_name; ?></td>
             <td><?php echo $value->nqpp_name; ?></td>

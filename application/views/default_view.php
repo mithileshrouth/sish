@@ -73,7 +73,8 @@
   	
 	
 	<!-- jQuery 3 -->
-<script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/jquery/dist/jquery.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -123,7 +124,8 @@
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/dist/js/demo.js"></script>
 -->
 <!-- DataTables -->
-<script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/bootstrap-timepicker.min.js"></script>

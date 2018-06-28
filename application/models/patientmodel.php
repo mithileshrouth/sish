@@ -22,6 +22,11 @@ class patientmodel extends CI_Model{
 									patient.patient_reg_date,
 									coordinator.name as coordinator_name,
 									nqpp.name as nqpp_name,
+									patient.dmc_sputum_done,
+									patient.xray_is_done,
+									patient.is_cbnaat_done,
+									patient.cbnaat_pstv,
+							        patient.is_ptb_trtmnt_done
 									")
 				->from('patient')
 				->join('nqpp','nqpp.id = patient.nqpp_id','LEFT')

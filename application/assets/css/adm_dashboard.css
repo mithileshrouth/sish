@@ -36,6 +36,33 @@
     margin: 0 auto;
 }
 
+@media only screen and (max-width: 734px){
+    .formBlock .formBlockMedium .formBlockLarge{
+    width: 80%;
+    margin: 0 auto;
+}
+
+}
+@media only screen and (max-width: 710px){
+    .formBlock .formBlockMedium .formBlockLarge{
+    width: 80%;
+    margin: 0 auto;
+}
+
+}
+
+@media only screen and (max-width: 560px){
+    .formBlock .formBlockMedium .formBlockLarge{
+    width: 98%;
+    margin: 0 auto;
+}
+
+}
+
+
+
+
+
 .formBlockMedium {
     width: 70%;
     margin: 0 auto;
@@ -504,4 +531,16 @@ div.slider {
 .errborder {
     border: 1px solid #fe7a31 !important;
     box-shadow: 0px 0px 2px 0px #ff7225 !important;
+}
+
+@media only screen and (max-width: 436px){
+   div.dataTables_wrapper div.dataTables_length label {
+  
+    display: none;
+}
+}
+
+@media only screen and (max-width: 450px){
+  .formBtn {
+    width: 100%;
 }

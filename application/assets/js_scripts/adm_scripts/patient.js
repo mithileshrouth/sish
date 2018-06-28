@@ -9,15 +9,15 @@ $(document).ready(function() {
         },
       
      "orderCellsTop": true,
-    
-
+   
         language: {
             search: "_INPUT_",
             searchPlaceholder: "Search..."
         },
+        "aaSorting": [],
         'aoColumnDefs': [{
                 'bSortable': false,
-                'aTargets': [-1,-2] /* 1st one, start by the right */
+                'aTargets': [0,1,2] /* 1st one, start by the right */
             }],
         initComplete: function () {
             this.api().columns([3,4,5,6,7]).every( function () {
@@ -47,10 +47,7 @@ $(document).ready(function() {
 
 } );
 
-    
-      
-      
-
+  
 
 
  $('#patient_list tfoot tr').insertBefore($('#patient_list thead tr'));
