@@ -60,9 +60,14 @@ class locationmodel extends CI_Model{
 				
 			if($query->num_rows()> 0)
 			{
-			  foreach($query->result() as $rows)
-				{
-					$data[] = $rows;
+				if($id == "ALL"){
+					foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+				}
+				else{
+					 $data = $query->row();
 				}
 			}
 			return $data;
@@ -96,9 +101,14 @@ class locationmodel extends CI_Model{
 				
 			if($query->num_rows()> 0)
 			{
-			  foreach($query->result() as $rows)
-				{
+				if($id == "ALL"){
+				  foreach($query->result() as $rows)
+				  {
 					$data[] = $rows;
+				  }
+				}
+				else{
+					 $data = $query->row();
 				}
 			}
 			return $data;
@@ -132,12 +142,17 @@ class locationmodel extends CI_Model{
 					->where($where_param)
 					->order_by('district.name')
 					->get();
-				
+			//echo $this->db->last_query();	
 			if($query->num_rows()> 0)
 			{
-			  foreach($query->result() as $rows)
-				{
-					$data[] = $rows;
+				if($id == "ALL"){
+				  foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+				}
+				else{
+					 $data = $query->row();
 				}
 			}
 			return $data;
@@ -175,6 +190,25 @@ class locationmodel extends CI_Model{
 				}
 			}
 			return $data;
+		}
+		
+		public function getCountryIDByStateID($sateID){
+			$country_id = 0;
+			$where = [
+				"state.id"=>$sateID,
+				"state.is_active"=>1
+			];
+			$query = $this->db->select("*")
+					->from("state")
+					->join("country","country.id=state.country_id","INNER")
+					->where($where)
+					->get();
+					
+			if($query->num_rows()>0){
+				$row = $query->row();
+				$country_id = $row->country_id;
+			}
+			return $country_id;
 		}
 	
 	
