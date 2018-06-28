@@ -681,7 +681,7 @@ public function __construct()
                      $result=array(
                         "status"=>420,
                         "statuscode"=>"IN_ACTIVE",
-                        "data"=>"NULL",
+                        "data"=>NULL,
 						"token"=>NULL
                     );
                  }
@@ -690,7 +690,7 @@ public function __construct()
                $result=array(
                  "status"=>402,
                  "statuscode"=>"INVALID_AUTH",
-                 "data"=>"NULL",
+                 "data"=>NULL,
 				 "token"=>NULL
                 );  
              }
@@ -730,7 +730,7 @@ public function __construct()
 	
 	$data = $request->data;
 	$session = $request->session;
-	
+
 	if(!empty($key) && $apikey == trim($key)){
 		
 		//pre($request);
@@ -740,6 +740,13 @@ public function __construct()
 			$result = [
 			"status"=>200,
             "statuscode"=>"SUCCESS",
+			"data"=> NULL
+			];
+		}
+		else{
+			$result = [
+			"status"=>400,
+            "statuscode"=>"ERROR",
 			"data"=> NULL
 			];
 		}
@@ -754,7 +761,9 @@ public function __construct()
 			];
 	}
 		
-	
+	$resultdata = json_encode($result);
+	echo $resultdata;
+	exit;
 	
  }
  
@@ -845,6 +854,8 @@ public function __construct()
 		exit;
  }
  
+ 
+ 
 	
  
   public function getTreatmentStructure(){
@@ -914,7 +925,7 @@ public function __construct()
 			else{
 				$result = [
 				 "status"=>400,
-                 "statuscode"=>"NO DATA FOUND",
+                 "statuscode"=>"ERROR",
 				 "data"=> NULL
 				];
 			}
