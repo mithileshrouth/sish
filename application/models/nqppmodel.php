@@ -76,6 +76,7 @@ class nqppmodel extends CI_Model{
 			$nqpp_data = [
 				"coordinator_id" => trim(htmlspecialchars($data['coordinator'])),
 				"name" => trim(htmlspecialchars($data['nqppname'])),
+				"gender" => trim(htmlspecialchars($data['nqppgender'])),
 				"mobile_no" => trim(htmlspecialchars($data['nqppmobile'])),
 				"village" => trim(htmlspecialchars($data['nqppvill'])),
 				"panchayat" => trim(htmlspecialchars($data['nqpppanchayat'])),
@@ -135,6 +136,7 @@ class nqppmodel extends CI_Model{
 					nqpp.aadhar_no,
 					nqpp.voter_id,
 					nqpp.block_id,
+					nqpp.gender,
 					nqpp.is_active as active,
 					user_master.id as userid,
 					user_master.password as nqpppsw
@@ -176,6 +178,7 @@ class nqppmodel extends CI_Model{
 			$nqpp_data = [
 				"coordinator_id" => trim(htmlspecialchars($data['coordinator'])),
 				"name" => trim(htmlspecialchars($data['nqppname'])),
+				"gender" => trim(htmlspecialchars($data['nqppgender'])),
 				"mobile_no" => trim(htmlspecialchars($data['nqppmobile'])),
 				"village" => trim(htmlspecialchars($data['nqppvill'])),
 				"panchayat" => trim(htmlspecialchars($data['nqpppanchayat'])),

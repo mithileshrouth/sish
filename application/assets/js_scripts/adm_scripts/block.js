@@ -79,6 +79,8 @@ $(document).ready(function(){
 function validateBlock()
 {
 	var blockname = $("#blockname").val();
+    var codelength = $('#blockcode').val().length;
+
 	$("#blockmsg").text("").css("dispaly", "none").removeClass("form_error");
 	if(blockname=="")
 	{
@@ -89,5 +91,15 @@ function validateBlock()
         .css("display", "block");
 		return false;
 	}
+
+    if(codelength!="2")
+    {
+        $("#blockcode").focus();
+        $("#blockmsg")
+        .text("Error : Enter Two Digit Block Code")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	return true;
 }

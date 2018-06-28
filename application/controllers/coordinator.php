@@ -86,6 +86,7 @@ class coordinator extends CI_Controller {
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 
 			$cordname = trim(htmlspecialchars($dataArry['cordname']));
+			$gender = trim(htmlspecialchars($dataArry['cordgender']));
 			$cordmobile = trim(htmlspecialchars($dataArry['cordmobile']));
 			$cordadd = trim(htmlspecialchars($dataArry['cordadd']));
 			$cordpin = trim(htmlspecialchars($dataArry['cordpin']));

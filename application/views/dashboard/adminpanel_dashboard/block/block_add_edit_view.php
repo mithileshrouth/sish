@@ -55,6 +55,13 @@
                     <input type="text" class="form-control forminputs typeahead" id="blockname" name="blockname" placeholder="Enter Block Name" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['BlockEditdata']->name;}?>" >
                   </div>
 
+                  
+                        <div class="form-group">
+                          <label for="cordpin">Block Code</label>
+                          <input type="text" minlength="2" maxlength="2"  class="form-control forminputs removeerr typeahead " id="blockcode" name="blockcode" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['BlockEditdata']->block_code; } ?>" >
+                        </div>
+                 
+
                   <p id="blockmsg" class="form_error"></p>
 
                   <div class="btnDiv">

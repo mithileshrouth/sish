@@ -25,6 +25,7 @@
                 <tr>
                   <th style="width:10%;">Sl</th>
                   <th>Block</th>
+                  <th>Block Code</th>
                   <th>District</th>
                   <th style="width:10%;">Status</th>
                   <th style="text-align:right;width:5%;">Action</th>
@@ -50,7 +51,8 @@
 
 					<tr>
 						<td><?php echo $i++; ?></td>
-						<td><?php echo $value->blockname; ?></td>
+            <td><?php echo $value->blockname; ?></td>
+						<td><?php echo $value->block_code; ?></td>
 						<td><?php echo $value->districtname; ?></td>
 						
 						<td><?php echo $status; ?></td>

@@ -72,6 +72,21 @@
                           <input type="text" class="form-control forminputs numchk" id="nqppmobile" name="nqppmobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['nqppEditdata']->nqppmobile; } ?>" maxlength="10">
                         </div>
                       </div>
+
+                     
+                       <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                          <label for="nqppgender">Gender</label>
+                        <select id="nqppgender" name="nqppgender" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" > 
+                          <option value="">Select</option>
+                          <option value="M" <?php if(($bodycontent['mode']=="EDIT") && $bodycontent['nqppEditdata']->gender=="M" ){echo "selected";}else{echo "";} ?>>Male</option>
+                          <option value="F" <?php if(($bodycontent['mode']=="EDIT") && $bodycontent['nqppEditdata']->gender=="F" ){echo "selected";}else{echo "";} ?>>Female</option>
+
+                         </select>
+                        </div>
+                      </div>
+
+                 
                     </div>
 
                    

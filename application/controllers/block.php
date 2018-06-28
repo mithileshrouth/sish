@@ -88,6 +88,7 @@ class block extends CI_Controller {
 			$districtID = trim(htmlspecialchars($dataArry['district']));
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 			$block = trim(htmlspecialchars($dataArry['blockname']));
+			$block_code = trim(htmlspecialchars($dataArry['blockcode']));
 
 
 			if($districtID!="0" && $block!="")
@@ -104,6 +105,7 @@ class block extends CI_Controller {
 					$array_upd = array(
 						"name" => $block,
 						"district_id" => $districtID,
+						"block_code" => $block_code,
 						"is_active" => 1
 					
 					);
@@ -158,6 +160,7 @@ class block extends CI_Controller {
 					$array_insert = array(
 						"name" => $block,
 						"district_id" => $districtID,
+						"block_code" => $block_code,
 						"is_active" => 1,
 						"created_by" => $session['userid']
 					);

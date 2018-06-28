@@ -11,12 +11,25 @@ class patientmodel extends CI_Model{
 	
 	public function getAllPatient(){
 		$data = [];
-		$query = $this->db->select("*")
+		$query = $this->db->select("
+									patient.patient_id,
+									patient.patient_name,
+									patient.patient_uniq_id,
+									patient.patient_mobile_primary,
+									patient.patient_village,
+									patient.patient_symptom,
+									patient.patient_adhar,
+									patient.patient_reg_date,
+									coordinator.name as coordinator_name,
+									nqpp.name as nqpp_name,
+									")
 				->from('patient')
-				->order_by('patient.patient_id')
+				->join('nqpp','nqpp.id = patient.nqpp_id','LEFT')
+				->join('coordinator','coordinator.id = patient.group_cord_id','LEFT')
+				->order_by('patient.patient_reg_date','desc')
 				->get();
 			
-			//echo $this->db->last_query();
+			#echo $this->db->last_query();
 			if($query->num_rows()> 0)
 			{
 	          foreach($query->result() as $rows)

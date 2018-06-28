@@ -141,6 +141,7 @@ function validateNQPP()
     var nqppadd = $("#nqppadd").val();
     var nqpppin = $("#nqpppin").val();
     var nqpppassword = $("#nqpppassword").val();
+    var nqppgender = $("#nqppgender").val();
 
     $("#nqppmsg").text("").css("dispaly", "none").removeClass("form_error");
 	if(nqppname=="")
@@ -162,7 +163,15 @@ function validateNQPP()
         .css("display", "block");
         return false;
     }
-	
+	 if(nqppgender=="")
+    {
+        $("#nqppgender").focus();
+        $("#nqppmsg")
+        .text("Error : Select Gender")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	if(nqpppin=="")
     {
         $("#nqpppin").focus();

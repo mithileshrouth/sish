@@ -13,6 +13,7 @@ class locationmodel extends CI_Model{
 		$query = $this->db->select("
 					block.id as blockid,
 					block.name as blockname,
+					block.block_code,
 					block.is_active,
 					district.name as districtname
 					

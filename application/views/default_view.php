@@ -36,6 +36,8 @@
    -->
   <!-- DataTables -->
   <link rel="stylesheet" href="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  
   
     <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/custominputradiocheck.css" />
@@ -123,6 +125,7 @@
 <!-- DataTables -->
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/bootstrap-timepicker.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/bootstrapselect.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/searchable_dropdown.min.js"></script>

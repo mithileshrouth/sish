@@ -81,6 +81,7 @@ function validateCORD()
     var cordadd = $("#cordadd").val();
     var cordpin = $("#cordpin").val();
     var cordpassword = $("#cordpassword").val();
+    var cordgender = $("#cordgender").val();
 
     $("#cordmsg").text("").css("dispaly", "none").removeClass("form_error");
 	if(cordname=="")
@@ -93,6 +94,15 @@ function validateCORD()
 		return false;
 	}
 
+    if(cordgender=="")
+    {
+        $("#cordgender").focus();
+        $("#cordmsg")
+        .text("Error : Select Gender")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
     if(cordmobile=="")
     {
         $("#cordmobile").focus();

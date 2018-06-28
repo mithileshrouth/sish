@@ -93,6 +93,7 @@ class nqpp extends CI_Controller {
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 
 			$nqppname = trim(htmlspecialchars($dataArry['nqppname']));
+			$nqppgender = trim(htmlspecialchars($dataArry['nqppgender']));
 			$nqppmobile = trim(htmlspecialchars($dataArry['nqppmobile']));
 			$nqppadd = trim(htmlspecialchars($dataArry['nqppadd']));
 			$nqpppin = trim(htmlspecialchars($dataArry['nqpppin']));

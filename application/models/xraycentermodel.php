@@ -120,7 +120,7 @@ class xraycentermodel extends CI_Model{
 				->order_by('xray_center.name')
 				->get();
 			
-			//echo $this->db->last_query();
+			#echo $this->db->last_query();
 			if($query->num_rows()> 0)
 			{
 				$data = $query->row();

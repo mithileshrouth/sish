@@ -54,7 +54,7 @@ class xraycenter extends CI_Controller {
 				);
 				// getSingleRowByWhereCls(tablename,where params)
 				$result['xrayEditdata'] = $this->xray->getXrayCenterEditDataByID($xrayCenterId); 
-				
+				//pre($result['xrayEditdata']);exit;
 			
 				
 			}

@@ -1,4 +1,4 @@
-<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/block.js"></script>  
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
 <style type="text/css">
 .contact{
@@ -405,7 +405,8 @@ element {
 
                   <?php 
 
-                        
+                        if (!empty($bodycontent['patientTreatmentInfo'])) {
+                       
                        
                         foreach ($bodycontent['patientTreatmentInfo'] as $value) {
                         
@@ -437,6 +438,7 @@ element {
                     </div>
                   </li>
               <?php }
+            }
 
                 } //end of treatment start check
 

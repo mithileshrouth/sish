@@ -64,15 +64,15 @@
 	  </div>
 	  
       <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> Remember Me
-            </label>
-          </div>
-        </div>
+       <!--  <div class="col-xs-8">
+         <div class="checkbox icheck">
+           <label>
+             <input type="checkbox"> Remember Me
+           </label>
+         </div>
+       </div> -->
         <!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-xs-offset-4 col-xs-4">
           <button type="submit" class="btn btn-primary btn-block btn-flat" id="loginBtn">Sign In</button>
         </div>
 		
@@ -91,7 +91,7 @@
         Google+</a>
     </div> -->
     <!-- /.social-auth-links -->
-		<a href="#">I forgot my password</a><br>
+		<!-- <a href="#">I forgot my password</a><br> -->
 		
 		<div class="row">
 			<p style="text-align:center;background: #e94747;color: #FFF;padding: 10px;margin-top: 22px;display:none;" id="login_err"></p>
