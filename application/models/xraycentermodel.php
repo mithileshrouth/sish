@@ -120,7 +120,7 @@ class xraycentermodel extends CI_Model{
 				->order_by('xray_center.name')
 				->get();
 			
-			//echo $this->db->last_query();
+			#echo $this->db->last_query();
 			if($query->num_rows()> 0)
 			{
 				$data = $query->row();
@@ -173,7 +173,7 @@ class xraycentermodel extends CI_Model{
 			$user_activity = array(
 					"activity_module" => 'X-Ray Center',
 					"action" => "Update",
-					"from_method" => "dmc/dmc_action/updateXray",
+					"from_method" => "xraycenter/xray_action/updateXray",
 					"user_id" => $session['userid'],
 					"ip_address" => getUserIPAddress(),
 					"user_browser" => getUserBrowserName(),

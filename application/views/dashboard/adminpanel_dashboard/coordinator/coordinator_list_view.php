@@ -23,11 +23,13 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <div class="datatalberes" style="overflow-x:auto;">
               <table id="dataTable" class="table table-bordered table-striped dataTables" style="border-collapse: collapse !important;">
                 <thead>
                 <tr>
                   <th style="width:10%;">Sl</th>
                   <th>Name</th>
+                  <th>Gender</th>
                   <th>Mobile</th>
                   <th>Block</th>
                   <th style="width:30%;">Address</th>
@@ -57,7 +59,12 @@
 
 					<tr>
 						<td><?php echo $i++; ?></td>
-						<td><?php echo $value->cordname; ?></td>
+            <td><?php echo $value->cordname; ?></td>
+						<td><?php if($value->gender=="M"){
+              echo "Male";
+            }elseif ($value->gender=="F") {
+             echo "Female";
+            } ?></td>
 						<td><?php echo $value->cordmobile; ?></td>
 						<td><?php echo $value->blockname; ?></td>
 						<td style="width:30%;"><?php echo $value->full_address; ?></td>
@@ -80,6 +87,7 @@
                 </tbody>
                
               </table>
+            </div>
             </div>
             <!-- /.box-body -->
           </div>

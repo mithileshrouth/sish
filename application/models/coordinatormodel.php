@@ -16,6 +16,7 @@ class coordinatormodel extends CI_Model{
 					coordinator.mobile_no as cordmobile,
 					coordinator.post_office,
 					coordinator.pin_code,
+					coordinator.gender,
 					coordinator.village,
 					coordinator.full_address,
 					coordinator.aadhar_no,
@@ -69,6 +70,7 @@ class coordinatormodel extends CI_Model{
 			
 			$crd_data = [
 				"name" => trim(htmlspecialchars($data['cordname'])),
+				"gender" => trim(htmlspecialchars($data['cordgender'])),
 				"mobile_no" => trim(htmlspecialchars($data['cordmobile'])),
 				"village" => trim(htmlspecialchars($data['cordvill'])),
 				"post_office" => trim(htmlspecialchars($data['cordpo'])),
@@ -124,6 +126,7 @@ class coordinatormodel extends CI_Model{
 					coordinator.aadhar_no,
 					coordinator.voter_id,
 					coordinator.block_id,
+					coordinator.gender,
 					coordinator.is_active as active,
 					user_master.id as userid,
 					user_master.password as cordpsw
@@ -164,6 +167,7 @@ class coordinatormodel extends CI_Model{
 			
 			$crd_data = [
 				"name" => trim(htmlspecialchars($data['cordname'])),
+				"gender" => trim(htmlspecialchars($data['cordgender'])),
 				"mobile_no" => trim(htmlspecialchars($data['cordmobile'])),
 				"village" => trim(htmlspecialchars($data['cordvill'])),
 				"post_office" => trim(htmlspecialchars($data['cordpo'])),

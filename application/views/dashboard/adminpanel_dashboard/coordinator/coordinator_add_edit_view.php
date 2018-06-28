@@ -51,6 +51,23 @@
                       </div>
                     </div>
 
+                     <div class="row">
+                       <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                          <label for="cordgender">Gender</label>
+                        <select id="cordgender" name="cordgender" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" > 
+                          <option value="">Select</option>
+                          <option value="M" <?php if(($bodycontent['mode']=="EDIT") && $bodycontent['cordEditdata']->gender=="M" ){echo "selected";}else{echo "";} ?>>Male</option>
+                          <option value="F" <?php if(($bodycontent['mode']=="EDIT") && $bodycontent['cordEditdata']->gender=="F" ){echo "selected";}else{echo "";} ?>>Female</option>
+
+                         </select>
+                        </div>
+                      </div>
+
+                     </div>
+
+
+
                    
 
                     <p class="formSubTitle"><span class="glyphicon glyphicon-pencil"></span> Address Info</p>

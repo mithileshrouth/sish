@@ -36,6 +36,8 @@
    -->
   <!-- DataTables -->
   <link rel="stylesheet" href="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  
   
     <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/custominputradiocheck.css" />
@@ -71,7 +73,8 @@
   	
 	
 	<!-- jQuery 3 -->
-<script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/jquery/dist/jquery.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -121,8 +124,10 @@
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/dist/js/demo.js"></script>
 -->
 <!-- DataTables -->
-<script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url();?>application/assets/diagnostic_theme/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/bootstrap-timepicker.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/bootstrapselect.min.js"></script>
 <script src="<?php echo base_url(); ?>application/assets/js_scripts/searchable_dropdown.min.js"></script>
@@ -363,13 +368,13 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo base_url();?>application/assets/diagnostic_theme/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="user-image" alt="User Image">
               <span class="hidden-xs">Mithilesh</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?php echo base_url();?>application/assets/diagnostic_theme/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="img-circle" alt="User Image">
 
                 <p>
                   Mithilesh - Web Developer
@@ -416,10 +421,10 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?php echo base_url();?>application/assets/diagnostic_theme/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Coordinator</p>
+          <p>Admin</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>

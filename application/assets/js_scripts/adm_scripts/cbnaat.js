@@ -2,19 +2,20 @@ $(document).ready(function(){
 	var basepath = $("#basepath").val();
 	
 	
-	$(document).on('submit','#cordForm',function(e){
+	$(document).on('submit','#cbnatForm',function(e){
 		e.preventDefault();
 
-		if(validateCORD())
+		if(validateCbnaat())
 		{
-            var formDataserialize = $("#cordForm").serialize();
+           
+            var formDataserialize = $("#cbnatForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
-            var urlpath = basepath + 'coordinator/coordinator_action';
-            $("#cordsavebtn").css('display', 'none');
+            var urlpath = basepath + 'cbnaat/cbnaat_action';
+            $("#cbnaatsavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'block');
 
             $.ajax({
@@ -31,20 +32,20 @@ $(document).ready(function(){
                             "keyboard": true,
                             "show": true
                         });
-                        var addurl = basepath + "coordinator/addcoordinator";
-                        var listurl = basepath + "coordinator";
+                        var addurl = basepath + "cbnaat/addcbnaat";
+                        var listurl = basepath + "cbnaat";
                         $("#responsemsg").text(result.msg_data);
                         $("#response_add_more").attr("href", addurl);
                         $("#response_list_view").attr("href", listurl);
 
                     } 
 					else {
-                        $("#cord_response_msg").text(result.msg_data);
+                        $("#cbnaat_response_msg").text(result.msg_data);
                     }
 					
                     $("#loaderbtn").css('display', 'none');
 					
-                    $("#cordsavebtn").css({
+                    $("#cbnaatsavebtn").css({
                         "display": "block",
                         "margin": "0 auto"
                     });
@@ -62,10 +63,10 @@ $(document).ready(function(){
 	
 
 	// Set Status
-    $(document).on("click", ".cordstatus", function() {
-		var uid = $(this).data("cordid");
+    $(document).on("click", ".cbnaatstatus", function() {
+		var uid = $(this).data("cbnaatid");
         var status = $(this).data("setstatus");
-        var url = basepath + 'coordinator/setStatus';
+        var url = basepath + 'cbnaat/setStatus';
         setActiveStatus(uid, status, url);
 
     });
@@ -74,71 +75,74 @@ $(document).ready(function(){
 
 });
 
-function validateCORD()
+function validateCbnaat()
 {
-    var cordname = $("#cordname").val();
-    var cordmobile = $("#cordmobile").val();
-    var cordadd = $("#cordadd").val();
-    var cordpin = $("#cordpin").val();
-    var cordpassword = $("#cordpassword").val();
-    var cordgender = $("#cordgender").val();
+    var seltu = $("#seltu").val();
+    var cbnatcntrname = $("#cbnatcntrname").val();
+    var cbnatcntradd = $("#cbnatcntradd").val();
+    var ltname = $("#ltname").val();
+    var mobile = $("#mobile").val();
+    var ltpass = $("#ltpass").val();
 
-    $("#cordmsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(cordname=="")
+    $("#cbnatmsg").text("").css("dispaly", "none").removeClass("form_error");
+	if(seltu=="")
 	{
-		$("#cordname").focus();
-		$("#cordmsg")
-		.text("Error : Enter Name")
+		$("#seltu").focus();
+		$("#cbnatmsg")
+		.text("Error : Select TU")
 		.addClass("form_error")
         .css("display", "block");
 		return false;
 	}
 
-    if(cordgender=="")
+    if(cbnatcntrname=="")
     {
-        $("#cordgender").focus();
-        $("#cordmsg")
-        .text("Error : Select Gender")
+        $("#cbnatcntrname").focus();
+        $("#cbnatmsg")
+        .text("Error : Enter Name Organization Name")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
-    if(cordmobile=="")
+     if(cbnatcntradd=="")
     {
-        $("#cordmobile").focus();
-        $("#cordmsg")
-        .text("Error : Enter Mobile No")
+        $("#cbnatcntradd").focus();
+        $("#cbnatmsg")
+        .text("Error : Enter Organization Address")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
 	
-	if(cordpin=="")
+    if(ltname=="")
     {
-        $("#cordpin").focus();
-        $("#cordmsg")
-        .text("Error : Enter Pin Code")
+        $("#ltname").focus();
+        $("#cbnatmsg")
+        .text("Error : Enter LT Name")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
-	if(cordadd=="")
+	if(mobile=="")
     {
-        $("#cordadd").focus();
-        $("#cordmsg")
-        .text("Error : Enter Address")
+        $("#mobile").focus();
+        $("#cbnatmsg")
+        .text("Error : Enter Mobile No")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
-	if(cordpassword=="")
+
+    if(ltpass=="")
     {
-        $("#cordpassword").focus();
-        $("#cordmsg")
+        $("#ltpass").focus();
+        $("#cbnatmsg")
         .text("Error : Enter Password")
         .addClass("form_error")
         .css("display", "block");
         return false;
     }
+	
+	
 	return true;
 }

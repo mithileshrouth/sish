@@ -59,7 +59,67 @@ $(document).ready(function(){
 
 	});
 	
-	
+	//import
+   
+$(document).on('click','#nqppimpsavebtn',function(e){
+        e.preventDefault();
+
+    $("#nqppimpsavebtn").addClass('nonclick');
+    $("#nqpp_loader").css("display", "block");  
+       
+ var form = $('#nqppimportForm')[0];
+    var formData = new FormData(form);
+    $.ajax({
+        type: "POST",
+        url: basepath + 'nqpp/nqppimport_action',
+        dataType: "json",
+        processData: false,
+        contentType: false, // "application/x-www-form-urlencoded; charset=UTF-8",
+        data: formData,
+        success: function(result) {
+            $("#nqpp_loader").css("display", "none");
+            $("#nqppimpsavebtn").removeClass('nonclick');
+
+            if (result.msg_status == 1) {
+
+                $("#suceessmodal").modal({
+                    "backdrop": "static",
+                    "keyboard": true,
+                    "show": true
+                });
+                var addurl = basepath + "nqpp/importnqpp";
+                var listurl = basepath + "nqpp";
+                $("#responsemsg").text(result.msg_data);
+                $("#response_add_more").attr("href", addurl);
+                $("#response_list_view").attr("href", listurl);
+
+            }
+
+        },
+        error: function(jqXHR, exception) {
+            var msg = '';
+            if (jqXHR.status === 0) {
+                msg = 'Not connect.\n Verify Network.';
+            } else if (jqXHR.status == 404) {
+                msg = 'Requested page not found. [404]';
+            } else if (jqXHR.status == 500) {
+                msg = 'Internal Server Error [500].';
+            } else if (exception === 'parsererror') {
+                msg = 'Requested JSON parse failed.';
+            } else if (exception === 'timeout') {
+                msg = 'Time out error.';
+            } else if (exception === 'abort') {
+                msg = 'Ajax request aborted.';
+            } else {
+                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+            }
+            // alert(msg);  
+        }
+    }); /*end ajax call*/
+
+
+ });
+
 
 	// Set Status
     $(document).on("click", ".cordstatus", function() {
@@ -81,6 +141,7 @@ function validateNQPP()
     var nqppadd = $("#nqppadd").val();
     var nqpppin = $("#nqpppin").val();
     var nqpppassword = $("#nqpppassword").val();
+    var nqppgender = $("#nqppgender").val();
 
     $("#nqppmsg").text("").css("dispaly", "none").removeClass("form_error");
 	if(nqppname=="")
@@ -102,7 +163,15 @@ function validateNQPP()
         .css("display", "block");
         return false;
     }
-	
+	 if(nqppgender=="")
+    {
+        $("#nqppgender").focus();
+        $("#nqppmsg")
+        .text("Error : Select Gender")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	if(nqpppin=="")
     {
         $("#nqpppin").focus();

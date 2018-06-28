@@ -20,6 +20,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <div class="datatalberes" style="overflow-x:auto;">
               <table class="table table-bordered table-striped dataTables" style="border-collapse: collapse !important;">
                 <thead>
                 <tr>
@@ -70,6 +71,9 @@
                 </tbody>
                
               </table>
+
+          </div>
+
             </div>
             <!-- /.box-body -->
           </div>

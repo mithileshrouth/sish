@@ -36,7 +36,7 @@ class xraycenter extends CI_Controller {
 				$result['btnText'] = "Save";
 				$result['btnTextLoader'] = "Saving...";
 				$dmcID = 0;
-				$result['dmcEditdata'] = [];
+				$result['xrayEditdata'] = [];
 				
 				//getAllRecordWhereOrderBy($table,$where,$orderby)
 				
@@ -54,7 +54,7 @@ class xraycenter extends CI_Controller {
 				);
 				// getSingleRowByWhereCls(tablename,where params)
 				$result['xrayEditdata'] = $this->xray->getXrayCenterEditDataByID($xrayCenterId); 
-				
+				//pre($result['xrayEditdata']);exit;
 			
 				
 			}
