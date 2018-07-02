@@ -580,19 +580,26 @@ class apimodel extends CI_Model {
 		}
 		
 		
-		// In Progress
+
 		
-		if($status=="INPROGRESS"){
+		// Detected
+		
+		if($status=="DETECTED"){
 			
-		$inProgressORWhere = [
-			"dmc_sputum_done" => "Y",
-			"xray_is_done" => "Y",
-			"is_cbnaat_done" => "Y"
-		];
-		
-		$inProgressWhere = [
-			"is_ptb_trtmnt_done" => "N"
-		];
+			$detectedORWhere = [
+				"dmc_spt_is_positive" => "Y",
+				"xray_is_postive" => "Y",
+				"cbnaat_pstv" => "Y"
+			];
+			
+			$detectedWhere = [
+				"is_ptb_trtmnt_done" => "N"
+			];
+			
+			
+			$where = " AND (dmc_sputum_done='Y' AND dmc_spt_is_positive='Y') OR  (xray_is_done='Y' AND xray_is_postive='Y') OR 
+					(dmc_sputum_done='Y' AND dmc_spt_is_positive.'Y')
+					"
 		
 		
 		
@@ -606,8 +613,8 @@ class apimodel extends CI_Model {
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->where($where)
-							->where($inProgressWhere)
-							->or_where($inProgressWhere)
+							->where($detectedWhere)
+							->or_where($detectedORWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="NQPP"){
@@ -620,8 +627,8 @@ class apimodel extends CI_Model {
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->where($where)
-							->where($inProgressWhere)
-							->or_where($inProgressWhere)
+							->where($detectedWhere)
+							->or_where($detectedORWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="DMC"){
@@ -634,8 +641,8 @@ class apimodel extends CI_Model {
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->where($where)
-							->where($inProgressWhere)
-							->or_where($inProgressWhere)
+							->where($detectedWhere)
+							->or_where($detectedORWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="XRAY"){
@@ -649,8 +656,8 @@ class apimodel extends CI_Model {
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
 							->where($where)
-							->where($inProgressWhere)
-							->or_where($inProgressWhere)
+							->where($detectedWhere)
+							->or_where($detectedORWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="CBNAAT"){
@@ -664,8 +671,8 @@ class apimodel extends CI_Model {
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
 							->where($where)
-							->where($inProgressWhere)
-							->or_where($inProgressWhere)
+							->where($detectedWhere)
+							->or_where($detectedORWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				else{
@@ -675,11 +682,13 @@ class apimodel extends CI_Model {
 							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
-							->where($inProgressWhere)
-							->or_where($inProgressWhere)
+							->where($detectedWhere)
+							->or_where($detectedORWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 		}
+		
+		
 		
 		
 		echo $this->db->last_query();

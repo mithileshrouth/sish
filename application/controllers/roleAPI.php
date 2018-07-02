@@ -813,7 +813,7 @@ public function __construct()
  
 	/*
 	* getStatusWisePTB
-	* Status = "NEW","INPROGRESS","DETECTED","COMPLETED"
+	* Status = "NEW","DATACAPTURED","DETECTED","COMPLETED"
 	* @date 02.07.2018
 	* 
 	*/
