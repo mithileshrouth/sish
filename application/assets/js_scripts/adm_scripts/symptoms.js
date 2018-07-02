@@ -1,22 +1,22 @@
 $(document).ready(function(){
 	var basepath = $("#basepath").val();
+	$("#symptom").focus();
 	
-	
-	$(document).on('submit','#BlockForm',function(e){
+	$(document).on('submit','#SYForm',function(e){
 		e.preventDefault();
 		
-		if(validateBlock())
+		if(validateSY())
 		{
 			
-			$("#district").removeAttr("disabled");
-            var formDataserialize = $("#BlockForm").serialize();
+		
+            var formDataserialize = $("#SYForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
-            var urlpath = basepath + 'block/block_action';
-            $("#blcksavebtn").css('display', 'none');
+            var urlpath = basepath + 'symptoms/symptoms_action';
+            $("#sysavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'block');
 
             $.ajax({
@@ -33,20 +33,20 @@ $(document).ready(function(){
                             "keyboard": true,
                             "show": true
                         });
-                        var addurl = basepath + "block/addblock";
-                        var listurl = basepath + "block";
+                        var addurl = basepath + "symptoms/addsymptoms";
+                        var listurl = basepath + "symptoms";
                         $("#responsemsg").text(result.msg_data);
                         $("#response_add_more").attr("href", addurl);
                         $("#response_list_view").attr("href", listurl);
 
                     } 
 					else {
-                        $("#blck_response_msg").text(result.msg_data);
+                        $("#sy_response_msg").text(result.msg_data);
                     }
 					
                     $("#loaderbtn").css('display', 'none');
 					
-                    $("#blcksavebtn").css({
+                    $("#sysavebtn").css({
                         "display": "block",
                         "margin": "0 auto"
                     });
@@ -64,10 +64,11 @@ $(document).ready(function(){
 	
 
 	// Set Status
-    $(document).on("click", ".blockstatus", function() {
-		var uid = $(this).data("blockid");
+    $(document).on("click", ".symtomstatus", function() {
+       
+		var uid = $(this).data("syid");
         var status = $(this).data("setstatus");
-        var url = basepath + 'block/setStatus';
+        var url = basepath + 'symptoms/setStatus';
         setActiveStatus(uid, status, url);
 
     });
@@ -76,30 +77,18 @@ $(document).ready(function(){
 
 });
 
-function validateBlock()
+function validateSY()
 {
-	var blockname = $("#blockname").val();
-    var codelength = $('#blockcode').val().length;
-
-	$("#blockmsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(blockname=="")
+	var symptom = $("#symptom").val();
+	$("#symsg").text("").css("dispaly", "none").removeClass("form_error");
+	if(symptom=="")
 	{
-		$("#blockname").focus();
-		$("#blockmsg")
-		.text("Error : Enter Block Name")
+		$("#symptom").focus();
+		$("#symsg")
+		.text("Error : Enter Symptom")
 		.addClass("form_error")
         .css("display", "block");
 		return false;
 	}
-
-    if(codelength!="2")
-    {
-        $("#blockcode").focus();
-        $("#blockmsg")
-        .text("Error : Enter Two Characters Block Code")
-        .addClass("form_error")
-        .css("display", "block");
-        return false;
-    }
 	return true;
 }

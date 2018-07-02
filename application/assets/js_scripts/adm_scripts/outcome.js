@@ -1,22 +1,22 @@
 $(document).ready(function(){
 	var basepath = $("#basepath").val();
+	$("#outcome").focus();
 	
-	
-	$(document).on('submit','#BlockForm',function(e){
+	$(document).on('submit','#OTForm',function(e){
 		e.preventDefault();
 		
-		if(validateBlock())
+		if(validateOT())
 		{
 			
-			$("#district").removeAttr("disabled");
-            var formDataserialize = $("#BlockForm").serialize();
+		
+            var formDataserialize = $("#OTForm").serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
 
             var formData = { formDatas: formDataserialize };
             var type = "POST"; //for creating new resource
-            var urlpath = basepath + 'block/block_action';
-            $("#blcksavebtn").css('display', 'none');
+            var urlpath = basepath + 'outcome/outcome_action';
+            $("#otsavebtn").css('display', 'none');
             $("#loaderbtn").css('display', 'block');
 
             $.ajax({
@@ -33,20 +33,20 @@ $(document).ready(function(){
                             "keyboard": true,
                             "show": true
                         });
-                        var addurl = basepath + "block/addblock";
-                        var listurl = basepath + "block";
+                        var addurl = basepath + "outcome/addoutcome";
+                        var listurl = basepath + "outcome";
                         $("#responsemsg").text(result.msg_data);
                         $("#response_add_more").attr("href", addurl);
                         $("#response_list_view").attr("href", listurl);
 
                     } 
 					else {
-                        $("#blck_response_msg").text(result.msg_data);
+                        $("#ot_response_msg").text(result.msg_data);
                     }
 					
                     $("#loaderbtn").css('display', 'none');
 					
-                    $("#blcksavebtn").css({
+                    $("#otsavebtn").css({
                         "display": "block",
                         "margin": "0 auto"
                     });
@@ -64,10 +64,11 @@ $(document).ready(function(){
 	
 
 	// Set Status
-    $(document).on("click", ".blockstatus", function() {
-		var uid = $(this).data("blockid");
+    $(document).on("click", ".outcomestatus", function() {
+       
+		var uid = $(this).data("otid");
         var status = $(this).data("setstatus");
-        var url = basepath + 'block/setStatus';
+        var url = basepath + 'outcome/setStatus';
         setActiveStatus(uid, status, url);
 
     });
@@ -76,30 +77,18 @@ $(document).ready(function(){
 
 });
 
-function validateBlock()
+function validateOT()
 {
-	var blockname = $("#blockname").val();
-    var codelength = $('#blockcode').val().length;
-
-	$("#blockmsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(blockname=="")
+	var outcome = $("#outcome").val();
+	$("#symsg").text("").css("dispaly", "none").removeClass("form_error");
+	if(outcome=="")
 	{
-		$("#blockname").focus();
-		$("#blockmsg")
-		.text("Error : Enter Block Name")
+		$("#outcome").focus();
+		$("#otmsg")
+		.text("Error : Enter Outcome")
 		.addClass("form_error")
         .css("display", "block");
 		return false;
 	}
-
-    if(codelength!="2")
-    {
-        $("#blockcode").focus();
-        $("#blockmsg")
-        .text("Error : Enter Two Characters Block Code")
-        .addClass("form_error")
-        .css("display", "block");
-        return false;
-    }
 	return true;
 }
