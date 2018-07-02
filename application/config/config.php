@@ -16,6 +16,10 @@
 */
 $config['base_url']	= '/sish/';
 
+$config['base_url']	= 'http://shis.localdevelopment.so/';
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Index File

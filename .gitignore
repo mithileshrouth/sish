@@ -50,3 +50,5 @@ nbproject/project.properties
 nbproject/project.xml
 info.txt
 .htaccess
+.htaccess
+application/config/config.php

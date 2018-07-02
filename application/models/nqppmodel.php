@@ -232,6 +232,7 @@ class nqppmodel extends CI_Model{
 				->from('nqpp')
 				->join('coordinator','coordinator.id = nqpp.coordinator_id')
 				->where($where)
+				->order_by('nqpp.name','ASC')
 				->get();
 			
 			if($query->num_rows()> 0)

@@ -254,7 +254,7 @@ public function __construct()
 		
 	
 		if(!empty($key) && $apikey == trim($key)){
-			
+				
 			if($sessiondata->rcode=="CORD"){
 				$resultset = $this->coordinator->getCoordinatorBYId($sessiondata->uid);
 			}
@@ -681,7 +681,7 @@ public function __construct()
                      $result=array(
                         "status"=>420,
                         "statuscode"=>"IN_ACTIVE",
-                        "data"=>"NULL",
+                        "data"=>NULL,
 						"token"=>NULL
                     );
                  }
@@ -690,7 +690,7 @@ public function __construct()
                $result=array(
                  "status"=>402,
                  "statuscode"=>"INVALID_AUTH",
-                 "data"=>"NULL",
+                 "data"=>NULL,
 				 "token"=>NULL
                 );  
              }
@@ -730,7 +730,7 @@ public function __construct()
 	
 	$data = $request->data;
 	$session = $request->session;
-	
+
 	if(!empty($key) && $apikey == trim($key)){
 		
 		//pre($request);
@@ -740,6 +740,13 @@ public function __construct()
 			$result = [
 			"status"=>200,
             "statuscode"=>"SUCCESS",
+			"data"=> NULL
+			];
+		}
+		else{
+			$result = [
+			"status"=>400,
+            "statuscode"=>"ERROR",
 			"data"=> NULL
 			];
 		}
@@ -754,7 +761,9 @@ public function __construct()
 			];
 	}
 		
-	
+	$resultdata = json_encode($result);
+	echo $resultdata;
+	exit;
 	
  }
  
@@ -802,6 +811,58 @@ public function __construct()
 		exit;
  }
  
+	/*
+	* getStatusWisePTB
+	* Status = "NEW","INPROGRESS","DETECTED","COMPLETED"
+	* @date 02.07.2018
+	* 
+	*/
+	
+	public function getStatusWisePTB(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$status = $request->status;
+		$apikey = $this->apimodel->getAPIkey();
+		$sessiondata = $request->session;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+				
+				$resultset = $this->apimodel->getStatusWisePTB($status,$sessiondata);
+				if(sizeof($resultset)>0)
+				{
+					$result = [
+					 "status"=>200,
+					 "statuscode"=>"SUCCESS",
+					 "data"=> $resultset
+					];
+				}
+				else{
+					$result = [
+					 "status"=>400,
+					 "statuscode"=>"NO DATA FOUND",
+					 "data"=> NULL
+					];
+				}
+				
+			}
+			else{
+				$result = [
+					 "status"=>403,
+					 "statuscode"=>"KEY_MISSING",
+					 "data"=> NULL
+				];
+			}
+			
+		$resultdata = json_encode($result);
+			echo $resultdata;
+			exit;
+	}
+ 
+ 
  public function getPatientStatus(){
 	header('Access-Control-Allow-Origin: *');  
 	header('Content-Type: application/json');
@@ -844,6 +905,8 @@ public function __construct()
 		echo $resultdata;
 		exit;
  }
+ 
+ 
  
 	
  
@@ -914,7 +977,7 @@ public function __construct()
 			else{
 				$result = [
 				 "status"=>400,
-                 "statuscode"=>"NO DATA FOUND",
+                 "statuscode"=>"ERROR",
 				 "data"=> NULL
 				];
 			}
