@@ -212,7 +212,7 @@ class apimodel extends CI_Model {
 					$coordinator_row = $this->coordinator->getCoordinatorEditDataByID($refferedbycord);
 					if(sizeof($coordinator_row)>0){
 						$coordinator_mobile = $coordinator_row->cordmobile;
-						/*
+						
 						$sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -224,7 +224,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
 					}
 					
 				}
@@ -232,7 +232,7 @@ class apimodel extends CI_Model {
 					$nqpp_row = $this->nqpp->getNQPPEditDataByID($refferedbynqpp);
 					if(sizeof($nqpp_row)>0){
 						$nqpp_mobile = $nqpp_row->nqppmobile;
-						/*
+						
 						$sms_status = $this->sendSMS($nqpp_mobile,$smstext);
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -244,7 +244,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
 					}
 					
 				}
@@ -252,7 +252,7 @@ class apimodel extends CI_Model {
 					$dmc_row = $this->dmc->getDMCEditDataByID($dmcid);
 					if(sizeof($dmc_row)>0){
 						$dmc_lt_mobile = $dmc_row->ltmobile;
-						/*
+						
 						$sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -264,13 +264,13 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
 						
 					}
 					
 				}
 				elseif($sendsms_to_role->role_code=="PTB"){
-					/*
+				
 					$sms_status = $this->sendSMS($mobile,$smstext);
 					$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -282,7 +282,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 					$this->db->insert('sms_sent_report', $sms_log);
-					*/
+					
 				}
 				
 			}
@@ -406,10 +406,11 @@ class apimodel extends CI_Model {
 			$where = [
 				"coordinator.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,IF(patient.`dmc_sputum_done`='Y',TRUE,FALSE) AS issputumdone",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
@@ -417,21 +418,271 @@ class apimodel extends CI_Model {
 			$where = [
 				"nqpp.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
 					->from("patient")
-					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->where($where)
+					->order_by("patient.patient_reg_date","DESC")->get();
+		}
+		elseif($localsession->rcode=="DMC"){
+			$where = [
+				"dmc.userid" =>$localsession->uid
+			];
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+					->from("patient")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+					->join("dmc","dmc.id = patient.dmc_id","INNER")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->where($where)
+					->order_by("patient.patient_reg_date","DESC")->get();
+		}
+		elseif($localsession->rcode=="XRAY"){
+			$where = [
+				"xray_center.userid" =>$localsession->uid
+			];
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+					->from("patient")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+					->join("dmc","dmc.id = patient.dmc_id","INNER")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
+					->where($where)
+					->order_by("patient.patient_reg_date","DESC")->get();
+		}
+		elseif($localsession->rcode=="CBNAAT"){
+			$where = [
+				"cbnaat.userid" =>$localsession->uid
+			];
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+					->from("patient")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+					->join("dmc","dmc.id = patient.dmc_id","INNER")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
 		else{
-			$query = $this->db->select("patient.*,dmc.name AS dmcname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			// Role = Project Manager
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
 					->from("patient")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
-					->where($where)
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
 		//echo $this->db->last_query();
+		
+		if($query->num_rows()> 0)
+		{
+	        foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+	            
+	    }
+			
+	    return $data;
+	}
+	
+	
+	
+	public function getStatusWisePTB($status,$localsession){
+		if($status=="NEW"){
+			
+			$newRegisterWhere = [
+				"dmc_sputum_done" => "N",
+				"xray_is_done" => "N",
+				"is_cbnaat_done" => "N",
+				"is_ptb_trtmnt_done" => "N"
+			
+			];
+			
+				if($localsession->rcode=="CORD"){
+					$where = [
+						"coordinator.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="NQPP"){
+					$where = [
+						"nqpp.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="DMC"){
+					$where = [
+						"dmc.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="XRAY"){
+					$where = [
+						"xray_center.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
+							->where($where)
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="CBNAAT"){
+					$where = [
+						"cbnaat.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
+							->where($where)
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				else{
+					// Role = Project Manager
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+		}
+		
+		
+		// In Progress
+		
+		if($status=="INPROGRESS"){
+			
+		$inProgressORWhere = [
+			"dmc_sputum_done" => "Y",
+			"xray_is_done" => "Y",
+			"is_cbnaat_done" => "Y"
+		];
+		
+		$inProgressWhere = [
+			"is_ptb_trtmnt_done" => "N"
+		];
+		
+		
+		
+				if($localsession->rcode=="CORD"){
+					$where = [
+						"coordinator.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($inProgressWhere)
+							->or_where($inProgressWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="NQPP"){
+					$where = [
+						"nqpp.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($inProgressWhere)
+							->or_where($inProgressWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="DMC"){
+					$where = [
+						"dmc.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($inProgressWhere)
+							->or_where($inProgressWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="XRAY"){
+					$where = [
+						"xray_center.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
+							->where($where)
+							->where($inProgressWhere)
+							->or_where($inProgressWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="CBNAAT"){
+					$where = [
+						"cbnaat.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
+							->where($where)
+							->where($inProgressWhere)
+							->or_where($inProgressWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				else{
+					// Role = Project Manager
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($inProgressWhere)
+							->or_where($inProgressWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+		}
+		
+		
+		echo $this->db->last_query();
 		
 		if($query->num_rows()> 0)
 		{
@@ -452,15 +703,18 @@ class apimodel extends CI_Model {
 				"patient.patient_id" =>$pid
 			];
 			//$this->db->_protect_identifiers=true;
-		$query = $this->db->select("patient.*,ptb_treatment_detail.*,
+		$query = $this->db->select("patient.*,ptb_treatment_detail.*,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname,
 						 DATE_FORMAT(ptb_treatment_detail.`first_followup_dt`,'%d/%m%/%Y') AS first_followup_dt,
 						DATE_FORMAT(ptb_treatment_detail.`second_followup_dt`, '%d/%m%/%Y') AS second_followup_dt
 						",FALSE)
 					->from("patient")
 					->join("ptb_treatment_detail","ptb_treatment_detail.patient_id = patient.patient_id","LEFT")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->where($where)
 					->get();
-				
+			//echo $this->db->last_query();
+
 		 if($query->num_rows()>0){
             $data = $query->row();
            

@@ -191,6 +191,26 @@ class cbnaatmodel extends CI_Model{
             echo $exc->getTraceAsString();
         }
 	}
+	public function getAllActiveCbnaatCenter(){
+		$data = [];
+		$query = $this->db->select("*")
+				->from('cbnaat')
+				->where('cbnaat.is_active',1)
+				->order_by('cbnaat.name')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+                 foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+                        }
+			
+	        return $data;
+	       
+	}
 
 	
 	

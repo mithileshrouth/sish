@@ -270,6 +270,7 @@ class coordinatormodel extends CI_Model{
 				->get();
 			
 			//echo $this->db->last_query();
+			
 			if($query->num_rows()> 0)
 			{
 	          foreach($query->result() as $rows)
