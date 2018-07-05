@@ -18,6 +18,7 @@ class block extends CI_Controller {
 			$result['blockList'] = $this->locations->getAllBlockList(); 
 			$page = "dashboard/adminpanel_dashboard/block/block_list_view";
 			createbody_method($result, $page, $header, $session);
+			
 		}
 		else
 		{
