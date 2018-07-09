@@ -50,7 +50,11 @@ class paymentgenerationmodel extends CI_Model{
 
 
 	public function getTransactionListByNqpp($nqppid){
-			$where = array('payment_gen_master.nqpp_id' => $nqppid );
+			
+			$where = array(
+						'payment_gen_master.nqpp_id' => $nqppid,
+						'payment_gen_master.is_payment_done' => 'N'
+						 );
 			$data = [];
 			$query = $this->db->select("*")
 					->from('payment_gen_master')

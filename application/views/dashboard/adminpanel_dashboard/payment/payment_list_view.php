@@ -1,4 +1,4 @@
-  <script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/payment_generation.js"></script>
+  <script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/payment.js"></script>
 
 
   <style type="text/css">
@@ -35,7 +35,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Payment Generation List</li>
+        <li class="active">Payment List</li>
       </ol>
     </section>
 
@@ -46,24 +46,15 @@
       <div class="col-md-12">
         <div class="box box-primary formBlock">
               <div class="box-header with-border">
-                <h3 class="box-title">Payment Generation - List</h3>
+                <h3 class="box-title">Payment - List</h3>
                 
               </div>
               <!-- /.box-header -->
               <!-- form start -->
- <!-- ********************************************************************************** -->  
+ 
 
- <!-- Custom Tabs -->
-          <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" class="firsttab" data-toggle="tab" aria-expanded="true">New</a></li>
-              <li class=""><a href="#tab_2" class="secondtab" data-toggle="tab" aria-expanded="false">Existing</a></li>
-             
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="tab_1">
-                      <?php /*New list*/
-              $attr = array("id"=>"PaymentListFilterForm","name"=>"PaymentListFilterForm");
+   <?php /*Payment list*/
+              $attr = array("id"=>"PaymentForm","name"=>"PaymentForm");
               echo form_open('',$attr); ?>
                 <div class="box-body">
 
@@ -92,106 +83,19 @@
                         </select>
                         </div>
                   </div>
-                  <p id="paygen_manual_err_msg" class="form_error"></p>
+                
+                  <p id="payment_manual_err_msg" class="form_error"></p>
 
             <div class="btnDiv">
-              <button type="submit" class="btn btn-primary formBtn" id="paygenListView" style="display: inline-block;">View</button>
+               <button type="submit" class="btn btn-primary formBtn" id="paymentListView" style="display: inline-block;">View</button> 
             </div>
                   
           </div>
                
               <?php echo form_close(); 
-                /*End of New list*/
+                /*End of payment list*/
 
-              ?>
-
-
-              </div>
-              <!-- /.tab-pane, end of tab 1 -->
-              <div class="tab-pane" id="tab_2">
-                    <?php /*Existing list*/
-              $attr = array("id"=>"PaymentListExistForm","name"=>"PaymentListExistForm");
-              echo form_open('',$attr); ?>
-                <div class="box-body">
-
-                  <div class="form-group">
-                     <label for="coordinatorList">Coordinator</label> 
-                        <select id="coordinatort2" name="coordinatort2" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                        <option value="0">Select</option>
-                          <?php 
-                            if($bodycontent['coordinatorList'])
-                            {
-                              foreach($bodycontent['coordinatorList'] as $coordinator_list)
-                              { ?>
-                                  <option value="<?php echo $coordinator_list->id; ?>"><?php echo $coordinator_list->name ; ?></option>
-                            <?php 
-                              }
-                            }
-                          ?>
-                        </select>
-                  </div>
-                       <div class="form-group">
-                     <label for="nqppList">NQPP</label> 
-                     <div id="nqppviewt2">
-                        <select id="sel_nqppt2" name="sel_nqppt2" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                      <option value="0">Select</option>
-                         
-                        </select>
-                        </div>
-                  </div>
-                      <div class="form-group">
-                     <label for="nqppList">Transaction Details</label> 
-                     <div id="txnview">
-                        <select id="sel_txn" name="sel_txn" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                      <option value="0">Select</option>
-                         
-                        </select>
-                        </div>
-                  </div>
-                  <p id="paygen_manual_err_msgt2" class="form_error"></p>
-
-            <div class="btnDiv">
-               <button type="submit" class="btn btn-primary formBtn" id="paygenListViewExisting" style="display: inline-block;">View</button> 
-            </div>
-                  
-          </div>
-               
-              <?php echo form_close(); 
-                /*End of Existing list*/
-
-              ?>
-
-
-
-
-
-              
-              </div>
-              <!-- /.tab-pane ,end of tab2 -->
-              
-            </div>
-            <!-- /.tab-content -->
-          </div>
-          <!-- nav-tabs-custom -->
-
-
-
-
-
- <!-- ********************************************************************************** -->            
-
-              
-
-
-    
-            
-
-
-
-
-
-
-
+              ?>            
 
         </div><!--End of from block -->
             
@@ -205,17 +109,13 @@
 
 
 
-
-
-
-
     <div class="dashboardloader" style="width: 100%; clear: both;display:none; ">
             <img src="<?php echo base_url();?>application/assets/images/verify_logo.gif"
              style="margin-left:auto;margin-right:auto;display:block;" />
            <p style="text-align:center;color:#055E87;letter-spacing:1px;">Please wait loading...</p>
     </div>
 
-    <section id="loadPatientList">
+    <section id="loadTransactionList">
          
     </section>
 
