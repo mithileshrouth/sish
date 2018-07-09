@@ -153,7 +153,7 @@ public function getPaymetGenPatientList()
 			
 			
 			  $latest_serial = $this->paygen->getLatestSerialNumber("PAY-GEN",1); //it will change
-			 $trnID = "B/".$latest_serial."/ Dt : ".$generation_date;
+			 $trnID = "B/".$latest_serial;
 			  
 				
 					/*  ADD MODE

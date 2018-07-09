@@ -33,7 +33,7 @@
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
 
                     <label for="district">District</label> 
-                    <select id="district" name="district" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" disabled="true">
+                    <select id="district" name="district" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
                    
                       <?php 
                       if($bodycontent['districtList'])

@@ -74,7 +74,10 @@ class paymentgenerationmodel extends CI_Model{
 
 
 		public function gePatientListByNqpp($nqppid){
-			$where = array('patient.nqpp_id' => $nqppid );
+			$where = array(
+				'patient.nqpp_id' => $nqppid,
+				'patient.is_tb_diagnosed' =>'Y' 
+			);
 			$data = [];
 			$query = $this->db->select("
 									   patient.patient_id,

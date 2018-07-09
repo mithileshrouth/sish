@@ -5,7 +5,7 @@
 		<?php
 				foreach ($txnList as $key => $value) { ?>
 
-				<option value="<?php echo $value->id; ?>"><?php echo $value->transaction_id; ?></option>
+				<option value="<?php echo $value->id; ?>"><?php echo $value->transaction_id." / Dt : ".date('Y-m-d', strtotime($value->generation_dt));; ?></option>
 
 					<?php	}
 					?>

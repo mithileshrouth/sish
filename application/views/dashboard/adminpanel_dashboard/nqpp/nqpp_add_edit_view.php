@@ -6,7 +6,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">NQPP <?php echo $bodycontent['mode']; ?></li>
+        <li class="active">NFHP <?php echo $bodycontent['mode']; ?></li>
       </ol>
     </section>
 
@@ -19,7 +19,7 @@
       <div class="col-md-12">
         <div class="box box-primary formBlockMedium">
               <div class="box-header with-border">
-                <h3 class="box-title">NQPP </h3>
+                <h3 class="box-title">NFHP </h3>
                 <a href="<?php echo base_url();?>nqpp" class="link_tab"><span class="glyphicon glyphicon-list"></span> Go to List</a>
               </div>
               <!-- /.box-header -->

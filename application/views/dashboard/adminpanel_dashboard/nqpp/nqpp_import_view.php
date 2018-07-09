@@ -15,7 +15,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">NQPP Import</li>
+        <li class="active">NFHP Import</li>
       </ol>
     </section>
 
@@ -26,7 +26,7 @@
       <div class="col-md-12">
         <div class="box box-primary formBlock">
               <div class="box-header with-border">
-                <h3 class="box-title">NQPP - Import </h3>
+                <h3 class="box-title">NFHP - Import </h3>
                  <a href="<?php echo base_url();?>nqpp" class="link_tab"><span class="glyphicon glyphicon-list"></span> List</a>
               </div>
               <!-- /.box-header -->

@@ -298,12 +298,12 @@ public function insertImportFileDataIntoNqpp($insertArray,$objReader,$session)
          	for($i=2;$i<=$totalrows;$i++)
           	{
             	$sl = $objWorksheet->getCellByColumnAndRow(0,$i)->getValue(); //Excel Column 1
-			  	$name = trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(1,$i)->getValue())); //Excel Column 2
+			  	$name = ucfirst(strtolower(trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(1,$i)->getValue())))); //Excel Column 2
 			  	$mobile_no = trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(2,$i)->getValue())); //Excel Column 3
-			  	$village = trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(3,$i)->getValue())); //Excel Column 3
-			  	$panchayat = trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(4,$i)->getValue())); //Excel Column 4
-			  	$dmcname = trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(5,$i)->getValue())); //Excel Column 4
-			  	$blockname = trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(6,$i)->getValue())); //Excel Column 5
+			  	$village = ucfirst(strtolower(trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(3,$i)->getValue())))); //Excel Column 4
+			  	$panchayat = ucfirst(strtolower(trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(4,$i)->getValue())))); //Excel Column 5
+			  	$dmcname = ucfirst(strtolower(trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(5,$i)->getValue())))); //Excel Column 6
+			  	$blockname = ucfirst(strtolower(trim(htmlspecialchars($objWorksheet->getCellByColumnAndRow(6,$i)->getValue())))); //Excel Column 7
 			  
 
 
@@ -325,7 +325,7 @@ public function insertImportFileDataIntoNqpp($insertArray,$objReader,$session)
 			    $user_id = $this->db->insert_id();
 				
 					$nqpp_data_ins_arry = [
-						"coordinator_id" => 1, // It will be change 
+						"coordinator_id" => 20, // It will be change 
 						"name" => $name,
 						"mobile_no" => $mobile_no,
 						"village" => $village,
