@@ -70,6 +70,91 @@ $(document).ready(function(){
 
     });
 
+  // check mobile no validity on keyup
+    $(document).on("keyup", "#cordmobile", function() {
+
+       var mobile = $("#cordmobile").val();
+       var oldmobile = $("#oldmobile").val();
+       var mode = $("#mode").val();
+       $("#cordmsg").text("").css("dispaly", "none").removeClass("form_error");
+       $("#cordsavebtn").addClass('nonclick');
+
+
+        var type = "POST"; //for creating new resource
+        var urlpath = basepath + 'coordinator/checkmobile';
+          $.ajax({
+                type: type,
+                url: urlpath,
+                data:{mobile:mobile,oldmobile:oldmobile,mode:mode},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+                    if (result.msg_status == 1) {
+
+                    // $("#cordmobile").focus();
+                     $("#cordmsg").text(result.msg_data).addClass("form_error").css("display", "block");
+                     return false;
+      
+                    } 
+                    else {
+                        $("#cordsavebtn").removeClass('nonclick');  
+                       
+                    }
+                    
+                 
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+    });  
+
+
+   // check mobile no validity on blur
+    $(document).on("blur", "#cordmobile", function() {
+
+       var mobile = $("#cordmobile").val();
+       var oldmobile = $("#oldmobile").val();
+       var mode = $("#mode").val();
+       $("#cordmsg").text("").css("dispaly", "none").removeClass("form_error");
+       $("#cordsavebtn").addClass('nonclick');
+
+
+        var type = "POST"; //for creating new resource
+        var urlpath = basepath + 'coordinator/checkmobile';
+          $.ajax({
+                type: type,
+                url: urlpath,
+                data:{mobile:mobile,oldmobile:oldmobile,mode:mode},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+                    if (result.msg_status == 1) {
+
+                    // $("#cordmobile").focus();
+                     $("#cordmsg").text(result.msg_data).addClass("form_error").css("display", "block");
+      
+                    } 
+                    else {
+                        $("#cordsavebtn").removeClass('nonclick');  
+                       
+                    }
+                    
+                 
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+    });
+  
+
+
+
 	
 
 });
@@ -79,6 +164,7 @@ function validateCORD()
     var cordname = $("#cordname").val();
     var cordmobile = $("#cordmobile").val();
     var cordadd = $("#cordadd").val();
+    var cordblock = $("#cordblock").val();
     var cordpin = $("#cordpin").val();
     var cordpassword = $("#cordpassword").val();
     var cordgender = $("#cordgender").val();
@@ -113,6 +199,15 @@ function validateCORD()
         return false;
     }
 	
+    if(cordblock=="0")
+    {
+        $("#cordblock").focus();
+        $("#cordmsg")
+        .text("Error : Select Block")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	if(cordpin=="")
     {
         $("#cordpin").focus();

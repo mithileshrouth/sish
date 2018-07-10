@@ -34,7 +34,7 @@
 
                     <label for="seltu">TU</label> 
                     <select id="seltu" name="seltu" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
-                   
+                   <option value="0">Select</option>
                       <?php 
                       if($bodycontent['tuList'])
                       {
@@ -57,6 +57,7 @@
 
                   <div class="form-group">
                     <label for="stsmobile">Mobile</label>
+                    <input type="hidden" name="oldmobile" id="oldmobile" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['stsEditdata']->mobile;}?>">
                     <input type="text" class="form-control forminputs typeahead numchk" id="stsmobile" name="stsmobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['stsEditdata']->mobile;}?>" maxlength="10">
                   </div>
 

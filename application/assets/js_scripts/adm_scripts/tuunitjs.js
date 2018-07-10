@@ -78,8 +78,20 @@ $(document).ready(function(){
 
 function validateTU()
 {
+    var block = $("#block").val();
 	var tuunitname = $("#tuunitname").val();
 	$("#tumsg").text("").css("dispaly", "none").removeClass("form_error");
+
+    if(block=="0")
+    {
+        $("#block").focus();
+        $("#tumsg")
+        .text("Error : Select Block")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+
 	if(tuunitname=="")
 	{
 		$("#tuunitname").focus();

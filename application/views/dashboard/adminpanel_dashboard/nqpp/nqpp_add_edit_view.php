@@ -6,7 +6,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">NQPP <?php echo $bodycontent['mode']; ?></li>
+        <li class="active">NFHP <?php echo $bodycontent['mode']; ?></li>
       </ol>
     </section>
 
@@ -19,7 +19,7 @@
       <div class="col-md-12">
         <div class="box box-primary formBlockMedium">
               <div class="box-header with-border">
-                <h3 class="box-title">NQPP </h3>
+                <h3 class="box-title">NFHP </h3>
                 <a href="<?php echo base_url();?>nqpp" class="link_tab"><span class="glyphicon glyphicon-list"></span> Go to List</a>
               </div>
               <!-- /.box-header -->
@@ -69,6 +69,7 @@
                       <div class="col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                           <label for="nqppmobile">Mobile</label>
+                          <input type="hidden" name="oldmobile" id="oldmobile" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['nqppEditdata']->nqppmobile;}?>">
                           <input type="text" class="form-control forminputs numchk" id="nqppmobile" name="nqppmobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['nqppEditdata']->nqppmobile; } ?>" maxlength="10">
                         </div>
                       </div>
@@ -97,6 +98,7 @@
                         <div class="form-group">
                            <label for="nqppblock">Block</label> 
 							<select id="nqppblock" name="nqppblock" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
+                <option value="0">Select</option>
 						   
 							  <?php 
 							  if($bodycontent['blockList'])

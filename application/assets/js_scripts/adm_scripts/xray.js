@@ -85,7 +85,7 @@ function validateXRAY()
     var ltpass = $("#ltpass").val();
 
     $("#xraymsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(seltu=="")
+	if(seltu=="0")
 	{
 		$("#seltu").focus();
 		$("#xraymsg")

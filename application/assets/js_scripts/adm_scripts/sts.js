@@ -70,15 +70,109 @@ $(document).ready(function(){
 
     });
 
+
+      // check mobile no validity on keyup
+    $(document).on("keyup", "#stsmobile", function() {
+
+       var mobile = $("#stsmobile").val();
+       var oldmobile = $("#oldmobile").val();
+       var mode = $("#mode").val();
+       $("#stsmsg").text("").css("dispaly", "none").removeClass("form_error");
+       $("#stssavebtn").addClass('nonclick');
+
+
+        var type = "POST"; //for creating new resource
+        var urlpath = basepath + 'sts/checkmobile';
+          $.ajax({
+                type: type,
+                url: urlpath,
+                data:{mobile:mobile,oldmobile:oldmobile,mode:mode},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+                    if (result.msg_status == 1) {
+
+                     $("#stsmobile").focus();
+                     $("#stsmsg").text(result.msg_data).addClass("form_error").css("display", "block");
+      
+                    } 
+                    else {
+                        $("#stssavebtn").removeClass('nonclick');  
+                       
+                    }
+                    
+                 
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+    });  
+
+
+ // check mobile no validity on blur
+    $(document).on("blur", "#stsmobile", function() {
+
+       var mobile = $("#stsmobile").val();
+       var oldmobile = $("#oldmobile").val();
+       var mode = $("#mode").val();
+       $("#stsmsg").text("").css("dispaly", "none").removeClass("form_error");
+       $("#stssavebtn").addClass('nonclick');
+
+
+        var type = "POST"; //for creating new resource
+        var urlpath = basepath + 'sts/checkmobile';
+          $.ajax({
+                type: type,
+                url: urlpath,
+                data:{mobile:mobile,oldmobile:oldmobile,mode:mode},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+                    if (result.msg_status == 1) {
+
+                     $("#stsmobile").focus();
+                     $("#stsmsg").text(result.msg_data).addClass("form_error").css("display", "block");
+      
+                    } 
+                    else {
+                        $("#stssavebtn").removeClass('nonclick');  
+                       
+                    }
+                    
+                 
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+    });
+
 	
 
 });
 
 function validateSTS()
 {
+    var seltu = $("#seltu").val();
     var stlsname = $("#stsname").val();
 	var stsmobile = $("#stsmobile").val();
     $("#stsmsg").text("").css("dispaly", "none").removeClass("form_error");
+
+    if(seltu=="0")
+    {
+        $("#seltu").focus();
+        $("#stsmsg")
+        .text("Error : Select TU")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+
 	if(stlsname=="")
 	{
 		$("#stsname").focus();

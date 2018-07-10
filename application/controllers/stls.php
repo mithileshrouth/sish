@@ -288,6 +288,89 @@ class stls extends CI_Controller {
 	}
 
 
+
+
+public function checkmobile(){
+
+		$session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+			$mobile = trim($this->input->post('mobile'));
+			$oldmobile = trim($this->input->post('oldmobile'));
+			$mode = trim($this->input->post('mode'));
+
+			if($mode=='ADD'){
+					$where = array('stls.mobile' => $mobile);
+					
+					$result = $this->commondatamodel->checkExistanceData('stls',$where);
+					
+					if($result)
+					{
+						$json_response = array(
+							"msg_status" => 1,
+							"msg_data" => "This mobile number already registered."
+						);
+					}
+					else
+					{
+						$json_response = array(
+							"msg_status" => 0,
+							"msg_data" => "available"
+						);
+					}
+
+				}else{
+
+
+						if ($mobile!=$oldmobile) {
+
+									$where = array('stls.mobile' => $mobile);
+									
+									$result = $this->commondatamodel->checkExistanceData('stls',$where);
+									
+									if($result)
+									{
+										$json_response = array(
+											"msg_status" => 1,
+											"msg_data" => "This mobile number already registered."
+										);
+									}
+									else
+									{
+										$json_response = array(
+											"msg_status" => 0,
+											"msg_data" => "available"
+										);
+									}
+
+
+
+							
+						}else{
+
+									$json_response = array(
+									"msg_status" => 0,
+									"msg_data" => "available"
+								);
+
+
+						}
+
+				}
+
+		
+		header('Content-Type: application/json');
+		echo json_encode( $json_response );
+		exit;
+
+		}
+		else
+		{
+			redirect('adminpanel','refresh');
+		}
+	}
+
+
 	
 	
 

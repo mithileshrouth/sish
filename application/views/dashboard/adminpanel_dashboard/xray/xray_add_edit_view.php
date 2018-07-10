@@ -37,7 +37,7 @@
 
                     <label for="seltu">TU</label> 
                     <select id="seltu" name="seltu" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
-                  
+                  <option value="0">Select</option>
                       <?php 
                       if($bodycontent['tuList'])
                       {
