@@ -34,7 +34,7 @@
 
                     <label for="district">District</label> 
                     <select id="district" name="district" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
-                   
+                    <option value="0">Select</option>
                       <?php 
                       if($bodycontent['districtList'])
                       {

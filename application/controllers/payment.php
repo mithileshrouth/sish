@@ -96,6 +96,14 @@ public function payment_action_update()
 			$payment_date = $dataArry['payment_date'];
 		    $totalamount = $dataArry['totalamount'];
 		    $remarks = $dataArry['remarks'];
+
+		     if($payment_date!=""){
+				$payment_date = str_replace('/', '-', $payment_date);
+				$payment_date = date("Y-m-d",strtotime($payment_date));
+			 }
+			 else{
+				 $payment_date = NULL;
+			 }
 		    
 			
 			

@@ -46,6 +46,7 @@
                       <div class="col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
                           <label for="cordmobile">Mobile</label>
+                  <input type="hidden" name="oldmobile" id="oldmobile" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cordEditdata']->cordmobile;}?>">         
                           <input type="text" class="form-control forminputs removeerr numchk" id="cordmobile" name="cordmobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cordEditdata']->cordmobile; } ?>" maxlength="10">
                         </div>
                       </div>
@@ -76,6 +77,7 @@
                         <div class="form-group">
                            <label for="cordblock">Block</label> 
 							<select id="cordblock" name="cordblock" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
+                <option value="0">Select</option>
 						   
 							  <?php 
 							  if($bodycontent['blockList'])

@@ -35,7 +35,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
                 <tbody>
                
         <?php
-        $curr_dt = date('d-m-Y');
+        $curr_dt = date('d/m/Y');
         $amount="0";
       
 
@@ -85,17 +85,17 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 
     <label for="date" class=" col-sm-2 col-form-label">Payment Date</label>
       <div class="col-sm-2 col-xs-12">
-              <input type="text" class="form-control custom_frm_input" id="payment_date" name="payment_date"  placeholder="" value="<?php echo $curr_dt;?>" readonly/>
+              <input type="text" id="datepicker" class="form-control custom_frm_input"  name="payment_date"  placeholder="" value="<?php echo $curr_dt;?>" />
         </div>
 
-         <label for="amount" class="col-sm-offset-4 col-sm-2 col-form-label">Total Amount</label>
+         <label for="amount" class="col-sm-offset-3 col-sm-2 col-form-label">Total Amount</label>
       <div class="col-sm-2 col-xs-12">
               <input type="text" class="form-control custom_frm_input" id="totalamount" name="totalamount"  placeholder="" readonly />
      </div>
 
     </div>
     <div class="form-group row">
-       <label for="date" class=" col-sm-2 col-form-label">Remarks</label>
+       <label for="date" class="col-sm-2 col-form-label">Remarks</label>
       <div class="col-sm-2 col-xs-12">
         <textarea class="form-control custom_frm_input" id="remarks" name="remarks"></textarea>
               
@@ -103,7 +103,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 
     </div>
 
-     <p id="paygenchk_manual_err_msg" class="form_error"></p>
+     <p id="paygenchk_manual_err_msg" class="form_error" style="width: 360px;"></p>
   
 
     <div class="form-group row" style="margin-top:20px;" id="paygenretedUpdate">

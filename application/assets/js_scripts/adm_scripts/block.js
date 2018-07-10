@@ -78,10 +78,21 @@ $(document).ready(function(){
 
 function validateBlock()
 {
+    var district = $("#district").val();
 	var blockname = $("#blockname").val();
     var codelength = $('#blockcode').val().length;
 
 	$("#blockmsg").text("").css("dispaly", "none").removeClass("form_error");
+
+     if(district=="0")
+    {
+        $("#district").focus();
+        $("#blockmsg")
+        .text("Error : Select District")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
 	if(blockname=="")
 	{
 		$("#blockname").focus();

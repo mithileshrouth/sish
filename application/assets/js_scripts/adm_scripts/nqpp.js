@@ -130,15 +130,100 @@ $(document).on('click','#nqppimpsavebtn',function(e){
 
     });
 
+      // check mobile no validity on keyup
+    $(document).on("keyup", "#nqppmobile", function() {
+
+       var mobile = $("#nqppmobile").val();
+       var oldmobile = $("#oldmobile").val();
+       var mode = $("#mode").val();
+       $("#nqppmsg").text("").css("dispaly", "none").removeClass("form_error");
+       $("#nqppsavebtn").addClass('nonclick');
+
+
+        var type = "POST"; //for creating new resource
+        var urlpath = basepath + 'nqpp/checkmobile';
+          $.ajax({
+                type: type,
+                url: urlpath,
+                data:{mobile:mobile,oldmobile:oldmobile,mode:mode},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+                    if (result.msg_status == 1) {
+
+                     //$("#nqppmobile").focus();
+                     $("#nqppmsg").text(result.msg_data).addClass("form_error").css("display", "block");
+      
+                    } 
+                    else {
+                        $("#nqppsavebtn").removeClass('nonclick');  
+                       
+                    }
+                    
+                 
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+    });  
+
+  // check mobile no validity on blur
+    $(document).on("blur", "#nqppmobile", function() {
+
+       var mobile = $("#nqppmobile").val();
+       var oldmobile = $("#oldmobile").val();
+       var mode = $("#mode").val();
+       $("#nqppmsg").text("").css("dispaly", "none").removeClass("form_error");
+       $("#nqppsavebtn").addClass('nonclick');
+
+
+        var type = "POST"; //for creating new resource
+        var urlpath = basepath + 'nqpp/checkmobile';
+          $.ajax({
+                type: type,
+                url: urlpath,
+                data:{mobile:mobile,oldmobile:oldmobile,mode:mode},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(result) {
+                    if (result.msg_status == 1) {
+
+                     $("#nqppmobile").focus();
+                     $("#nqppmsg").text(result.msg_data).addClass("form_error").css("display", "block");
+      
+                    } 
+                    else {
+                        $("#nqppsavebtn").removeClass('nonclick');  
+                       
+                    }
+                    
+                 
+                },
+                error: function(jqXHR, exception) {
+                    var msg = '';
+                }
+            });
+
+
+    });   
+
+
+
+
+
 	
 
-});
+}); //end of document ready
 
 function validateNQPP()
 {
     var nqppname = $("#nqppname").val();
     var nqppmobile = $("#nqppmobile").val();
     var nqppadd = $("#nqppadd").val();
+    var nqppblock = $("#nqppblock").val();
     var nqpppin = $("#nqpppin").val();
     var nqpppassword = $("#nqpppassword").val();
     var nqppgender = $("#nqppgender").val();
@@ -168,6 +253,15 @@ function validateNQPP()
         $("#nqppgender").focus();
         $("#nqppmsg")
         .text("Error : Select Gender")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+    if(nqppblock=="0")
+    {
+        $("#nqppblock").focus();
+        $("#nqppmsg")
+        .text("Error : Select Block")
         .addClass("form_error")
         .css("display", "block");
         return false;

@@ -85,7 +85,7 @@ function validateCbnaat()
     var ltpass = $("#ltpass").val();
 
     $("#cbnatmsg").text("").css("dispaly", "none").removeClass("form_error");
-	if(seltu=="")
+	if(seltu=="0")
 	{
 		$("#seltu").focus();
 		$("#cbnatmsg")

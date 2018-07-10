@@ -89,6 +89,9 @@ var basepath = $("#basepath").val();
                 success: function (result) {
                    
                     $("#loadTransactionList").html(result);
+                    $('#datepicker').datepicker({
+                     uiLibrary: 'bootstrap'
+                    });
                 
                     $(".dashboardloader").css("display","none");
                     calculateamount();
@@ -186,6 +189,7 @@ function validateView()
 
     var coordinator = $("#coordinator").val();
     var sel_nqpp = $("#sel_nqpp").val();
+   
 
     if(coordinator=="0")
     {
@@ -197,6 +201,8 @@ function validateView()
         $("#payment_manual_err_msg").css("display","block").text("Error : Select NQPP");
         return false;
     }
+
+    
     $("#payment_manual_err_msg").css("display","none").text("");
     return true;
 }
@@ -204,10 +210,16 @@ function validateView()
 function chkvalidation(){
 
 	length=$('[name="chkpay[]"]:checked').length;
+     var payment_date = $("#datepicker").val();
 	
 	if(length=="0")
     {
         $("#paygenchk_manual_err_msg").css("display","block").text("Error : Select Check Box");
+        return false;
+    }
+    if(payment_date=="")
+    {
+        $("#paygenchk_manual_err_msg").css("display","block").text("Error : Select Payment Date");
         return false;
     }
     $("#paygenchk_manual_err_msg").css("display","none").text("");

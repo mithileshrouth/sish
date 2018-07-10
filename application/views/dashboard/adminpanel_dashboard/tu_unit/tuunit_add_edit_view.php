@@ -34,6 +34,7 @@
 
                     <label for="block">Block</label> 
                     <select id="block" name="block" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
+                      <option value="0">Select</option>
                    
                       <?php 
                       if($bodycontent['blockList'])
