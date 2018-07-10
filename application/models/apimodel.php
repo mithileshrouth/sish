@@ -104,6 +104,26 @@ class apimodel extends CI_Model {
 	    return $data;
 	}
 	
+	public function getSymptomList(){
+		$data = [];
+		$query = $this->db->select("*")
+					->from("symptoms_master")
+					->where("symptoms_master.is_active",1)
+					->order_by("symptoms_master.symptom","ASC")
+					->get();
+		
+		if($query->num_rows()> 0)
+		{
+	        foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+	            
+	    }
+			
+	    return $data;
+	}
+	
 	
 	
 
@@ -113,10 +133,9 @@ class apimodel extends CI_Model {
 			$this->load->library('parser');
             $this->db->trans_begin();
 			
-			
+				
 			$reg_data = [];
-			
-			
+				
 				// Personal Data Info
 				$personaldata = $data->personalInfo;
 				
@@ -137,8 +156,9 @@ class apimodel extends CI_Model {
 				$fulladdress = $addressdata->fulladdress;
 				$pincode = $addressdata->pincode;
 				$postoffice = $addressdata->postoffice;
-				$state = $addressdata->state;
+				//$state = $addressdata->state;
 				$village = $addressdata->village;
+				$grampanchayat = $addressdata->grampanchayat;
 				
 				// Document Data Info
 				$documentdata = $data->documentInfo;
@@ -151,9 +171,16 @@ class apimodel extends CI_Model {
 				$referaldata = $data->refferalInfo;
 				$referraldate = $referaldata->referraldate;
 				$refferedbycord = $referaldata->refferedbycoordinator;
-				$refferedbynqpp = $referaldata->refferedbynqpp;
+				
+				$nqppdata = $referaldata->refferedbynqpp;
+				
+				$refferedbynqpp = $nqppdata->id;
 				$dmcid = $referaldata->selecteddmc;
 				$symptom = $referaldata->symptom;
+				
+				
+				
+			
 				
 				$latest_serial = $this->getLatestSerialNumber("REG",$localsession->prj);
 				
@@ -168,6 +195,8 @@ class apimodel extends CI_Model {
 					$patient_uniqID = "PTB/".$district_code."/".$block_code."/".$latest_serial;
 				}
 			
+			$state_id = $this->location->getStateByDistrictID($district);
+			
 			$reg_data = [
 				"patient_uniq_id" => $patient_uniqID,
 				"patient_name" => trim(htmlspecialchars($name)),
@@ -175,10 +204,11 @@ class apimodel extends CI_Model {
 				"patient_age" => trim(htmlspecialchars($age)),
 				"patient_full_address" => trim(htmlspecialchars($fulladdress)),
 				"patient_village" => trim(htmlspecialchars($village)),
+				"patient_gram_panchayat" => trim(htmlspecialchars($grampanchayat)),
 				"patient_postoffice" => trim(htmlspecialchars($postoffice)),
 				"patient_pin" => trim(htmlspecialchars($pincode)),
-				"patient_state" => $state,
-				"patient_country" => $this->location->getCountryIDByStateID($state),
+				"patient_state" =>  $state_id,
+				"patient_country" => $this->location->getCountryIDByStateID($state_id),
 				"patient_gurdian" => trim(htmlspecialchars($guardianname)),
 				"patient_sex" => trim(htmlspecialchars($gender)),
 				"patient_block" => $block,
@@ -186,17 +216,23 @@ class apimodel extends CI_Model {
 				"patient_adhar" => trim(htmlspecialchars($aadharno)),
 				"patient_voter" => trim(htmlspecialchars($voterid)),
 				"patient_ration" => trim(htmlspecialchars($rationno)),
-				"patient_symptom" => trim(htmlspecialchars($symptom)),
+				"patient_symptom" => NULL,
 				"nqpp_id" =>  $refferedbynqpp,
 				"group_cord_id" =>  $refferedbycord,
 				"dmc_id" => $dmcid,
 				"registered_by_user" => $localsession->uid
 			];
 			
+			//pre($reg_data);
 			
 			$this->db->insert('patient', $reg_data);
 			$ptb_inserted_id = $this->db->insert_id();
-			
+			//echo "Q ".$this->db->last_query();
+			//exit;
+			// INSERT INTO PATIENTsYMPTOM
+			$this->insertIntoPTBSymptomDtl($ptb_inserted_id,$symptom);
+
+						
 			$sms_row = $this->getMessageContentToSendSMS("REG");
 			$result_data = $this->getRolesToSendSMS("REG");
 			
@@ -212,7 +248,7 @@ class apimodel extends CI_Model {
 					$coordinator_row = $this->coordinator->getCoordinatorEditDataByID($refferedbycord);
 					if(sizeof($coordinator_row)>0){
 						$coordinator_mobile = $coordinator_row->cordmobile;
-						
+						/*
 						$sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -224,6 +260,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
+						*/
 						
 					}
 					
@@ -232,7 +269,7 @@ class apimodel extends CI_Model {
 					$nqpp_row = $this->nqpp->getNQPPEditDataByID($refferedbynqpp);
 					if(sizeof($nqpp_row)>0){
 						$nqpp_mobile = $nqpp_row->nqppmobile;
-						
+						/*
 						$sms_status = $this->sendSMS($nqpp_mobile,$smstext);
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -244,7 +281,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						
+						*/
 					}
 					
 				}
@@ -252,7 +289,7 @@ class apimodel extends CI_Model {
 					$dmc_row = $this->dmc->getDMCEditDataByID($dmcid);
 					if(sizeof($dmc_row)>0){
 						$dmc_lt_mobile = $dmc_row->ltmobile;
-						
+						/*
 						$sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -264,13 +301,13 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						
+						*/
 						
 					}
 					
 				}
 				elseif($sendsms_to_role->role_code=="PTB"){
-				
+					/*
 					$sms_status = $this->sendSMS($mobile,$smstext);
 					$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -282,7 +319,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 					$this->db->insert('sms_sent_report', $sms_log);
-					
+					*/
 				}
 				
 			}
@@ -312,6 +349,21 @@ class apimodel extends CI_Model {
             echo $exc->getTraceAsString();
         }
 	}
+	
+	
+	public function insertIntoPTBSymptomDtl($patientID,$symptom){
+		$ins_ary = [];
+		if(sizeof($symptom)>0){
+			for($i=0;$i<sizeof($symptom);$i++){
+				$ins_ary = [
+					"patient_id" => $patientID,
+					"symptom_id" => $symptom[$i]
+				];
+				$this->db->insert("patient_symptom_detail",$ins_ary);
+			}
+		}
+	}
+	
 	
 	private function getMessageContentToSendSMS($module_type){
 		$row = [];
@@ -490,15 +542,17 @@ class apimodel extends CI_Model {
 	
 	
 	public function getStatusWisePTB($status,$localsession){
+		
+		$data = [];
 		if($status=="NEW"){
 			
-			$newRegisterWhere = [
-				"dmc_sputum_done" => "N",
-				"xray_is_done" => "N",
-				"is_cbnaat_done" => "N",
-				"is_ptb_trtmnt_done" => "N"
-			
-			];
+				$newRegisterWhere = [
+					"dmc_sputum_done" => "N",
+					"xray_is_done" => "N",
+					"is_cbnaat_done" => "N",
+					"is_ptb_trtmnt_done" => "N"
+				
+				];
 			
 				if($localsession->rcode=="CORD"){
 					$where = [
@@ -586,22 +640,9 @@ class apimodel extends CI_Model {
 		
 		if($status=="DETECTED"){
 			
-			$detectedORWhere = [
-				"dmc_spt_is_positive" => "Y",
-				"xray_is_postive" => "Y",
-				"cbnaat_pstv" => "Y"
-			];
-			
-			$detectedWhere = [
-				"is_ptb_trtmnt_done" => "N"
-			];
-			
-			
-			$where = " AND (dmc_sputum_done='Y' AND dmc_spt_is_positive='Y') OR  (xray_is_done='Y' AND xray_is_postive='Y') OR 
-					(dmc_sputum_done='Y' AND dmc_spt_is_positive.'Y')
-					"
-		
-		
+			$whereDetected = "(patient.dmc_sputum_done='Y' AND patient.dmc_spt_is_positive='Y') 
+								OR (patient.xray_is_done='Y' AND patient.xray_is_postive='Y') 
+								OR (patient.`is_cbnaat_done`='Y' AND patient.`cbnaat_pstv`='Y') AND is_ptb_trtmnt_done='N'";
 		
 				if($localsession->rcode=="CORD"){
 					$where = [
@@ -613,8 +654,7 @@ class apimodel extends CI_Model {
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->where($where)
-							->where($detectedWhere)
-							->or_where($detectedORWhere)
+							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="NQPP"){
@@ -627,8 +667,7 @@ class apimodel extends CI_Model {
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->where($where)
-							->where($detectedWhere)
-							->or_where($detectedORWhere)
+							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="DMC"){
@@ -641,8 +680,7 @@ class apimodel extends CI_Model {
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->where($where)
-							->where($detectedWhere)
-							->or_where($detectedORWhere)
+							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="XRAY"){
@@ -656,8 +694,7 @@ class apimodel extends CI_Model {
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
 							->where($where)
-							->where($detectedWhere)
-							->or_where($detectedORWhere)
+							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				elseif($localsession->rcode=="CBNAAT"){
@@ -671,8 +708,7 @@ class apimodel extends CI_Model {
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 							->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
 							->where($where)
-							->where($detectedWhere)
-							->or_where($detectedORWhere)
+							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
 				else{
@@ -682,16 +718,103 @@ class apimodel extends CI_Model {
 							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 							->join("dmc","dmc.id = patient.dmc_id","INNER")
 							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
-							->where($detectedWhere)
-							->or_where($detectedORWhere)
+							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
+		}
+		
+		if($status=="TREATMENT"){
+			
+			$whereTreatment = "(patient.dmc_sputum_done='Y' AND patient.dmc_spt_is_positive='Y') 
+								OR (patient.xray_is_done='Y' AND patient.xray_is_postive='Y') 
+								OR (patient.`is_cbnaat_done`='Y' AND patient.`cbnaat_pstv`='Y') AND is_ptb_trtmnt_done='Y'";
+		
+		
+		
+				if($localsession->rcode=="CORD"){
+					$where = [
+						"coordinator.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="NQPP"){
+					$where = [
+						"nqpp.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="DMC"){
+					$where = [
+						"dmc.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($where)
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="XRAY"){
+					$where = [
+						"xray_center.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
+							->where($where)
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				elseif($localsession->rcode=="CBNAAT"){
+					$where = [
+						"cbnaat.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
+							->where($where)
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				else{
+					// Role = Project Manager
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+			
 		}
 		
 		
 		
 		
-		echo $this->db->last_query();
+		
 		
 		if($query->num_rows()> 0)
 		{
@@ -714,7 +837,10 @@ class apimodel extends CI_Model {
 			//$this->db->_protect_identifiers=true;
 		$query = $this->db->select("patient.*,ptb_treatment_detail.*,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname,
 						 DATE_FORMAT(ptb_treatment_detail.`first_followup_dt`,'%d/%m%/%Y') AS first_followup_dt,
-						DATE_FORMAT(ptb_treatment_detail.`second_followup_dt`, '%d/%m%/%Y') AS second_followup_dt
+						 IFNULL (DATE_FORMAT(ptb_treatment_detail.first_followup_taken_on,'%d/%m%/%Y'),NULL) AS firstfollowuptaken,
+					
+					DATE_FORMAT(ptb_treatment_detail.`second_followup_dt`, '%d/%m%/%Y') AS second_followup_dt,
+					IFNULL (DATE_FORMAT(ptb_treatment_detail.second_followup_taken_on,'%d/%m%/%Y'),NULL) AS secondfollowuptaken
 						",FALSE)
 					->from("patient")
 					->join("ptb_treatment_detail","ptb_treatment_detail.patient_id = patient.patient_id","LEFT")
@@ -722,7 +848,7 @@ class apimodel extends CI_Model {
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->where($where)
 					->get();
-			//echo $this->db->last_query();
+			
 
 		 if($query->num_rows()>0){
             $data = $query->row();
@@ -799,6 +925,14 @@ class apimodel extends CI_Model {
 				$this->db->where('patient.patient_id', $patientid);
 				$this->db->update('patient', $upd_data); 
 			}
+			if($updFrom=="TB_DIAGNOSED"){
+				$upd_data = [
+					"is_tb_diagnosed" => $updateDatas->tbDiagnosedFeed
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
 			if($updFrom=="TREATMENT"){
 				
 				$treatmentDtl = $this->gettreatmentStructureDatas($updateDatas);
@@ -870,6 +1004,211 @@ class apimodel extends CI_Model {
 	}
 	
 	
+	public function updatePTBFollowUP($ptbdata,$patientid,$localsession){
+		try {
+            $this->db->trans_begin();
+			
+			$upd_data = [];
+			if($ptbdata->followuptype == "FIRST"){
+				$upd_data = [
+					"first_followup_taken_on" => date("Y-m-d",strtotime($ptbdata->firstfollowupdoneDt)),
+					"first_follow_up_feed" => $ptbdata->firstfollowupFeed
+				];
+			
+				$this->db->where('ptb_treatment_detail.patient_id', $patientid);
+				$this->db->update('ptb_treatment_detail', $upd_data); 
+			}
+			
+			
+			if($ptbdata->followuptype == "SECOND"){
+				$upd_data = [
+					"second_followup_taken_on" => date("Y-m-d",strtotime($ptbdata->secondfollowupdoneDt)),
+					"second_followup_feed" => $ptbdata->secondfollowupFeed
+				];
+			
+				$this->db->where('ptb_treatment_detail.patient_id', $patientid);
+				$this->db->update('ptb_treatment_detail', $upd_data); 
+			}
+			
+			
+			
+				$user_activity = array(
+					"module_master_id" => $patientid,
+					"activity_module" => "PATIENT '".$ptbdata->followuptype."' FOLLOWUP",
+					"action" => "Update",
+					"from_method" => "roleAPI/updatePTBFollowUP/updatePTBFollowUP",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
+	public function removePTBStatus($patientdata,$localsession){
+		try {
+            $this->db->trans_begin();
+			
+			$patientid = $patientdata->pid;
+			$updFrom = $patientdata->removefrom;
+			$upd_data = [];
+			
+			if($updFrom=="SPUTUM"){
+				$upd_data = [
+					"dmc_sputum_done" => "N",
+					"dmc_sputum_date" => NULL
+				];
+			
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="SPUTUM_RESULT"){
+				$upd_data = [
+					"dmc_result_done" => "N",
+					"dmc_spt_is_positive" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="XRAY"){
+				$upd_data = [
+					"xray_is_done" => "N",
+					"xray_date" => NULL,
+					"xray_cntr_id" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="XRAY_RESULT"){
+				$upd_data = [
+					"xray_result_done" => "N",
+					"xray_is_postive" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="CBNAAT"){
+				$upd_data = [
+					"is_cbnaat_done" => "N",
+					"cbnaat_date" => NULL,
+					"cbnaat_id" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="CBNAAT_RESULT"){
+				$upd_data = [
+					"cbnaat_result_done" => "N",
+					"cbnaat_pstv" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="TB_DIAGNOSED"){
+				$upd_data = [
+					"is_tb_diagnosed" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+			if($updFrom=="OUTCOME"){
+				$upd_data = [
+					"outcome" => NULL
+				];
+				
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+			}
+
+				$user_activity = array(
+					"module_master_id" => $patientid,
+					"activity_module" => "PATIENT ".$updFrom,
+					"action" => "DELETE",
+					"from_method" => "roleAPI/removePTBStatus/removePTBStatus",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
+	public function clearTreatmentCategory($patientid,$localsession){
+		try {
+            $this->db->trans_begin();
+			
+				$upd_data = [];
+				$upd_data['is_ptb_trtmnt_done'] = "N";
+				$upd_data['trtmnt_start_date'] = NULL;
+				$upd_data['trtmnt_end_date'] = NULL;
+				$upd_data['trtmnt_duration'] = NULL;
+			
+				$this->db->where('patient.patient_id', $patientid);
+				$this->db->update('patient', $upd_data); 
+				
+			
+				$this->db->where('ptb_treatment_detail.patient_id', $patientid);
+				$this->db->delete('ptb_treatment_detail'); 
+				
+				
+				$user_activity = array(
+					"module_master_id" => $patientid,
+					"activity_module" => "TREATMENT",
+					"action" => "Delete",
+					"from_method" => "roleAPI/clearTreatmentCategory/clearTreatmentCategory",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
 	
 	public function gettreatmentStructureDatas($datas){
 		$data = [];
@@ -906,6 +1245,25 @@ class apimodel extends CI_Model {
 	public function getNewDateByNoOfDays($startdate,$days){
 		$newDate = date('Y-m-d', strtotime($startdate. " + $days days"));
 		return date("d/m/Y",strtotime($newDate));
+	}
+	
+	
+	public function checkIsPTBExist($datas){
+		$isPTBexist = false;
+		
+		$whereSql = "patient.patient_mobile_primary =  '".$datas->mbl."' 
+					AND LOWER(REPLACE(patient.patient_name, ' ','')) = '".strtolower(str_replace(' ','', $datas->name))."'";
+		
+		$query = $this->db->select("*")
+					->from("patient")
+					->where($whereSql)
+					->get();
+		//echo $this->db->last_query();	
+		if($query->num_rows()>0){
+			$isPTBexist = true;
+		}
+		return $isPTBexist;
+		
 	}
 	
 	private function sendSMS($phone,$sms_text){

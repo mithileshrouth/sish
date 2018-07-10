@@ -114,7 +114,27 @@ class locationmodel extends CI_Model{
 			}
 			return $data;
 		}
-
+		
+		
+		
+		public function getStateByDistrictID($distID){
+			$state_id = 0;
+			$where = [
+				"district.id"=>$distID,
+				"district.is_active"=>1
+			];
+			$query = $this->db->select("*")
+					->from("district")
+					->join("state","state.id=district.state_id","INNER")
+					->where($where)
+					->get();
+					
+			if($query->num_rows()>0){
+				$row = $query->row();
+				$state_id = $row->state_id;
+			}
+			return $state_id;
+		}
 		
 		
 		/*******************************************************/

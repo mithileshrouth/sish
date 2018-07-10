@@ -638,6 +638,54 @@ public function __construct()
 		exit;
  }
  
+ 
+  public function getSymptoms(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$apikey = $this->apimodel->getAPIkey();
+	$key = $request->key;
+		
+	
+		if(!empty($key) && $apikey == trim($key)){
+			
+			
+			$resultset = $this->apimodel->getSymptomList();
+			
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
+ 
 
  public function verifyLogin(){
 	header('Access-Control-Allow-Origin: *');  
@@ -727,13 +775,13 @@ public function __construct()
 	$request = json_decode($postdata);
 	$key = $request->key;
 	$apikey = $this->apimodel->getAPIkey();
-	
 	$data = $request->data;
 	$session = $request->session;
-
+	
+	
+	
 	if(!empty($key) && $apikey == trim($key)){
 		
-		//pre($request);
 		// Insert Into Patient // Registration Of New patient
 		$register = $this->apimodel->insertIntoPatient($data,$session);
 		if($register){
@@ -813,7 +861,7 @@ public function __construct()
  
 	/*
 	* getStatusWisePTB
-	* Status = "NEW","DATACAPTURED","DETECTED","COMPLETED"
+	* Status = "NEW","DETECTED","TREATMENT"
 	* @date 02.07.2018
 	* 
 	*/
@@ -997,6 +1045,139 @@ public function __construct()
  }
  
  
+ public function updatePTBFollowUP(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$patientdata = $request->data;
+	$ptbid = $request->ptbid;
+	$sessiondata = $request->session;
+	
+	if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->updatePTBFollowUP($patientdata,$ptbid,$sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"ERROR",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+	
+	
+ 
+ public function clearTreatmentCategory(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$ptbid = $request->ptbid;
+	$sessiondata = $request->session;
+	
+	if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->clearTreatmentCategory($ptbid,$sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"ERROR",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ } 
+ 
+	
+	public function removePTBStatus(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$patientdata = $request->data;
+		$sessiondata = $request->session;
+	
+			if(!empty($key) && $apikey == trim($key)){
+				
+				$resultset = $this->apimodel->removePTBStatus($patientdata,$sessiondata);
+				if(sizeof($resultset)>0)
+				{
+					$result = [
+					 "status"=>200,
+					 "statuscode"=>"SUCCESS",
+					 "data"=> $resultset
+					];
+				}
+				else{
+					$result = [
+					 "status"=>400,
+					 "statuscode"=>"ERROR",
+					 "data"=> NULL
+					];
+				}
+				
+			}
+			else{
+				$result = [
+					 "status"=>403,
+					 "statuscode"=>"KEY_MISSING",
+					 "data"=> NULL
+				];
+			}
+		
+	$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
  public function getActiveUserData(){
 	header('Access-Control-Allow-Origin: *');  
 	header('Content-Type: application/json');
@@ -1040,6 +1221,55 @@ public function __construct()
 		exit;
  }
  
+ 
+ 
+  public function isPatientExist(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$ptbdata = $request->data;
+	
+
+		
+	if(!empty($key) && $apikey == trim($key)){
+			
+			$isexist = $this->apimodel->checkIsPTBExist($ptbdata);
+			if($isexist)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"EXIST",
+				 "data"=> NULL
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NOTEXIST",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+ 
+ 
+ 
+ 
   private function generateToken()
  {
 	$token="";
@@ -1070,13 +1300,7 @@ public function __construct()
  
  
  
-	public function sendSMSTest(){
-		$phone = 8017486320;
-		$message = "Test Message From SHISAP";
-		$this->sendSMS($phone,$message);
-	}
- 
- 
+
  
  
  
