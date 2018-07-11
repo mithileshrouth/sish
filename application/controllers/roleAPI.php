@@ -15,6 +15,7 @@ public function __construct()
     $this->load->model('dmcmodel','dmc',TRUE);
     $this->load->model('xraycentermodel','xray',TRUE);
     $this->load->model('cbnaatmodel','cbnaat',TRUE);
+    $this->load->model('tuberculosisunitmodel','tuunit',TRUE);
  }
 
  
@@ -207,6 +208,55 @@ public function __construct()
 		
 		if(!empty($key) && $apikey == trim($key)){
 			$data = $this->location->getBlock($id);
+			if(sizeof($data)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $data
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+  }
+  
+  
+   /* @method getBlock
+  *  @param postdata
+  */
+  
+  public function getTUUnitsByBlock(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		
+		$blockid = $request->id;
+		$key = $request->key;
+		
+		if(!empty($key) && $apikey == trim($key)){
+			$data = $this->tuunit->getTUUnitByBlock($blockid);
 			if(sizeof($data)>0)
 			{
 				$result = [

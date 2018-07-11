@@ -31,6 +31,34 @@ class tuberculosisunitmodel extends CI_Model{
 	       
 		
 	}
+	
+	public function getTUUnitByBlock($blockid){
+		$data = [];
+		$where = [
+			"tu_unit.block_id" => $blockid,
+			"tu_unit.is_active" => 1
+		];
+		$query = $this->db->select("
+					tu_unit.id as tuid,
+					tu_unit.name as tuname
+					")
+				->from('tu_unit')
+				->join('block','block.id = tu_unit.block_id','INNER')
+			    ->order_by('tu_unit.name')
+				->where($where)
+				->get();
+		//	echo $this->db->last_query();exit;
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
 
 
 
