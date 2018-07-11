@@ -88,6 +88,7 @@ class paymentgenerationmodel extends CI_Model{
 							           patient.patient_name,
 							           patient.patient_mobile_primary,
 							           patient.patient_village,
+							           patient.patient_gram_panchayat,
 							           block.name as blockname
 							           ")
 					->from('patient')
@@ -122,6 +123,7 @@ class paymentgenerationmodel extends CI_Model{
 							           patient.patient_name,
 							           patient.patient_mobile_primary,
 							           patient.patient_village,
+							           patient.patient_gram_panchayat,
 							           block.name as blockname,
 							           payment_gen_master.transaction_id
 							           ")

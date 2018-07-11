@@ -66,7 +66,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
              <td align="left"><?php echo $patient_list->patient_mobile_primary;  ?></td>
              <td align="left"><?php echo $patient_list->blockname;  ?></td>
              <td align="left"><?php echo $patient_list->patient_village;  ?></td>
-             <td align="left"><?php   ?></td>
+             <td align="left"><?php echo $patient_list->patient_gram_panchayat;  ?></td>
              <td align="right"><?php echo $amount;  ?></td>
              <td align="center"><input type="checkbox" class="selCheckbox" id="check_<?php echo $i;?>"  name="chkpay[]" style="position: inherit;" checked value="<?php echo $i;?>"></td>
             
@@ -95,7 +95,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
               <input type="text" class="form-control custom_frm_input" id="generation_date" name="generation_date"  placeholder="" value="<?php echo $curr_dt;?>" readonly/>
         </div>
 
-         <label for="amount" class="col-sm-offset-4 col-sm-2 col-form-label">Total Amount</label>
+         <label for="amount" class="col-sm-offset-3 col-sm-2 col-form-label">Total Amount</label>
       <div class="col-sm-2 col-xs-12">
               <input type="text" class="form-control custom_frm_input" id="totalamount" name="totalamount"  placeholder="" readonly />
         </div>
