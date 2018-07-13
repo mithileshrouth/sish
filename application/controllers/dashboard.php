@@ -6,6 +6,7 @@ class dashboard extends CI_Controller
 	{
 	   parent::__construct();
 	   $this->load->library('session');
+	   $this->load->model('dashboardmodel','dashboardmodel',TRUE);
 		
 	}
 		
@@ -17,6 +18,8 @@ class dashboard extends CI_Controller
 			$page = 'dashboard/adminpanel_dashboard/ds-home/dashboard-home';
 			$result = "";
 			$header = "";
+			$result['patient']=$this->commondatamodel->rowcount('patient');
+
 			createbody_method($result, $page, $header, $session);
 		}
 		else

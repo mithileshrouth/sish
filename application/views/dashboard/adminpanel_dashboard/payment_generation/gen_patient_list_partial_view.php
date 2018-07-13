@@ -67,7 +67,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
              <td align="left"><?php echo $patient_list->patient_mobile_primary;  ?></td>
              <td align="left"><?php echo $patient_list->blockname;  ?></td>
              <td align="left"><?php echo $patient_list->patient_village;  ?></td>
-             <td align="left"><?php   ?></td>
+             <td align="left"><?php echo $patient_list->patient_gram_panchayat;  ?></td>
              <td align="right"><?php echo $amount;  ?></td>
              <td align="center"><input type="checkbox" class="selCheckbox" id="check_<?php echo $i;?>"  name="chkpay[]" style="position: inherit;" checked value="<?php echo $i;?>"></td>
             

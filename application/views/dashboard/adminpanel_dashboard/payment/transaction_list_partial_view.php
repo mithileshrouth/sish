@@ -55,7 +55,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
             <input type="hidden" id="amt_<?php echo $i;?>" name="amt[]" value="<?php echo $tran_list->payable_amt;?>">
              <input type="hidden" id="txn_<?php echo $i;?>" name="txn[]" value="<?php echo $tran_list->transaction_id;?>">
              <td align="left"><?php echo $tran_list->nqppname;  ?></td>
-             <td align="left"><?php echo date('d-m-Y', strtotime($tran_list->generation_dt));;  ?></td>
+             <td align="left"><?php echo date('d-m-Y', strtotime($tran_list->generation_dt));  ?></td>
              <td align="left"><?php echo $tran_list->transaction_id;  ?></td>
           
              <td align="right"><?php echo $tran_list->payable_amt;  ?></td>

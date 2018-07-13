@@ -369,7 +369,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="user-image" alt="User Image">
-              <span class="hidden-xs">Mithilesh</span>
+              <span class="hidden-xs">Admin</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -377,8 +377,8 @@
                 <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="img-circle" alt="User Image">
 
                 <p>
-                  Mithilesh - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  Admin
+                 
                 </p>
               </li>
               <!-- Menu Body --
@@ -397,9 +397,9 @@
               </li> -->
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="pull-left">
+                <!-- <div class="pull-left">
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
-                </div>
+                </div> -->
                 <div class="pull-right">
                   <a href="<?php echo base_url();?>adminpanel/logmeout" class="btn btn-default btn-flat">Sign out</a>
                 </div>

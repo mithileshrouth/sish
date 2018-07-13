@@ -142,6 +142,36 @@ class locationmodel extends CI_Model{
 		/*****************************************************/
 
 
+	public function getAllDistrictList(){
+		$data = [];
+		$query = $this->db->select("
+							 district.id,
+							 district.dist_code,
+							 district.is_active,
+							 district.name,
+							 state.state as state
+					
+					")
+				->from('district')
+				->join('state','state.id = district.state_id','INNER')
+			    ->order_by('district.name')
+				->get();
+			#echo $this->db->last_query();	
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+
 		public function getDistrict($id=NULL){
 			$data = [];
 			
