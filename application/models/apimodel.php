@@ -151,6 +151,7 @@ class apimodel extends CI_Model {
 				$addressdata = $data->addressInfo;
 				
 				$block = $addressdata->block;
+				$tuunitid = $addressdata->tuunit;
 				//$country = $addressdata->country;
 				$district = $addressdata->district;
 				$fulladdress = $addressdata->fulladdress;
@@ -212,6 +213,7 @@ class apimodel extends CI_Model {
 				"patient_gurdian" => trim(htmlspecialchars($guardianname)),
 				"patient_sex" => trim(htmlspecialchars($gender)),
 				"patient_block" => $block,
+				"patient_tuid" => $tuunitid,
 				"patient_district" => $district,
 				"patient_adhar" => trim(htmlspecialchars($aadharno)),
 				"patient_voter" => trim(htmlspecialchars($voterid)),
