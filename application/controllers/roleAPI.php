@@ -1317,6 +1317,96 @@ public function __construct()
 		exit;
  }
  
+ public function getGeneratedReferralAmount(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$sessiondata = $request->session;
+
+		
+	if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getGeneratedReferralAmount($sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+ }
+	
+
+	public function getPaymentRefDetailByType(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		
+		$sessiondata = $request->session;
+		$type = $request->type;
+		$dtldata = $request->dtldata;
+		
+
+		
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getPaymentRefDetailByType($type,$dtldata,$sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
  
  
  
