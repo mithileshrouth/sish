@@ -90,7 +90,10 @@ var basepath = $("#basepath").val();
                    
                     $("#loadTransactionList").html(result);
                     $('#datepicker').datepicker({
+                     format: 'dd/mm/yyyy',
+                     todayHighlight: true,
                      uiLibrary: 'bootstrap'
+
                     });
                 
                     $(".dashboardloader").css("display","none");

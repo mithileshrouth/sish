@@ -127,6 +127,7 @@ public function payment_action_update()
 						"payment_dt" => date("Y-m-d",strtotime($payment_date)),
 						"due" => 0,
 						"remarks" => $remarks,
+						"created_by" => $session['userid']
 							
 					);
 
