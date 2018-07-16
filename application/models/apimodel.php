@@ -1243,6 +1243,89 @@ class apimodel extends CI_Model {
 	}
 	
 	
+	public function getGeneratedReferralAmount($localsession){
+		$data = [];
+			$userid = $localsession->uid;
+			$rcode = $localsession->rcode;
+			if($rcode == "NQPP"){
+				$sql = "SELECT 
+					payment_gen_master.`id` AS paygenerated_id,
+					DATE_FORMAT(payment_gen_master.`generation_dt`,'%m') AS formonth,
+					DATE_FORMAT(payment_gen_master.`generation_dt`,'%Y') AS foryear,
+					DATE_FORMAT(payment_gen_master.`generation_dt`,'%M %Y') AS generatedMonthYr,
+					SUM(payment_gen_master.`payable_amt`) AS generatedAmt
+					FROM `payment_gen_master`
+					INNER JOIN `nqpp`
+					ON nqpp.`id` = payment_gen_master.`nqpp_id`
+					WHERE nqpp.`userid` = ".$userid."
+					AND payment_gen_master.`is_payment_done` = 'N'
+					GROUP BY  DATE_FORMAT(payment_gen_master.`generation_dt`,'%M %Y')
+					ORDER BY `payment_gen_master`.`generation_dt` DESC";
+			
+				$query = $this->db->query($sql);
+				if($query->num_rows()>0){
+					foreach($query->result() as $rows)
+					{
+						$data[] = [
+							//"payment_generated_id" => $rows->paygenerated_id,
+							"generated_amt" => $rows->generatedAmt,
+							"generated_month_year" => $rows->generatedMonthYr,
+							"month" =>  $rows->formonth,
+							"foryear" =>  $rows->foryear
+						];
+					}
+				}
+				
+			}
+		
+		return $data;
+	
+	}
+	
+	public function getPaymentRefDetailByType($type,$dtldata,$localsession){
+		$data = [];
+		
+		$userid = $localsession->uid;
+		$rcode = $localsession->rcode;
+		$month = $dtldata->month;
+		$foryear = $dtldata->foryear;
+		$where = [];
+		if($type=="GENERATED"){
+				$sql = "SELECT 
+						patient.`patient_id`,
+						patient.`patient_name`,
+						patient.`patient_mobile_primary`,
+						patient.`patient_uniq_id`,
+						payment_gen_details.`amount`,
+						payment_gen_master.`generation_dt`
+						FROM `payment_gen_master`
+						INNER JOIN `nqpp`
+						ON nqpp.`id` = payment_gen_master.`nqpp_id`
+						INNER JOIN `payment_gen_details`
+						ON `payment_gen_details`.`payment_id`= payment_gen_master.`id`
+						INNER JOIN `patient`
+						ON patient.`patient_id` = `payment_gen_details`.`patient_id`
+						WHERE nqpp.`userid` = ".$userid."
+						AND DATE_FORMAT(payment_gen_master.`generation_dt`,'%m')='".$month."' 
+						AND DATE_FORMAT(payment_gen_master.`generation_dt`,'%Y')='".$foryear."' 
+						AND payment_gen_master.`is_payment_done` = 'N'
+						ORDER BY `payment_gen_master`.`generation_dt` DESC";
+			
+				$query = $this->db->query($sql);
+				if($query->num_rows()>0){
+					foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+				}
+		}
+		
+		return $data;
+	}
+	
+	
+
+	
 	
 	public function getNewDateByNoOfDays($startdate,$days){
 		$newDate = date('Y-m-d', strtotime($startdate. " + $days days"));
