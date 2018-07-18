@@ -946,7 +946,7 @@
     <!-- /.modal -->
 <!-- end success modal-->
 
-<!-- Admin Detail View Modal --->
+<!-- Admin Detail View Modal -->
 <div class="modal fade" id="pop_modal_detail_admin">
     <div class="modal-dialog">
       <div id="detailListmodalView"></div>

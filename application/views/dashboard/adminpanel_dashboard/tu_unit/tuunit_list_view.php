@@ -15,7 +15,7 @@
 
 		    <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Block List</h3>
+              <h3 class="box-title">TU List</h3>
               <a href="<?php echo base_url();?>tuberculosisunit/addtuunit" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
             </div>
             <!-- /.box-header -->

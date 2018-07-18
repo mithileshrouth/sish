@@ -325,7 +325,7 @@ public function insertImportFileDataIntoNqpp($insertArray,$objReader,$session)
 			    $user_id = $this->db->insert_id();
 				
 					$nqpp_data_ins_arry = [
-						"coordinator_id" => 20, // It will be change 
+						"coordinator_id" => 38, // It will be change 
 						"name" => $name,
 						"mobile_no" => $mobile_no,
 						"village" => $village,

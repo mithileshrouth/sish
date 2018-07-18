@@ -85,7 +85,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 
     <label for="date" class=" col-sm-2 col-form-label">Payment Date</label>
       <div class="col-sm-2 col-xs-12">
-              <input type="text" id="datepicker" class="form-control custom_frm_input"  name="payment_date"  placeholder="" value="<?php echo $curr_dt;?>" />
+              <input type="text" id="datepicker" class="form-control custom_frm_input"  name="payment_date"  placeholder="" value="" />
         </div>
 
          <label for="amount" class="col-sm-offset-3 col-sm-2 col-form-label">Total Amount</label>
