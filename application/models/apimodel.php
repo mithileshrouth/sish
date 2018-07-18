@@ -1242,6 +1242,33 @@ class apimodel extends CI_Model {
 		
 	}
 	
+	public function getTotalIncomeByRole($localsession){
+		$totalIncome = 0;
+		$userid = $localsession->uid;
+		$rcode = $localsession->rcode;
+		if($rcode == "NQPP"){
+				
+				$where = [
+					"nqpp.userid" => $userid,
+					"payment_gen_master.is_payment_done" => 'Y'
+				];
+		
+			$query = $this->db->select("SUM(`payment_master`.`amount`) AS totalIncome")
+					->from("payment_master")
+					->join('payment_gen_master','payment_gen_master.id = payment_master.payment_gen_id','INNER')
+					->join('nqpp','nqpp.id = payment_gen_master.nqpp_id','INNER')
+					->where($where)
+				
+					->get();
+				
+				if($query->num_rows()>0){
+					$row = $query->row();
+					$totalIncome = $row->totalIncome;
+					}
+				}
+			return $totalIncome;
+	}
+	
 	
 	public function getGeneratedReferralAmount($localsession){
 		$data = [];
@@ -1282,6 +1309,87 @@ class apimodel extends CI_Model {
 	
 	}
 	
+	public function getPaidReferralAmount($localsession){
+		$data = [];
+			$userid = $localsession->uid;
+			$rcode = $localsession->rcode;
+			if($rcode == "NQPP"){
+				$sql = "SELECT 
+					payment_master.`id` AS payment_id,
+					DATE_FORMAT(payment_master.`payment_dt`,'%m') AS formonth,
+					DATE_FORMAT(payment_master.`payment_dt`,'%Y') AS foryear,
+					DATE_FORMAT(payment_master.`payment_dt`,'%M %Y') AS paidMonthYr,
+					SUM(payment_master.amount) AS paidAmt
+					FROM `payment_master`
+					INNER JOIN `payment_gen_master`
+					ON `payment_master`.`payment_gen_id` = payment_gen_master.`id`
+					INNER JOIN `nqpp`
+					ON nqpp.`id` = payment_gen_master.`nqpp_id`
+					
+					WHERE nqpp.`userid` = '".$userid."'
+					AND payment_gen_master.`is_payment_done` = 'Y'
+					GROUP BY  DATE_FORMAT(payment_master.`payment_dt`,'%M %Y')
+					ORDER BY `payment_master`.`payment_dt` DESC";
+			
+				$query = $this->db->query($sql);
+				if($query->num_rows()>0){
+					foreach($query->result() as $rows)
+					{
+						$data[] = [
+							//"payment_generated_id" => $rows->paygenerated_id,
+							"paid_amt" => $rows->paidAmt,
+							"paid_month_year" => $rows->paidMonthYr,
+							"month" =>  $rows->formonth,
+							"foryear" =>  $rows->foryear
+						];
+					}
+				}
+				
+			}
+		
+		return $data;
+	
+	}
+	
+	public function getPendingReferralData($localsession){
+		$data = [];
+			$userid = $localsession->uid;
+			$rcode = $localsession->rcode;
+			if($rcode == "NQPP"){
+				
+				$where = [
+					"nqpp.userid" => $userid,
+					"patient.is_tb_diagnosed" => 'Y'
+				];
+		
+			$query = $this->db->select("patient.`patient_id`,
+						patient.`patient_name`,
+						patient.`patient_mobile_primary`,
+						patient.`patient_uniq_id`,
+						DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,
+						payment_gen_details.`patient_id`",FALSE)
+					->from("patient")
+					->join('nqpp','nqpp.id = patient.nqpp_id','INNER')
+					->join('payment_gen_details','payment_gen_details.patient_id = patient.patient_id','LEFT')
+					->where($where)
+					->where('payment_gen_details.patient_id IS NULL')
+					->get();
+				
+				
+
+				if($query->num_rows()>0){
+					foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+				}
+				
+			}
+		
+		return $data;
+	
+	}
+	
 	public function getPaymentRefDetailByType($type,$dtldata,$localsession){
 		$data = [];
 		
@@ -1296,8 +1404,9 @@ class apimodel extends CI_Model {
 						patient.`patient_name`,
 						patient.`patient_mobile_primary`,
 						patient.`patient_uniq_id`,
+						DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,
 						payment_gen_details.`amount`,
-						payment_gen_master.`generation_dt`
+						DATE_FORMAT(payment_gen_master.`generation_dt`,'%d/%m%/%Y') AS pdate
 						FROM `payment_gen_master`
 						INNER JOIN `nqpp`
 						ON nqpp.`id` = payment_gen_master.`nqpp_id`
@@ -1320,6 +1429,39 @@ class apimodel extends CI_Model {
 				}
 		}
 		
+		
+		if($type=="PAID"){
+				$sql = "SELECT 
+						patient.`patient_id`,
+						patient.`patient_name`,
+						patient.`patient_mobile_primary`,
+						patient.`patient_uniq_id`,
+						DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,
+						payment_gen_details.`amount`,
+						DATE_FORMAT(payment_master.`payment_dt`,'%d/%m%/%Y') AS pdate
+						FROM `payment_master`
+						INNER JOIN `payment_gen_master`
+						ON `payment_master`.`payment_gen_id` = payment_gen_master.`id`
+						INNER JOIN `nqpp`
+						ON nqpp.`id` = payment_gen_master.`nqpp_id`
+						INNER JOIN `payment_gen_details`
+						ON `payment_gen_details`.`payment_id`= payment_gen_master.`id`
+						INNER JOIN `patient`
+						ON patient.`patient_id` = `payment_gen_details`.`patient_id`
+						WHERE nqpp.`userid` = '".$userid."'
+						AND DATE_FORMAT(payment_master.`payment_dt`,'%m')='".$month."' 
+						AND DATE_FORMAT(payment_master.`payment_dt`,'%Y')='".$foryear."' 
+						AND payment_gen_master.`is_payment_done` = 'Y'
+						ORDER BY `payment_master`.`payment_dt` DESC";
+			
+				$query = $this->db->query($sql);
+				if($query->num_rows()>0){
+					foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+				}
+		}
 		return $data;
 	}
 	
