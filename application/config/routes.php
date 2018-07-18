@@ -41,6 +41,8 @@
 
 $route['default_controller'] = "adminpanel";
 $route['404_override'] = '';
+$route['admin'] = 'adminpanel';
+
 
 
 

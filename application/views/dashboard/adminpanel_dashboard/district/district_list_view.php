@@ -6,7 +6,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">District List</li>
+        <li class="active">List of District(s)</li>
       </ol>
     </section>
 
@@ -15,7 +15,7 @@
 
 		    <div class="box">
             <div class="box-header">
-              <h3 class="box-title">District List</h3>
+              <h3 class="box-title">List of District(s)</h3>
               <a href="<?php echo base_url();?>district/adddistrict" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
             </div>
             <!-- /.box-header -->
