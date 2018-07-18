@@ -19,6 +19,26 @@ class rolemastermodel extends CI_Model{
 		   return $data;
 	}
 	
+	public function getActiveRoleForApp()
+	{
+		$where = [
+			"role_master.is_visible_app"=>'Y'
+		];
+		$query = $this->db->select("*")
+				->from("role_master")
+				->where($where)
+				->get();
+		// $this->db->last_query();		
+		
+		if ($query->num_rows() > 0) 
+		{
+		    foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+		}
+		   return $data;
+	}
 	
 	
 	public function getRoleIDByRoleType($roletype){

@@ -23,7 +23,7 @@ public function __construct()
 
      $result = [];
      if($id=="all"){
-         $data["role"]= $this->role->getActiveRole();
+         $data["role"]= $this->role->getActiveRoleForApp();
          if(!empty($data["role"])){
              $result=[
                  "status"=>200,
