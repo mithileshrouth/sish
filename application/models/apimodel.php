@@ -552,7 +552,8 @@ class apimodel extends CI_Model {
 					"dmc_sputum_done" => "N",
 					"xray_is_done" => "N",
 					"is_cbnaat_done" => "N",
-					"is_ptb_trtmnt_done" => "N"
+					"is_ptb_trtmnt_done" => "N",
+					"is_tb_diagnosed" => NULL
 				
 				];
 			
@@ -642,9 +643,16 @@ class apimodel extends CI_Model {
 		
 		if($status=="DETECTED"){
 			
+			/*
 			$whereDetected = "(patient.dmc_sputum_done='Y' AND patient.dmc_spt_is_positive='Y') 
 								OR (patient.xray_is_done='Y' AND patient.xray_is_postive='Y') 
 								OR (patient.`is_cbnaat_done`='Y' AND patient.`cbnaat_pstv`='Y') AND is_ptb_trtmnt_done='N'";
+			*/					
+			
+			$whereDetected = [
+				"patient.is_tb_diagnosed" => "Y",
+				"patient.is_ptb_trtmnt_done" => "N"
+			];
 		
 				if($localsession->rcode=="CORD"){
 					$where = [
@@ -727,10 +735,16 @@ class apimodel extends CI_Model {
 		
 		if($status=="TREATMENT"){
 			
+			/*
 			$whereTreatment = "(patient.dmc_sputum_done='Y' AND patient.dmc_spt_is_positive='Y') 
 								OR (patient.xray_is_done='Y' AND patient.xray_is_postive='Y') 
 								OR (patient.`is_cbnaat_done`='Y' AND patient.`cbnaat_pstv`='Y') AND is_ptb_trtmnt_done='Y'";
-		
+			*/
+			
+				$whereTreatment = [
+					"patient.is_tb_diagnosed" => "Y",
+					"patient.is_ptb_trtmnt_done" => "Y"
+				];
 		
 		
 				if($localsession->rcode=="CORD"){
@@ -842,12 +856,13 @@ class apimodel extends CI_Model {
 						 IFNULL (DATE_FORMAT(ptb_treatment_detail.first_followup_taken_on,'%d/%m%/%Y'),NULL) AS firstfollowuptaken,
 					
 					DATE_FORMAT(ptb_treatment_detail.`second_followup_dt`, '%d/%m%/%Y') AS second_followup_dt,
-					IFNULL (DATE_FORMAT(ptb_treatment_detail.second_followup_taken_on,'%d/%m%/%Y'),NULL) AS secondfollowuptaken
+					IFNULL (DATE_FORMAT(ptb_treatment_detail.second_followup_taken_on,'%d/%m%/%Y'),NULL) AS secondfollowuptaken,payment_gen_details.id AS ptb_payment_gen_dtl_id
 						",FALSE)
 					->from("patient")
 					->join("ptb_treatment_detail","ptb_treatment_detail.patient_id = patient.patient_id","LEFT")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
 					->where($where)
 					->get();
 			
@@ -1137,8 +1152,8 @@ class apimodel extends CI_Model {
 					"outcome" => NULL
 				];
 				
-				$this->db->where('patient.patient_id', $patientid);
-				$this->db->update('patient', $upd_data); 
+				$this->db->where('ptb_treatment_detail.patient_id', $patientid);
+				$this->db->update('ptb_treatment_detail', $upd_data); 
 			}
 
 				$user_activity = array(
