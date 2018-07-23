@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var basepath = $("#basepath").val();
-$('.selectpicker').selectpicker();
+$('.selectpicker').selectpicker({dropupAuto: false});
 	/* On select Coordinator select NQPP tab 1*/
     $(document).on("change", "#coordinator", function() {
     	var val=$('select[name=coordinator]').val();
@@ -13,7 +13,7 @@ $('.selectpicker').selectpicker();
 	
 	success: function(data){
 		$("#nqppview").html(data);
-		$('.selectpicker').selectpicker();
+		$('.selectpicker').selectpicker({dropupAuto: false});
 	},
 	error: function (jqXHR, exception) {
 				  var msg = '';
@@ -54,7 +54,7 @@ $('.selectpicker').selectpicker();
 	
 	success: function(data){
 		$("#nqppviewt2").html(data);
-		$('.selectpicker').selectpicker();
+		$('.selectpicker').selectpicker({dropupAuto: false});
 	},
 	error: function (jqXHR, exception) {
 				  var msg = '';
@@ -94,7 +94,7 @@ $('.selectpicker').selectpicker();
 	
 	success: function(data){
 		$("#txnview").html(data);
-		$('.selectpicker').selectpicker();
+		$('.selectpicker').selectpicker({dropupAuto: false});
 	},
 	error: function (jqXHR, exception) {
 				  var msg = '';

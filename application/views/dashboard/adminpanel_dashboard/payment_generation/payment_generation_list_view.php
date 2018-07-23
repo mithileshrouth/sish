@@ -76,7 +76,7 @@
                             {
                               foreach($bodycontent['coordinatorList'] as $coordinator_list)
                               { ?>
-                                  <option value="<?php echo $coordinator_list->id; ?>"><?php echo $coordinator_list->name ; ?></option>
+                                  <option value="<?php echo $coordinator_list->id; ?>"><?php echo $coordinator_list->name; ?></option>
                             <?php 
                               }
                             }

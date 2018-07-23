@@ -108,7 +108,7 @@ tfoot input {
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered table-striped" id="patient_list" >
+              <table class="table table-bordered table-striped nowrap" id="patient_list" >
                 <thead>
                 <tr>
                    <th style="width:5%;">&nbsp;</th> 

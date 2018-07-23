@@ -16,7 +16,7 @@ var basepath = $("#basepath").val();
 	
 	success: function(data){
 		$("#nqppview").html(data);
-		$('.selectpicker').selectpicker();
+		$('.selectpicker').selectpicker({dropupAuto: false});
 	},
 	error: function (jqXHR, exception) {
 				  var msg = '';
