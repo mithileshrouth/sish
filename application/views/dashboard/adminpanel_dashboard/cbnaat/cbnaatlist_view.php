@@ -5,8 +5,8 @@
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">CB-NAAT Center List</li>
+        <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">List of CB-NAAT Center(s)</li>
       </ol>
     </section>
 
@@ -15,7 +15,7 @@
 
 		    <div class="box">
             <div class="box-header">
-              <h3 class="box-title">CB-NAAT List</h3>
+              <h3 class="box-title">List of CB-NAAT Center(s)</h3>
               <a href="<?php echo base_url();?>cbnaat/addcbnaat" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
             </div>
             <!-- /.box-header -->

@@ -26,6 +26,9 @@ element {
     box-shadow: none;
 
 }
+.vill{
+  display: inline-block;
+}
 </style>
    <section class="content-header">
       <h1>
@@ -33,7 +36,7 @@ element {
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Patient Details</li>
       </ol>
     </section>
@@ -101,7 +104,7 @@ element {
                 <li class="list-group-item">
                   <b>Gurdian</b> <a class="pull-right"><?php echo $value->patient_gurdian;?></a>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item vill">
                   <b>Village</b> <a class="pull-right"><?php echo $value->patient_village;?></a>
                 </li>
                 <li class="list-group-item">
@@ -180,8 +183,8 @@ element {
                      
                     <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-3">Sputum Collection :<?php echo ($value->dmc_sputum_date == NULL ? "" : date("d-m-Y", strtotime($value->dmc_sputum_date)));?></div>
-                        <div class="col-sm-3">DMC :<?php echo $value->dmcname;?></div>
+                        <div class="col-sm-2">Sputum Collection :<?php echo ($value->dmc_sputum_date == NULL ? "" : date("d-m-Y", strtotime($value->dmc_sputum_date)));?></div>
+                        <div class="col-sm-4">DMC :<?php echo $value->dmcname;?></div>
                         
                       </div>
                        <div class="row">
@@ -264,8 +267,8 @@ element {
 
                     <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-3">X-Ray Date :<?php echo ($value->xray_date == NULL ? "" : date("d-m-Y", strtotime($value->xray_date)));?></div>
-                        <div class="col-sm-3">Center :<?php echo $value->xraycntname;?></div>
+                        <div class="col-sm-2">X-Ray Date :<?php echo ($value->xray_date == NULL ? "" : date("d-m-Y", strtotime($value->xray_date)));?></div>
+                        <div class="col-sm-4">Center :<?php echo $value->xraycntname;?></div>
                         
                       </div>
                        <div class="row">
@@ -340,8 +343,8 @@ element {
                        
                     <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-3">CBNAAT Date :<?php echo ($value->cbnaat_date == NULL ? "" : date("d-m-Y", strtotime($value->cbnaat_date)));?></div>
-                        <div class="col-sm-3">Center :<?php echo $value->cbnaatname;?></div>
+                        <div class="col-sm-2">CBNAAT Date :<?php echo ($value->cbnaat_date == NULL ? "" : date("d-m-Y", strtotime($value->cbnaat_date)));?></div>
+                        <div class="col-sm-4">Center :<?php echo $value->cbnaatname;?></div>
                         
                       </div>
                        <div class="row">

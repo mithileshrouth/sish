@@ -34,8 +34,8 @@
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Payment List</li>
+        <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">List of Payment(s)</li>
       </ol>
     </section>
 
@@ -46,7 +46,7 @@
       <div class="col-md-12">
         <div class="box box-primary formBlock">
               <div class="box-header with-border">
-                <h3 class="box-title">Payment - List</h3>
+                <h3 class="box-title">List of Payment(s)</h3>
                 
               </div>
               <!-- /.box-header -->

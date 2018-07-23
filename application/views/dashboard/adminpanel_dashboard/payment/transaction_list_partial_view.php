@@ -19,7 +19,9 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
             </span>
 
           </div>
-         
+         <?php
+       if(sizeof($transactionlistData)>0){
+?>
           <div style="max-height:500px;overflow-y:scroll;">
               <table class="table table-bordered table-striped table-responsive" id="PatientlistTbl" style="border-collapse: collapse !important;" >
                 <thead>
@@ -77,9 +79,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
       </table>
       
     </div>
-<?php
-       if(sizeof($transactionlistData)>0){
-?>
+
  <div class="container" style="margin-top:50px; ">
   <div class="form-group row">
 
@@ -108,7 +108,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 
     <div class="form-group row" style="margin-top:20px;" id="paygenretedUpdate">
       <div class="btnDiv">
-              <button type="submit" class="btn btn-primary formBtn" id="savePayment" style="display: inline-block;width:200px;">Save</button>
+              <button type="submit" class="btn btn-primary formBtn" id="savePayment" style="display: inline-block;width:200px;">Pay</button>
             </div>
     </div>
 
@@ -116,6 +116,14 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 
 
  <?php 
+} //end of transaction list record
+
+else{
+?>
+  <div class="well well-sm noinfo">
+        No record found. 
+        </div>
+<?php
 }
 
 

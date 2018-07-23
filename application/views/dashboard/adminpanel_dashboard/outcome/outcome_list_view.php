@@ -5,8 +5,8 @@
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Outcome List</li>
+        <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">List of Outcome(s)</li>
       </ol>
     </section>
 
@@ -15,7 +15,7 @@
 
 		    <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Outcome List</h3>
+              <h3 class="box-title">List of Outcome(s)</h3>
               <a href="<?php echo base_url();?>outcome/addoutcome" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
             </div>
             <!-- /.box-header -->

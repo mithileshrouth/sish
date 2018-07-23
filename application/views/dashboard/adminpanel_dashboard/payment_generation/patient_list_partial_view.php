@@ -5,6 +5,9 @@
 .trnxdiv{
 text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 }
+.noinfo{
+ text-align:center; 
+}
     </style>   
         
         <div class="box-body" id="PatientList">
@@ -19,8 +22,13 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
             </span>
 
           </div>
+          <?php
+
+           if(sizeof($patientlistData)>0){
+
+          ?>
           <div class="well well-sm infohead">
-        The list of Patients Those who have been <strong>diagnosed with TB.</strong> 
+        The list of patients those who have been <strong>diagnosed with TB.</strong> 
         </div>
           <div style="max-height:500px;overflow-y:scroll;">
               <table class="table table-bordered table-striped table-responsive" id="PatientlistTbl" style="border-collapse: collapse !important;" >
@@ -58,7 +66,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
         
       ?>      
           <tr>
-            <td><?php echo $sl; ?></td>
+            <td><?php echo $sl++; ?></td>
             <input type="hidden" id="patient_<?php echo $i;?>" name="patient[]" value="<?php echo $patient_list->patient_id;?>">
             <input type="hidden" name="nqpp" value="<?php echo $nqpp;?>">
             <input type="hidden" id="amt_<?php echo $i;?>" name="amt[]" value="<?php echo $amount?>">
@@ -86,7 +94,7 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
       </table>
     </div>
 <?php
-       if(sizeof($patientlistData)>0){
+      
 ?>
  <div class="container" style="margin-top:50px; ">
   <div class="form-group row">
@@ -117,6 +125,14 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
 
 
  <?php 
+} //end of patient list record
+
+else{
+?>
+  <div class="well well-sm noinfo">
+        No record found. 
+        </div>
+<?php
 }
 
 
