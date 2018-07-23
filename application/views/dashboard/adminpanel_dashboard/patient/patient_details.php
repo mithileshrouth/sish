@@ -102,7 +102,7 @@ element {
               </p>
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Gurdian</b> <a class="pull-right"><?php echo $value->patient_gurdian;?></a>
+                  <b>Guardian</b> <a class="pull-right"><?php echo $value->patient_gurdian;?></a>
                 </li>
                 <li class="list-group-item vill">
                   <b>Village</b> <a class="pull-right"><?php echo $value->patient_village;?></a>
