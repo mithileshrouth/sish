@@ -4,14 +4,31 @@ class usermastermodel extends CI_Model{
     
     public function getUserById($userId=""){
         $row=array();
-         $query = $this->db->select("user_master.id AS userid,role_master.id AS roleid,user_master.*,role_master.*")
+			$query = $this->db->select("
+						user_master.id AS userid,
+						role_master.id AS roleid,
+						user_master.*,
+						role_master.*,
+						CASE WHEN (coordinator.`name` IS NOT NULL) THEN coordinator.`name`
+						 WHEN (nqpp.`name` IS NOT NULL) THEN nqpp.`name`
+						 WHEN (dmc.`name` IS NOT NULL) THEN dmc.`name`
+						 WHEN (`xray_center`.`name` IS NOT NULL) THEN `xray_center`.`name`
+						 WHEN (`cbnaat`.`name`IS NOT NULL) THEN `cbnaat`.`name`
+						 END AS username
+						",FALSE)
 				->from("user_master")
-                                ->join("role_master","user_master.role_id=role_master.id","LEFT")    
+                ->join("role_master","user_master.role_id=role_master.id","LEFT")    
+                ->join("coordinator","coordinator.userid=user_master.id","LEFT")    
+                ->join("nqpp","nqpp.userid=user_master.id","LEFT")    
+                ->join("dmc","dmc.userid=user_master.id","LEFT")    
+                ->join("xray_center","xray_center.userid=user_master.id","LEFT")    
+                ->join("cbnaat","cbnaat.userid=user_master.id","LEFT")    
 				->where('user_master.id',$userId )
-                                ->where('user_master.is_active','Y')
-				->get();
-			//echo $this->db->last_query();
-         if($query->num_rows()>0){
+                ->where('user_master.is_active','Y')
+				->get(); 
+			
+		//echo $this->db->last_query();
+        if($query->num_rows()>0){
             $row = $query->row();
            }
            return $row;
