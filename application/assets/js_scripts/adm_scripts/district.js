@@ -81,6 +81,10 @@ function validateDistrict()
     var state = $("#state").val();
 	var districtname = $("#districtname").val();
     var codelength = $('#districtcode').val().length;
+	
+    var distcoordinator = $('#distcoordinator').val();
+    var distcoordinatormbl = $('#distcoordinatormbl').val();
+    var distcoordinatorpassword = $('#distcoordinatorpassword').val();
 
 	$("#districtmsg").text("").css("dispaly", "none").removeClass("form_error");
 
@@ -112,5 +116,29 @@ function validateDistrict()
         .css("display", "block");
         return false;
     }
+	if(distcoordinator==""){
+		$("#distcoordinator").focus();
+		$("#districtmsg")
+        .text("Error : Enter District Coordinator Name")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+	}
+	if(distcoordinatormbl==""){
+		$("#distcoordinatormbl").focus();
+		$("#districtmsg")
+        .text("Error : Enter District Coordinator Mobile No")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+	}
+	if(distcoordinatorpassword==""){
+		$("#distcoordinatorpassword").focus();
+		$("#districtmsg")
+        .text("Error : Enter District Coordinator Password")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+	}
 	return true;
 }

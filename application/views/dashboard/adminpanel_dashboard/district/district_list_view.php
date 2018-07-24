@@ -28,6 +28,8 @@
                   <th>District</th>
                   <th>District Code</th>
                   <th>State</th>
+                  <th>Dist. Coordinator</th>
+                  <th>Dist. Coord. Mobile</th>
                   <th style="width:10%;">Status</th>
                   <th style="text-align:right;width:5%;">Action</th>
                 </tr>
@@ -55,6 +57,8 @@
                    <td><?php echo $value->name; ?></td>
 						<td><?php echo $value->dist_code; ?></td>
 						<td><?php echo $value->state; ?></td>
+						<td><?php echo $value->dist_coordinator; ?></td>
+						<td><?php echo $value->dist_cordinator_mbl; ?></td>
 						
 						<td><?php echo $status; ?></td>
 						<td align="center"> 

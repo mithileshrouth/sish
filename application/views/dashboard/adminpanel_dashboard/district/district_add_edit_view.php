@@ -29,7 +29,8 @@
                 <div class="box-body">
                   <div class="form-group">
                     
-                    <input type="hidden" name="districtID" id="districtID" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->id;}else{echo "0";}?>" />
+                    <input type="hidden" name="districtID" id="districtID" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->distid;}else{echo "0";}?>" />
+					 <input type="hidden" name="uid" id="uid" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->userid;}else{echo "0";}?>" />
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
 
                     <label for="state">State</label> 
@@ -52,7 +53,7 @@
 
                   <div class="form-group">
                     <label for="blockname">Name</label>
-                    <input type="text" class="form-control forminputs typeahead" id="districtname" name="districtname" placeholder="Enter District Name" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->name;}?>" >
+                    <input type="text" class="form-control forminputs typeahead" id="districtname" name="districtname" placeholder="Enter District Name" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->distname;}?>" >
                   </div>
 
                   
@@ -60,7 +61,22 @@
                           <label for="cordpin">District Code</label>
                           <input type="text" minlength="2" maxlength="3"  class="form-control forminputs removeerr typeahead " id="districtcode" name="districtcode" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->dist_code; } ?>" >
                         </div>
-                 
+					
+					<hr>
+						<div class="form-group">
+                          <label for="distcodename">Dist. Coordinator Name</label>
+                          <input type="text"  class="form-control forminputs removeerr " id="distcoordinator" name="distcoordinator" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->dist_coordinator; } ?>" >
+                        </div>
+						
+						<div class="form-group">
+                          <label for="distcodembl">Dist. Coordinator Mobile</label>
+                          <input type="text"  class="form-control forminputs removeerr numchk" id="distcoordinatormbl" name="distcoordinatormbl" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->dist_cordinator_mbl; } ?>" maxlength="10" >
+                        </div>
+						
+						<div class="form-group">
+                          <label for="distcodembl">Dist. Coordinator Password</label>
+                          <input type="text" class="form-control forminputs removeerr " id="distcoordinatorpassword" name="distcoordinatorpassword" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['DistrictEditdata']->userpass; } ?>" >
+                        </div>
 
                   <p id="districtmsg" class="form_error"></p>
 

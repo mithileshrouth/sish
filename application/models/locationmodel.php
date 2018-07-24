@@ -1,7 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class locationmodel extends CI_Model{
+	public function __construct()
+	{
+	   // parent::__construct();
 	
+		$this->load->model('rolemastermodel','rolemodel',TRUE);
+	}
 	
 	
 	/****************************************************************************/
@@ -149,8 +154,9 @@ class locationmodel extends CI_Model{
 							 district.dist_code,
 							 district.is_active,
 							 district.name,
+							 district.dist_coordinator,
+							 district.dist_cordinator_mbl,
 							 state.state as state
-					
 					")
 				->from('district')
 				->join('state','state.id = district.state_id','INNER')
@@ -208,6 +214,153 @@ class locationmodel extends CI_Model{
 			}
 			return $data;
 		}
+		
+		// Save District Data
+		public function insertIntoDistrict($data,$session){
+		try {
+            $this->db->trans_begin();
+			
+			$district_data = [];
+			$user_data = [];
+			
+			$user_data = [
+				"mobile_no" => trim(htmlspecialchars($data['distcoordinatormbl'])),
+				"password" => trim(htmlspecialchars($data['distcoordinatorpassword'])),
+				"role_id" => $this->rolemodel->getRoleIDByRoleType("DISTCORD"),
+				"project_id" => 1,
+				"is_active" => 1
+			];
+			
+			$this->db->insert('user_master', $user_data);
+				
+			$user_id = $this->db->insert_id();
+			
+				$district_data = [
+					"name" => trim(htmlspecialchars($data['districtname'])),
+					"dist_code" => trim(htmlspecialchars($data['districtcode'])),
+					"state_id" => trim(htmlspecialchars($data['state'])),
+					"dist_coordinator" => trim(htmlspecialchars($data['distcoordinator'])),
+					"dist_cordinator_mbl" => trim(htmlspecialchars($data['distcoordinatormbl'])),
+					"userid" => $user_id,
+					"project_id" => 1, // need to change dynamically according to requirement
+					"is_active" => 1,
+					"created_by" => $session['userid']
+				];
+			
+				$this->db->insert('district', $district_data);
+				
+				
+				$user_activity = array(
+					"activity_module" => 'District',
+					"action" => 'Insert',
+					"from_method" => 'district/district_action/insertIntoDistrict',
+					"user_id" => $session['userid'],
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+				$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
+	// update district data
+		public function updateDistrict($data,$session){
+		try {
+            $this->db->trans_begin();
+			
+			$district_data = [];
+			$user_data = [];
+			
+			$user_data = [
+				"mobile_no" => trim(htmlspecialchars($data['distcoordinatormbl'])),
+				"password" => trim(htmlspecialchars($data['distcoordinatorpassword'])),
+			];
+			
+			$userid = trim(htmlspecialchars($data['uid']));
+			$districtID = trim(htmlspecialchars($data['districtID']));
+			
+			$this->db->where('user_master.id', $userid);
+			$this->db->update('user_master', $user_data); 
+			
+			
+			
+			$district_data = [
+				"name" => trim(htmlspecialchars($data['districtname'])),
+				"dist_code" => trim(htmlspecialchars($data['districtcode'])),
+				"state_id" => trim(htmlspecialchars($data['state'])),
+				"dist_coordinator" => trim(htmlspecialchars($data['distcoordinator'])),
+				"dist_cordinator_mbl" => trim(htmlspecialchars($data['distcoordinatormbl']))
+			];
+			
+			$this->db->where('district.id', $districtID);
+			$this->db->update('district', $district_data); 
+			
+		
+			
+			$user_activity = array(
+					"activity_module" => 'District',
+					"action" => 'Update',
+					"from_method" => 'district/district_action/updateDistrict',
+					"user_id" => $session['userid'],
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	public function getDistrictEditDataByID($id){
+		$data = [];
+		$query = $this->db->select("
+					district.id as distid,
+					district.name as distname,
+					district.dist_code,
+					district.state_id,
+					district.dist_coordinator,
+					district.dist_cordinator_mbl ,
+					district.is_active as active ,
+					user_master.id as userid,
+					user_master.password as userpass
+					")
+				->from('district')
+			
+				->join('user_master','user_master.id = district.userid','INNER')
+				->where('district.id',$id)
+				->order_by('district.name')
+				->get();
+			
+			//echo $this->db->last_query();
+			if($query->num_rows()> 0)
+			{
+				$data = $query->row();
+	        }
+			
+	        return $data;
+	}
 	
 	/*******************************************************/
 	/********************COUNTRY***************************/
@@ -261,6 +414,9 @@ class locationmodel extends CI_Model{
 			}
 			return $country_id;
 		}
+		
+		
+		
 	
 	
 }

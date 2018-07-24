@@ -56,7 +56,8 @@ class district extends CI_Controller {
 					'district.id' => $districtID
 				);
 				// getSingleRowByWhereCls(tablename,where params)
-				$result['DistrictEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('district',$whereAry); 
+			//	$result['DistrictEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('district',$whereAry); 
+					$result['DistrictEditdata'] = $this->locations->getDistrictEditDataByID($districtID); 
 				
 			}
 
@@ -93,9 +94,15 @@ class district extends CI_Controller {
 			$mode = trim(htmlspecialchars($dataArry['mode']));
 			$district = trim(htmlspecialchars($dataArry['districtname']));
 			$dist_code = trim(htmlspecialchars($dataArry['districtcode']));
+			
+			$distcoordinator = trim(htmlspecialchars($dataArry['distcoordinator']));
+			$distcoordinatormbl = trim(htmlspecialchars($dataArry['distcoordinatormbl']));
+			$distcoordinatorpassword = trim(htmlspecialchars($dataArry['distcoordinatorpassword']));
+			
+			
 
-
-			if($stateID!="0" && $district!="")
+			
+			if($stateID!="0" && $district!="" && $distcoordinator!="" && $distcoordinatormbl!="")
 			{
 	
 				
@@ -105,34 +112,8 @@ class district extends CI_Controller {
 					/*  EDIT MODE
 					 *	-----------------
 					*/
-
-					$array_upd = array(
-						"name" => $district,
-						"state_id" => $stateID,
-						"dist_code" => $dist_code,
-						"is_active" => 1
 					
-					);
-
-					$where_upd = array(
-						"district.id" => $districtID
-					);
-
-					$user_activity = array(
-						"activity_module" => 'District',
-						"action" => 'Update',
-						"from_method" => 'district/district_action',
-						"user_id" => $session['userid'],
-						"ip_address" => getUserIPAddress(),
-						"user_browser" => getUserBrowserName(),
-						"user_platform" => getUserPlatform()
-					 );
-
-
-					/*
-					@updateData_WithUserActivity('update table name','update table data','update table where condition','user activity table name','user activity table data');
-					*/
-					$update = $this->commondatamodel->updateData_WithUserActivity('district',$array_upd,$where_upd,'activity_log',$user_activity);
+					$update = $this->locations->updateDistrict($dataArry,$session);
 					
 					
 					if($update)
@@ -160,31 +141,7 @@ class district extends CI_Controller {
 					 *	-----------------
 					*/
 
-
-					$array_insert = array(
-						"name" => $district,
-						"dist_code" => $dist_code,
-						"state_id" => $stateID,
-						"is_active" => 1
-					);
-					
-					
-	
-					$user_activity = array(
-						"activity_module" => 'District',
-						"action" => 'Insert',
-						"from_method" => 'district/district_action',
-						"user_id" => $session['userid'],
-						"ip_address" => getUserIPAddress(),
-						"user_browser" => getUserBrowserName(),
-						"user_platform" => getUserPlatform()
-						
-					 );
-
-						
-					$tbl_name = array('district','activity_log');
-					$insert_array = array($array_insert,$user_activity);
-					$insertData = $this->commondatamodel->insertMultiTableData($tbl_name,$insert_array);
+					$insertData = $this->locations->insertIntoDistrict($dataArry,$session);
 
 					if($insertData)
 					{
