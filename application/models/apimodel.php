@@ -232,7 +232,10 @@ class apimodel extends CI_Model {
 			//echo "Q ".$this->db->last_query();
 			//exit;
 			// INSERT INTO PATIENTsYMPTOM
-			$this->insertIntoPTBSymptomDtl($ptb_inserted_id,$symptom);
+			if(isset($symptom)){
+				$this->insertIntoPTBSymptomDtl($ptb_inserted_id,$symptom);
+			}
+			
 
 						
 			$sms_row = $this->getMessageContentToSendSMS("REG");
@@ -259,6 +262,27 @@ class apimodel extends CI_Model {
 							"send_to_role" => $sendsms_to_role->send_to_roleid,
 							"receiver_user_id" => $coordinator_row->userid,
 							"receiver_mobile_no" => $coordinator_mobile,
+							"is_sent" => $sms_status
+						];
+						$this->db->insert('sms_sent_report', $sms_log);
+						*/
+						
+					}
+					
+				}
+				if($sendsms_to_role->role_code=="DISTCORD"){
+					$distcord_row = $this->location->getDistrict($district);
+					if(sizeof($distcord_row)>0){
+						$distcord_mobile = $distcord_row->dist_cordinator_mbl;
+						/*
+						$sms_status = $this->sendSMS($distcord_mobile,$smstext);	
+						$sms_log = [
+							"performed_by_user_id" => $localsession->uid,
+							"sms_sent_against_ptb_id" => $ptb_inserted_id,
+							"sms_action_mst_id" => $sms_row->id,
+							"send_to_role" => $sendsms_to_role->send_to_roleid,
+							"receiver_user_id" => $distcord_row->userid,
+							"receiver_mobile_no" => $distcord_mobile,
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
@@ -355,15 +379,18 @@ class apimodel extends CI_Model {
 	
 	public function insertIntoPTBSymptomDtl($patientID,$symptom){
 		$ins_ary = [];
-		if(sizeof($symptom)>0){
-			for($i=0;$i<sizeof($symptom);$i++){
-				$ins_ary = [
-					"patient_id" => $patientID,
-					"symptom_id" => $symptom[$i]
-				];
-				$this->db->insert("patient_symptom_detail",$ins_ary);
+		if(isset($symptom)){
+			if(sizeof($symptom)>0){
+				for($i=0;$i<sizeof($symptom);$i++){
+					$ins_ary = [
+						"patient_id" => $patientID,
+						"symptom_id" => $symptom[$i]
+					];
+					$this->db->insert("patient_symptom_detail",$ins_ary);
+				}
 			}
 		}
+		
 	}
 	
 	
