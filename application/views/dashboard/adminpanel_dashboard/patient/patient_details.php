@@ -27,8 +27,8 @@ element {
 
 }
 .vill{
-  display: inline-block;
-}
+  height:60px;
+} 
 </style>
    <section class="content-header">
       <h1>
