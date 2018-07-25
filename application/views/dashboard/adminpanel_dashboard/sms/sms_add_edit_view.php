@@ -38,7 +38,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Add sms sender</li>
+        <li class="active"><?php echo $bodycontent['mode']; ?> SMS to Role</li>
       </ol>
     </section>
 
@@ -50,7 +50,7 @@
         <div class="box box-primary formBlock">
               
                <div class="box-header with-border">
-                <h3 class="box-title">Add sms sender</h3>
+                <h3 class="box-title"> SMS to Role</h3>
                  <a href="<?php echo base_url();?>smsconfig" class="link_tab"><span class="glyphicon glyphicon-list"></span> List</a>
               </div>
               <!-- /.box-header -->
@@ -78,7 +78,8 @@
       
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
                   <div class="form-group">
-                     <label for="smsphaseList">Send sms phase</label> 
+                   <input type="hidden" name="oldsmsphase" id="oldsmsphase" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['smsphaseid'];}else{echo "0";}?>" />  
+                     <label for="smsphaseList">Phase</label> 
                         <select id="smsphase" name="smsphase" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                         <option value="0">Select</option>
                           <?php 

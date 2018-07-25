@@ -5,6 +5,7 @@ $(document).ready(function() {
               var mode=$("#mode").val();
             
               if (mode=='EDIT') {
+
 	        var  selected_roles = $("#selected_role_dtl_id").val();
 
             var selected_attr = selected_roles.split(',');
@@ -78,9 +79,25 @@ function validateSMS()
 {
     var smsphase = $("#smsphase").val();
     var sel_role = $("#sel_role").val();
+    var mode = $("#mode").val();
+    var oldsmsphase = $("#oldsmsphase").val();
   
 
     $("#smsmsg").text("").css("dispaly", "none").removeClass("form_error");
+
+    if (mode=='EDIT') {
+    	if (smsphase!=oldsmsphase) {
+    	$("#smsphase").focus();
+        $("#smsmsg")
+        .text("Error : Phase change not possible")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+
+
+    	}
+
+    }
     if(smsphase=="0")
     {
         $("#smsphase").focus();
