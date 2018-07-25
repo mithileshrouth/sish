@@ -257,6 +257,33 @@ class coordinatormodel extends CI_Model{
 	        return $data;
 	}
 	
+	public function getCoordinatorByDistCode($distcodeuserid){
+		$data = [];
+		$where = [
+			"coordinator.is_active"=>1,
+			"district.userid"=>$distcodeuserid
+		];
+		$query = $this->db->select("coordinator.id,coordinator.name")
+				->from('coordinator')
+				->join('block','block.id=coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($where)
+				->order_by('coordinator.name','ASC')
+				->get();
+			
+			//echo $this->db->last_query();exit;
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	
 	public function getCoordinatorOfNQPP($nqppid){
 		$data = [];
 		$where = [

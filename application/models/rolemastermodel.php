@@ -27,6 +27,7 @@ class rolemastermodel extends CI_Model{
 		$query = $this->db->select("*")
 				->from("role_master")
 				->where($where)
+				->order_by('role_master.app_order','ASC')
 				->get();
 		// $this->db->last_query();		
 		

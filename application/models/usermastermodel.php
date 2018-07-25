@@ -14,6 +14,7 @@ class usermastermodel extends CI_Model{
 						 WHEN (dmc.`name` IS NOT NULL) THEN dmc.`name`
 						 WHEN (`xray_center`.`name` IS NOT NULL) THEN `xray_center`.`name`
 						 WHEN (`cbnaat`.`name`IS NOT NULL) THEN `cbnaat`.`name`
+						 WHEN (`district`.`dist_coordinator`IS NOT NULL) THEN `district`.`dist_coordinator`
 						 END AS username
 						",FALSE)
 				->from("user_master")
@@ -23,6 +24,7 @@ class usermastermodel extends CI_Model{
                 ->join("dmc","dmc.userid=user_master.id","LEFT")    
                 ->join("xray_center","xray_center.userid=user_master.id","LEFT")    
                 ->join("cbnaat","cbnaat.userid=user_master.id","LEFT")    
+                ->join("district","district.userid=user_master.id","LEFT")    
 				->where('user_master.id',$userId )
                 ->where('user_master.is_active','Y')
 				->get(); 
@@ -42,6 +44,7 @@ class usermastermodel extends CI_Model{
 				 WHEN (dmc.`name` IS NOT NULL) THEN dmc.`name`
 				 WHEN (`xray_center`.`name` IS NOT NULL) THEN `xray_center`.`name`
 				 WHEN (`cbnaat`.`name`IS NOT NULL) THEN `cbnaat`.`name`
+				 WHEN (`district`.`dist_coordinator`IS NOT NULL) THEN `district`.`dist_coordinator`
 				 END AS username, `role_master`.`name` AS role
 				FROM (`user_master`)
 				LEFT JOIN `coordinator` ON `coordinator`.`userid` = `user_master`.`id`
@@ -49,11 +52,12 @@ class usermastermodel extends CI_Model{
 				LEFT JOIN `dmc` ON `dmc`.`userid` = `user_master`.`id`
 				LEFT JOIN `xray_center` ON `xray_center`.`userid`=`user_master`.`id`
 				LEFT JOIN `cbnaat` ON `cbnaat`.`userid`=`user_master`.`id`
+				LEFT JOIN `district` ON `district`.`userid`=`user_master`.`id`
 				LEFT JOIN `role_master` ON `role_master`.`id`=`user_master`.`role_id`
 				WHERE `user_master`.`id` =  ".$userId."
 				AND `user_master`.`is_active` =  'Y'";
 	
-	
+		
 		$query = $this->db->query($sql);
         if($query->num_rows()>0){
             $row = $query->row();

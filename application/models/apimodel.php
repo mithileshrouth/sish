@@ -468,6 +468,24 @@ class apimodel extends CI_Model {
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
+		
+		elseif($localsession->rcode=="DISTCORD"){
+			$where = [
+				"district.userid" =>$localsession->uid
+			];
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+					->from("patient")
+					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+					->join("dmc","dmc.id = patient.dmc_id","INNER")
+					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("block","block.id = coordinator.block_id","INNER")
+					->join("district","district.id = block.district_id","INNER")
+					->where($where)
+					->order_by("patient.patient_reg_date","DESC")->get();
+			//echo $this->db->last_query();		
+					
+		}
+		
 		elseif($localsession->rcode=="NQPP"){
 			$where = [
 				"nqpp.userid" =>$localsession->uid
@@ -570,6 +588,22 @@ class apimodel extends CI_Model {
 							->where($newRegisterWhere)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
+				elseif($localsession->rcode=="DISTCORD"){
+					$where = [
+						"district.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("block","block.id = coordinator.block_id","INNER")
+							->join("district","district.id = block.district_id","INNER")
+							->where($where)
+							->where($newRegisterWhere)
+							->order_by("patient.patient_reg_date","DESC")->get();
+							
+				}
 				elseif($localsession->rcode=="NQPP"){
 					$where = [
 						"nqpp.userid" =>$localsession->uid
@@ -667,6 +701,21 @@ class apimodel extends CI_Model {
 							->where($whereDetected)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
+				elseif($localsession->rcode=="DISTCORD"){
+					$where = [
+						"district.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("block","block.id = coordinator.block_id","INNER")
+							->join("district","district.id = block.district_id","INNER")
+							->where($where)
+							->where($whereDetected)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
 				elseif($localsession->rcode=="NQPP"){
 					$where = [
 						"nqpp.userid" =>$localsession->uid
@@ -760,6 +809,25 @@ class apimodel extends CI_Model {
 							->where($whereTreatment)
 							->order_by("patient.patient_reg_date","DESC")->get();
 				}
+				
+				
+							
+				if($localsession->rcode=="DISTCORD"){
+					$where = [
+						"district.userid" =>$localsession->uid
+					];
+					$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from("patient")
+							->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+							->join("dmc","dmc.id = patient.dmc_id","INNER")
+							->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+							->join("block","block.id = coordinator.block_id","INNER")
+							->join("district","district.id = block.district_id","INNER")
+							->where($where)
+							->where($whereTreatment)
+							->order_by("patient.patient_reg_date","DESC")->get();
+				}
+				
 				elseif($localsession->rcode=="NQPP"){
 					$where = [
 						"nqpp.userid" =>$localsession->uid

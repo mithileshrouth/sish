@@ -247,6 +247,58 @@ class nqppmodel extends CI_Model{
 	        return $data;
 	}
 	
+	public function getNqppByCoordID($cordid){
+		$data = [];
+		$where = [
+			"nqpp.is_active"=>1,
+			"nqpp.coordinator_id"=>$cordid
+		];
+		$query = $this->db->select("nqpp.id,nqpp.name")
+				->from('nqpp')
+			
+				->where($where)
+				->order_by('nqpp.name','ASC')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	
+	/*
+	public function getNQPPbyDistCodeUserID($distcorduid){
+		$data = [];
+		$where = [
+			"nqpp.is_active"=>1,
+			"district.userid"=>$distcorduid
+		];
+		$query = $this->db->select("nqpp.id,nqpp.name")
+				->from('nqpp')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id')
+				->where($where)
+				->order_by('nqpp.name','ASC')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	*/
+	
 	public function getNQPPbyUserID($userid){
 		$data = [];
 		$where = [

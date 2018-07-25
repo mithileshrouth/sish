@@ -78,6 +78,26 @@ class locationmodel extends CI_Model{
 			}
 			return $data;
 		}
+		
+		public function getBlockBYDistrictID($distID){
+			$data = [];
+			$where_param = [
+				"block.is_active" => 1,
+				"district.id" => $distID
+				];
+				
+				$query = $this->db->select("block.*")
+					->from('block')
+					->join('district','district.id=block.district_id')
+					->where($where_param)
+					->order_by('block.name')
+					->get();
+					foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+					return $data;
+		}
 
 		/********************************************************/
 		/**************************STATE*************************/

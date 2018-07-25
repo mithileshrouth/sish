@@ -289,6 +289,54 @@ public function __construct()
 		exit;
   }
   
+   /* @method getBlock
+  *  @param postdata
+  */
+  
+  public function getBlockByDist(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		
+		$distid = $request->id;
+		$key = $request->key;
+		
+		if(!empty($key) && $apikey == trim($key)){
+			$data = $this->location->getBlockBYDistrictID($distid);
+			if(sizeof($data)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $data
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+  }
+  
   /* @method getCoordinator
   *  @param postdata
   */
@@ -311,7 +359,10 @@ public function __construct()
 			elseif($sessiondata->rcode=="NQPP"){
 				$resultset = $this->coordinator->getCoordinatorOfNQPP($sessiondata->uid);
 			}
-			elseif($sessiondata->rcode=="PM"){
+			elseif($sessiondata->rcode=="DISTCORD"){
+				$resultset = $this->coordinator->getCoordinatorByDistCode($sessiondata->uid); 
+			}
+			else{
 				$resultset = $this->coordinator->getCoordinatorByPM(); // Need to change if necessary
 			}
 			
@@ -410,6 +461,51 @@ public function __construct()
 		exit;
   }
  
+
+   public function getNQPPByCords(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		
+		$coordid = $request->id;
+		$key = $request->key;
+		
+		if(!empty($key) && $apikey == trim($key)){
+			$data = $this->nqpp->getNqppByCoordID($coordid);
+			if(sizeof($data)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $data
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+  }
+  
  
  public function getAllPTBPhase(){
 		header('Access-Control-Allow-Origin: *');  
