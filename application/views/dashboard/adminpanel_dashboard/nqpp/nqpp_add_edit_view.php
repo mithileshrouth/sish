@@ -34,7 +34,7 @@
 					
 					<div class="col-md-6 col-sm-12 col-xs-12">
                         <div class="form-group">
-                           <label for="coordinator">Coordinator</label> 
+                           <label for="coordinator">Group Coordinator</label> 
 							<select id="coordinator" name="coordinator" class="form-control selectpicker" data-show-subtext="true" data-live-search="true" >
 						   
 							  <?php 

@@ -6,7 +6,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Coordinator <?php echo $bodycontent['mode']; ?></li>
+        <li class="active">Group Coordinator <?php echo $bodycontent['mode']; ?></li>
       </ol>
     </section>
 
@@ -17,7 +17,7 @@
       <div class="col-md-12">
         <div class="box box-primary formBlockMedium">
               <div class="box-header with-border">
-                <h3 class="box-title">Coordinator </h3>
+                <h3 class="box-title">Group Coordinator </h3>
                 <a href="<?php echo base_url();?>coordinator" class="link_tab"><span class="glyphicon glyphicon-list"></span> Go to List</a>
               </div>
               <!-- /.box-header -->

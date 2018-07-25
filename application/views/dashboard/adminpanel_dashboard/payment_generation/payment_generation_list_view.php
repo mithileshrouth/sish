@@ -68,7 +68,7 @@
                 <div class="box-body">
 
                   <div class="form-group">
-                     <label for="coordinatorList">Coordinator</label> 
+                     <label for="coordinatorList">Group Coordinator</label> 
                         <select id="coordinator" name="coordinator" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                         <option value="0">Select</option>
                           <?php 
@@ -115,7 +115,7 @@
                 <div class="box-body">
 
                   <div class="form-group">
-                     <label for="coordinatorList">Coordinator</label> 
+                     <label for="coordinatorList">Group Coordinator</label> 
                         <select id="coordinatort2" name="coordinatort2" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                         <option value="0">Select</option>
                           <?php 

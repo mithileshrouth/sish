@@ -30,7 +30,7 @@
                   <th style="width:10%;">Sl</th>
                   <th>Name</th>
                   <th>Mobile</th>
-                  <th>Coordinator</th>
+                  <th>Group Coordinator</th>
                   <th>Block</th>
                   <th>Village</th>
                   <th>Panchayat</th>
