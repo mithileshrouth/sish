@@ -253,7 +253,7 @@ class apimodel extends CI_Model {
 					$coordinator_row = $this->coordinator->getCoordinatorEditDataByID($refferedbycord);
 					if(sizeof($coordinator_row)>0){
 						$coordinator_mobile = $coordinator_row->cordmobile;
-						/*
+						
 						$sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -265,7 +265,8 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
+						
 						
 					}
 					
@@ -274,7 +275,7 @@ class apimodel extends CI_Model {
 					$distcord_row = $this->location->getDistrict($district);
 					if(sizeof($distcord_row)>0){
 						$distcord_mobile = $distcord_row->dist_cordinator_mbl;
-						/*
+						
 						$sms_status = $this->sendSMS($distcord_mobile,$smstext);	
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -286,7 +287,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
 						
 					}
 					
@@ -295,7 +296,7 @@ class apimodel extends CI_Model {
 					$nqpp_row = $this->nqpp->getNQPPEditDataByID($refferedbynqpp);
 					if(sizeof($nqpp_row)>0){
 						$nqpp_mobile = $nqpp_row->nqppmobile;
-						/*
+						
 						$sms_status = $this->sendSMS($nqpp_mobile,$smstext);
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -307,7 +308,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
 					}
 					
 				}
@@ -315,7 +316,7 @@ class apimodel extends CI_Model {
 					$dmc_row = $this->dmc->getDMCEditDataByID($dmcid);
 					if(sizeof($dmc_row)>0){
 						$dmc_lt_mobile = $dmc_row->ltmobile;
-						/*
+						
 						$sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -327,13 +328,13 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 						$this->db->insert('sms_sent_report', $sms_log);
-						*/
+						
 						
 					}
 					
 				}
 				elseif($sendsms_to_role->role_code=="PTB"){
-					/*
+					
 					$sms_status = $this->sendSMS($mobile,$smstext);
 					$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -345,7 +346,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 					$this->db->insert('sms_sent_report', $sms_log);
-					*/
+					
 				}
 				
 			}
