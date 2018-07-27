@@ -41,6 +41,36 @@ class locationmodel extends CI_Model{
 	       
 		
 	}
+
+	public function getAllBlockListINDistict($district_ids){
+		$data = [];
+		$query = $this->db->select("
+					block.id as blockid,
+					block.name as blockname,
+					block.block_code,
+					block.is_active,
+					district.name as districtname
+					
+					")
+				->from('block')
+				->join('district','district.id = block.district_id','INNER')
+				->where_in('block.district_id', $district_ids)
+			    ->order_by('block.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
 	
 	public function getBlock($id=NULL){
 			$data = [];

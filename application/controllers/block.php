@@ -16,6 +16,11 @@ class block extends CI_Controller {
 		{
 			$header = "";
 			$result['blockList'] = $this->locations->getAllBlockList(); 
+			$distwhere = [
+				"district.is_active" => 1 
+				];
+			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); 
+
 			$page = "dashboard/adminpanel_dashboard/block/block_list_view";
 			createbody_method($result, $page, $header, $session);
 			
@@ -286,7 +291,47 @@ class block extends CI_Controller {
 	}
 
 
-	
+	public function getBlockList()
+	{
+		$session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+			$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_dist'])) {
+				$sel_dist = $dataArry['sel_dist'];
+				//pre($sel_dist);
+				$in_district = "";
+                   if (!empty($sel_dist)) {
+                      //echo "not empty";
+                      for($i=0;$i<sizeof($sel_dist);$i++)
+                      { 
+                        $in_district.= $sel_dist[$i];
+                        $in_district.=",";
+                      }
+                   $in_district = rtrim($in_district,',');
+                    }
+
+
+         $result['blockList'] = $this->locations->getAllBlockListINDistict($in_district);
+			}else{
+
+         $result['blockList'] = $this->locations->getAllBlockList(); 
+			}
+
+
+			
+			$page = "dashboard/adminpanel_dashboard/block/block_list_data";
+			$partial_view = $this->load->view($page,$result);
+			echo $partial_view;
+		}
+		else
+		{
+			redirect('administratorpanel','refresh');
+		}
+	}
 	
 
 }
