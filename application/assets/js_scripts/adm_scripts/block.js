@@ -74,7 +74,7 @@ $(document).ready(function(){
 
 
 
-     // For Listing New Payment Generation
+     // For Listing Block by District
     $(document).on("submit","#BlockListForm",function(event){
         event.preventDefault();
 

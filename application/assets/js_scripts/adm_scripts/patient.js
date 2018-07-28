@@ -17,10 +17,10 @@ $(document).ready(function() {
         "aaSorting": [],
         'aoColumnDefs': [{
                 'bSortable': false,
-                'aTargets': [0,1,2] /* 1st one, start by the right */
+                'aTargets': [0,1] /* 1st one, start by the right */
             }],
         initComplete: function () {
-            this.api().columns([3,4,5,6,7]).every( function () {
+            this.api().columns([2,3,4,5,6]).every( function () {
                 var column = this;
                 var select = $('<select class="form_input_text selectpicker" data-live-search="true"><option value="">Show all</option></select>')
                     .appendTo( $(column.footer()).empty() )

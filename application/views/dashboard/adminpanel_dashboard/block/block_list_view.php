@@ -1,21 +1,6 @@
-<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/block.js"></script>     
-<style type="text/css">
- .check-mark{
-  color:#5bce5b;
-}
-.btnview{
-  float: left;
-}
-.searchby{
-  float: right;
-  margin-top: 4px;
-}
-#loadBlockList{
-  margin-top:20px;
-}
-.open{
-  border: 1px solid rgb(6, 149, 206);
-}
+<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/block.js"></script> 
+<link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/admin_style.css" />    
+
 
   </style>
 
@@ -45,12 +30,12 @@
               $attr = array("id"=>"BlockListForm","name"=>"BlockListForm");
               echo form_open('',$attr); ?>
               <div class="row">
-      <div class="col-md-4 "><label for="roleList" class="searchby">Search By </label> </div>
+      <div class="col-md-4 "><label for="roleList" class="searchby">Search By District </label> </div>
       <div class="col-md-4">
                       <div class="form-group">
                      
                      
-                       <select id="sel_dist" name="sel_dist[]" class="form-control selectpicker" multiple="multiple">
+                       <select id="sel_dist" name="sel_dist[]" class="form-control selectpicker" data-actions-box="true" multiple="multiple">
                         
                           <?php 
                             if($bodycontent['districtList'])
@@ -66,7 +51,7 @@
                         </div>
                  
                   </div>
-              <div class="col-md-4 btnview">
+              <div class="col-md-4 btnviewrow">
               <button type="submit" class="btn btn-primary formBtn" id="viewblocllist">View</button>
                                 </div>
                 </div>

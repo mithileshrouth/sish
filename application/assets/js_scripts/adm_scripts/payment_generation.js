@@ -2,6 +2,7 @@ $(document).ready(function(){
 	var basepath = $("#basepath").val();
 $('.selectpicker').selectpicker({dropupAuto: false});
 	/* On select Coordinator select NQPP tab 1*/
+    
     $(document).on("change", "#coordinator", function() {
     	var val=$('select[name=coordinator]').val();
 

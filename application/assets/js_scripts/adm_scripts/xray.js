@@ -114,7 +114,7 @@ function validateXRAY()
         return false;
     }
 	
-    if(ltname=="")
+    /*if(ltname=="")
     {
         $("#ltname").focus();
         $("#xraymsg")
@@ -141,7 +141,7 @@ function validateXRAY()
         .addClass("form_error")
         .css("display", "block");
         return false;
-    }
+    }*/
 	
 	
 	return true;

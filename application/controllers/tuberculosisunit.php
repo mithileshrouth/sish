@@ -18,6 +18,11 @@ class tuberculosisunit extends CI_Controller {
 		{
 			$header = "";
 			$result['tuList'] = $this->tuunit->getAllTUList(); 
+
+			$blockwhere = [
+				"block.is_active" => 1 
+				];
+			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
 			$page = "dashboard/adminpanel_dashboard/tu_unit/tuunit_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -285,9 +290,37 @@ class tuberculosisunit extends CI_Controller {
 		}
 	}
 
+public function getTuList()
+	{
+		$session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+			$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_block'])) {
+				$block_ids = $dataArry['sel_block'];
+	
+            $result['tuList'] = $this->tuunit->getAllTuunitListINBlock($block_ids);
+			}else{
 
+            $result['tuList'] = $this->tuunit->getAllTUList(); 
+			}
+
+			//pre($result['tuList']);
+			
+			$page = "dashboard/adminpanel_dashboard/tu_unit/tuunit_list_data";
+			$partial_view = $this->load->view($page,$result);
+			echo $partial_view;
+		}
+		else
+		{
+			redirect('administratorpanel','refresh');
+		}
+	}
 	
 	
 
-}
+}//end of class
 ?>

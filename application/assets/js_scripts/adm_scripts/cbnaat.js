@@ -114,7 +114,7 @@ function validateCbnaat()
         return false;
     }
 	
-    if(ltname=="")
+    /*if(ltname=="")
     {
         $("#ltname").focus();
         $("#cbnatmsg")
@@ -141,7 +141,7 @@ function validateCbnaat()
         .addClass("form_error")
         .css("display", "block");
         return false;
-    }
+    }*/
 	
 	
 	return true;

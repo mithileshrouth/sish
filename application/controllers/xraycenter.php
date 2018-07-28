@@ -95,13 +95,13 @@ class xraycenter extends CI_Controller {
 			$seltu = trim(htmlspecialchars($dataArry['seltu']));
 			$xraycntrname = trim(htmlspecialchars($dataArry['xraycntrname']));
 			$xraycntradd = trim(htmlspecialchars($dataArry['xraycntradd']));
-			$ltname = trim(htmlspecialchars($dataArry['ltname']));
+			/*$ltname = trim(htmlspecialchars($dataArry['ltname']));
 			$mobile = trim(htmlspecialchars($dataArry['mobile']));
-			$ltpass = trim(htmlspecialchars($dataArry['ltpass']));
+			$ltpass = trim(htmlspecialchars($dataArry['ltpass']));*/
 			
 
 
-			if($seltu!="0" && $xraycntrname!="" && $xraycntradd!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
+			if($seltu!="0" && $xraycntrname!="" && $xraycntradd!="")
 			{
 	
 				

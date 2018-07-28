@@ -32,7 +32,7 @@
                     
                     <input type="hidden" name="cbnatId" id="cbnatId" 
                            value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->cbnatId;}else{echo "0";}?>" />
-		    <input type="hidden" name="uid" id="uid" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->userid;}else{echo "0";}?>" />
+		    <!-- <input type="hidden" name="uid" id="uid" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->userid;}else{echo "0";}?>" /> -->
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
 
                     <label for="seltu">TU</label> 
@@ -64,20 +64,20 @@
                     <textarea class="form-control forminputs typeahead" id="cbnatcntradd" name="cbnatcntradd" style="resize:none;"><?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->cbnat_add;}?></textarea>
                   </div>
 				  
-				   <div class="form-group">
-                    <label for="ltname">LT Name</label>
-                    <input type="text" class="form-control forminputs typeahead " id="ltname" name="ltname" placeholder="Enter Name of LT" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->lt_name;}?>" >
-                  </div>
-
-                  <div class="form-group">
-                    <label for="mobile">Mobile</label>
-                    <input type="text" class="form-control forminputs typeahead numchk" id="mobile" name="mobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->ltmobile;}?>" maxlength="10">
-                  </div>
-				  
-				   <div class="form-group">
-                    <label for="ltpass">Password</label>
-                    <input type="password" class="form-control forminputs typeahead " id="ltpass" name="ltpass" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->userpass;}?>" >
-                  </div>
+				  <!--  <div class="form-group">
+                              <label for="ltname">LT Name</label>
+                              <input type="text" class="form-control forminputs typeahead " id="ltname" name="ltname" placeholder="Enter Name of LT" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->lt_name;}?>" >
+                            </div>
+          
+                            <div class="form-group">
+                              <label for="mobile">Mobile</label>
+                              <input type="text" class="form-control forminputs typeahead numchk" id="mobile" name="mobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->ltmobile;}?>" maxlength="10">
+                            </div>
+                    
+          <div class="form-group">
+                              <label for="ltpass">Password</label>
+                              <input type="password" class="form-control forminputs typeahead " id="ltpass" name="ltpass" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['cbnaatEditdata']->userpass;}?>" >
+                            </div> -->
 
                   <p id="cbnatmsg" class="form_error"></p>
 

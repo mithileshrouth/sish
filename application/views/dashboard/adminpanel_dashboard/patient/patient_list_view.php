@@ -112,7 +112,7 @@ tfoot input {
                 <thead>
                 <tr>
                    <th style="width:5%;">&nbsp;</th> 
-                  <th style="text-align:right;width:5%;">Action</th>
+                 <!--  <th style="text-align:right;width:5%;">Action</th> -->
                    <th style="width:10%;">view</th>
                   <th style="width:20%;">Patient</th>
                   <th style="width:5%;">Mobile</th>
@@ -158,12 +158,12 @@ tfoot input {
 
 					<tr>
 						 <td align="center"><?php echo $process_state;?></td> 
-            <td align="center"> 
-              <a href="<?php echo base_url(); ?>patient<?php //echo $value->patient_id; ?>" class="btn btn-primary btn-xs" data-title="Edit">
-                <span class="glyphicon glyphicon-pencil"></span>
-              </a>
-            
-            </td>
+          <!--   <td align="center"> 
+           <a href="<?php echo base_url(); ?>patient<?php //echo $value->patient_id; ?>" class="btn btn-primary btn-xs" data-title="Edit">
+             <span class="glyphicon glyphicon-pencil"></span>
+           </a>
+          
+          </td> -->
               <td align="center"><a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="View">View
                
               </a></td>
@@ -187,7 +187,7 @@ tfoot input {
                <tfoot>
                 <tr>
                 <th></th>
-                <th></th>
+               <!--  <th></th> -->
                 <th></th>
                 <th></th>
                 <th></th>

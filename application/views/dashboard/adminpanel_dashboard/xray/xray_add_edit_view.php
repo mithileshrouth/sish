@@ -32,7 +32,7 @@
                     
                     <input type="hidden" name="xraycntrId" id="xraycntrId" 
                            value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->xraycntrId;}else{echo "0";}?>" />
-		    <input type="hidden" name="uid" id="uid" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->userid;}else{echo "0";}?>" />
+		   <!--  <input type="hidden" name="uid" id="uid" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->userid;}else{echo "0";}?>" /> -->
                     <input type="hidden" name="mode" id="mode" value="<?php echo $bodycontent['mode']; ?>" />
 
                     <label for="seltu">TU</label> 
@@ -62,21 +62,21 @@
                     <label for="xraycntradd">Organization Address</label>
                     <textarea class="form-control forminputs typeahead" id="xraycntradd" name="xraycntradd" style="resize:none;"><?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->xraycntradd;}?></textarea>
                   </div>
-				  
-				   <div class="form-group">
-                    <label for="ltname">LT Name</label>
-                    <input type="text" class="form-control forminputs typeahead " id="ltname" name="ltname" placeholder="Enter Name of LT" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->lt_name;}?>" >
-                  </div>
-
-                  <div class="form-group">
-                    <label for="mobile">Mobile</label>
-                    <input type="text" class="form-control forminputs typeahead numchk" id="mobile" name="mobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->ltmobile;}?>" maxlength="10">
-                  </div>
-				  
-				   <div class="form-group">
-                    <label for="ltpass">Password</label>
-                    <input type="password" class="form-control forminputs typeahead " id="ltpass" name="ltpass" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->userpass;}?>" >
-                  </div>
+				 <!--  
+          <div class="form-group">
+                             <label for="ltname">LT Name</label>
+                             <input type="text" class="form-control forminputs typeahead " id="ltname" name="ltname" placeholder="Enter Name of LT" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->lt_name;}?>" >
+                           </div>
+         
+                           <div class="form-group">
+                             <label for="mobile">Mobile</label>
+                             <input type="text" class="form-control forminputs typeahead numchk" id="mobile" name="mobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->ltmobile;}?>" maxlength="10">
+                           </div>
+         
+          <div class="form-group">
+                             <label for="ltpass">Password</label>
+                             <input type="password" class="form-control forminputs typeahead " id="ltpass" name="ltpass" placeholder="" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['xrayEditdata']->userpass;}?>" >
+                           </div> -->
 
                   <p id="xraymsg" class="form_error"></p>
 

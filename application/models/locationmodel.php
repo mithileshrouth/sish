@@ -44,6 +44,7 @@ class locationmodel extends CI_Model{
 
 	public function getAllBlockListINDistict($district_ids){
 		$data = [];
+		
 		$query = $this->db->select("
 					block.id as blockid,
 					block.name as blockname,

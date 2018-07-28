@@ -1,4 +1,5 @@
-<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/nqpp.js"></script>   
+<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/nqpp.js"></script> 
+<link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/admin_style.css" />     
     <style>
    
     </style>
@@ -23,6 +24,83 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+
+                <?php
+              $attr = array("id"=>"NfhpListForm","name"=>"NfhpListForm");
+              echo form_open('',$attr); ?>
+              <div class="row">
+            <div class="col-md-4 "><label for="districtList" class="searchby"> District </label> </div>
+            <div class="col-md-4">
+                      <div class="form-group">
+                     
+                     
+                       <select id="sel_dist" name="sel_dist[]" class="form-control selectpicker"
+                       data-show-subtext="true" data-actions-box="true" data-live-search="true" multiple="multiple">
+                        
+                          <?php 
+                            if($bodycontent['districtList'])
+                            {
+                              foreach($bodycontent['districtList'] as $value)
+                              { ?>
+                    <option value="<?php echo $value->id; ?>"><?php echo $value->name ; ?></option>
+                            <?php 
+                              }
+                            }
+                          ?>
+                        </select>
+                        </div>
+                 
+                  </div>
+             
+                </div>
+                  <div class="row">
+            <div class="col-md-4 "><label for="blockList" class="searchby"> Block </label> </div>
+            <div class="col-md-4">
+                      <div class="form-group">
+                     
+                     <div id="blockview">
+                       <select id="sel_block" name="sel_block[]" class="form-control selectpicker"
+                       data-show-subtext="true" data-live-search="true" multiple="multiple">
+                       
+                        </select>
+                         </div>
+                        </div>
+                 
+                  </div>
+             
+                </div>
+
+                     <div class="row">
+            <div class="col-md-4 "><label for="coordinatorList" class="searchby"> Group Coordinator </label> </div>
+            <div class="col-md-4">
+                      <div class="form-group">
+                     
+                     <div id="cordinatorview">
+                       <select id="sel_coordinator" name="sel_coordinator[]" class="form-control selectpicker"
+                       data-show-subtext="true" data-live-search="true" multiple="multiple">
+                       
+                        </select>
+                         </div>
+                        </div>
+                 
+                  </div>
+             
+                </div>
+
+
+                 <div class="row">
+                    <div class="col-md-offset-4 col-md-4 btnview">
+              <button type="submit" class="btn btn-primary formBtn" id="viewblocllist">View</button>
+              </div>
+                 </div>
+             <?php echo form_close(); ?>
+
+              <div class="dashboardloader" style="width: 100%; clear: both;display:none; ">
+            <img src="<?php echo base_url();?>application/assets/images/verify_logo.gif"
+             style="margin-left:auto;margin-right:auto;display:block;" />
+           <p style="text-align:center;color:#055E87;letter-spacing:1px;">Please wait loading...</p>
+            </div>
+            <section id="loadnqppList"> 
                <div class="datatalberes" style="overflow-x:auto;">
               <table id="dataTable" class="table table-bordered table-striped dataTables" style="border-collapse: collapse !important;">
                 <thead>
@@ -34,7 +112,7 @@
                   <th>Block</th>
                   <th>Village</th>
                   <th>Panchayat</th>
-                  <th style="width:30%;">Address</th>
+                  <!-- <th style="width:30%;">Address</th> -->
                   <!-- <th>Pin</th> -->
                   <th>Aadhar No.</th>
                   <!-- <th>Voter No</th> -->
@@ -67,7 +145,7 @@
             <td><?php echo $value->blockname; ?></td>
             <td><?php echo $value->village; ?></td>
 						<td><?php echo $value->panchayat; ?></td>
-						<td style="width:30%;"><?php echo $value->full_address; ?></td>
+						<!-- <td style="width:30%;"><?php echo $value->full_address; ?></td> -->
 						<!-- <td><?php echo $value->pin_code; ?></td> -->
 						<td><?php echo $value->aadhar_no; ?></td>
 						<!-- <td><?php echo $value->voter_id; ?></td> -->
@@ -89,6 +167,9 @@
               </table>
 
             </div>
+
+             </section>
+
             </div>
             <!-- /.box-body -->
           </div>

@@ -48,7 +48,7 @@ class xraycentermodel extends CI_Model{
 			$xraycntr_data = [];
 			$user_data = [];
 			
-			$user_data = [
+			/*$user_data = [
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
 				"password" => trim(htmlspecialchars($data['ltpass'])),
 				"role_id" => $this->rolemodel->getRoleIDByRoleType("XRAY"),
@@ -57,15 +57,15 @@ class xraycentermodel extends CI_Model{
 			];
 			
 			$this->db->insert('user_master', $user_data);
-			$user_id = $this->db->insert_id();
+			$user_id = $this->db->insert_id();*/
 			
 			$xraycntr_data = [
 				"name" => trim(htmlspecialchars($data['xraycntrname'])),
 				"address" => trim(htmlspecialchars($data['xraycntradd'])),
 				"tuid" => trim(htmlspecialchars($data['seltu'])),
-				"lt_name" => trim(htmlspecialchars($data['ltname'])),
-				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
-				"userid" => $user_id,
+				"lt_name" => NULL,
+				"mobile_no" => NULL,
+				"userid" => NULL,
 				"project_id" => 1, // need to change dynamically according to requirement
 				"is_active" => 1,
 				"created_by" => $session['userid']
@@ -108,14 +108,9 @@ class xraycentermodel extends CI_Model{
 					xray_center.address as xraycntradd,
 					xray_center.mobile_no as ltmobile,
 					xray_center.tuid ,
-					xray_center.lt_name ,
-					user_master.id as userid,
-					user_master.password as userpass
-					
+					xray_center.lt_name 
 				   ")
 				->from('xray_center')
-			
-				->join('user_master','user_master.id = xray_center.userid','INNER')
 				->where('xray_center.id',$id)
 				->order_by('xray_center.name')
 				->get();
@@ -136,25 +131,25 @@ class xraycentermodel extends CI_Model{
 			$xraycenter_data = [];
 			$user_data = [];
 			
-			$user_data = [
+		/*	$user_data = [
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
 				"password" => trim(htmlspecialchars($data['ltpass']))
 			];
 			
-			$userid = trim(htmlspecialchars($data['uid']));
+			$userid = trim(htmlspecialchars($data['uid']));*/
 			$xraycenterId = trim(htmlspecialchars($data['xraycntrId']));
 			
-			$this->db->where('user_master.id', $userid);
-			$this->db->update('user_master', $user_data); 
+			/*$this->db->where('user_master.id', $userid);
+			$this->db->update('user_master', $user_data); */
 			
 			
 			
 			$xraycenter_data = [
 				"name" => trim(htmlspecialchars($data['xraycntrname'])),
 				"address" => trim(htmlspecialchars($data['xraycntradd'])),
-				"tuid" => trim(htmlspecialchars($data['seltu'])),
-				"lt_name" => trim(htmlspecialchars($data['ltname'])),
-				"mobile_no" => trim(htmlspecialchars($data['mobile']))
+				"tuid" => trim(htmlspecialchars($data['seltu']))
+				/*"lt_name" => trim(htmlspecialchars($data['ltname'])),
+				"mobile_no" => trim(htmlspecialchars($data['mobile']))*/
 				
 			];
                         

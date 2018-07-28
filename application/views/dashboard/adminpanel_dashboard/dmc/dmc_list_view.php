@@ -1,4 +1,5 @@
-<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/dmc.js"></script>    
+<script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/dmc.js"></script>  
+<link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/admin_style.css" />  
    <section class="content-header">
       <h1>
         Dashboard
@@ -20,6 +21,67 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              
+               <?php
+              $attr = array("id"=>"DmcListForm","name"=>"DmcListForm");
+              echo form_open('',$attr); ?>
+              <div class="row">
+            <div class="col-md-4 "><label for="blockList" class="searchby"> Block </label> </div>
+            <div class="col-md-4">
+                      <div class="form-group">
+                     
+                     
+                       <select id="sel_block" name="sel_block[]" class="form-control selectpicker"
+                       data-show-subtext="true" data-actions-box="true" data-live-search="true" multiple="multiple">
+                        
+                          <?php 
+                            if($bodycontent['blockList'])
+                            {
+                              foreach($bodycontent['blockList'] as $value)
+                              { ?>
+                    <option value="<?php echo $value->id; ?>"><?php echo $value->name ; ?></option>
+                            <?php 
+                              }
+                            }
+                          ?>
+                        </select>
+                        </div>
+                 
+                  </div>
+             
+                </div>
+                  <div class="row">
+            <div class="col-md-4 "><label for="tuList" class="searchby"> TU </label> </div>
+            <div class="col-md-4">
+                      <div class="form-group">
+                     
+                     <div id="tuview">
+                       <select id="sel_tu" name="sel_tu[]" class="form-control selectpicker"
+                       data-show-subtext="true" data-live-search="true" multiple="multiple">
+                       
+                        </select>
+                         </div>
+                        </div>
+                 
+                  </div>
+             
+                </div>
+
+                 <div class="row">
+                    <div class="col-md-offset-4 col-md-4 btnview">
+              <button type="submit" class="btn btn-primary formBtn" id="viewdmcllist">View</button>
+              </div>
+                 </div>
+             <?php echo form_close(); ?>
+
+              <div class="dashboardloader" style="width: 100%; clear: both;display:none; ">
+            <img src="<?php echo base_url();?>application/assets/images/verify_logo.gif"
+             style="margin-left:auto;margin-right:auto;display:block;" />
+           <p style="text-align:center;color:#055E87;letter-spacing:1px;">Please wait loading...</p>
+            </div>
+
+              <section id="loadTuList"> 
+             
               <div class="datatalberes" style="overflow-x:auto;">
               <table class="table table-bordered table-striped dataTables" style="border-collapse: collapse !important;">
                 <thead>
@@ -79,6 +141,9 @@
                
               </table>
             </div>
+
+             </section>
+
             </div>
             <!-- /.box-body -->
           </div>

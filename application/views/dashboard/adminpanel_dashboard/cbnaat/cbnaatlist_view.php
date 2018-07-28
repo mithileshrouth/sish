@@ -27,8 +27,8 @@
                   <th style="width:10%;">Sl</th>
                   <th>CB-NAAT</th>
                   <th>Address</th>
-                  <th>LT Name</th>
-                  <th>Mobile No</th>
+                  <!-- <th>LT Name</th>
+                  <th>Mobile No</th> -->
                   <th>TU</th>
                   <th>Block</th>
                   <th style="width:10%;">Status</th>
@@ -57,8 +57,8 @@
 						<td><?php echo $i++; ?></td>
 						<td><?php echo $value->cbnat_name; ?></td>
 						<td><?php echo $value->cbnat_add; ?></td>
-						<td><?php echo $value->lt_name; ?></td>
-						<td><?php echo $value->ltmobile; ?></td>
+					<!--   <td><?php echo $value->lt_name; ?></td>
+          <td><?php echo $value->ltmobile; ?></td> -->
 						<td><?php echo $value->tuname; ?></td>
 						<td><?php echo $value->blockname; ?></td>
 						<td><?php echo $status; ?></td>

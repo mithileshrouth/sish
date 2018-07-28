@@ -6,6 +6,7 @@ class dmc extends CI_Controller {
 	    parent::__construct();
 		$this->load->library('session');
 		$this->load->model('dmcmodel','dmc',TRUE);
+		$this->load->model('tuberculosisunitmodel','tuunit',TRUE);
 	}
 	
 	
@@ -16,6 +17,10 @@ class dmc extends CI_Controller {
 		{
 			$header = "";
 			$result['dmcList'] = $this->dmc->getAllDMC(); 
+			$blockwhere = [
+				"block.is_active" => 1 
+				];
+			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
 			$page = "dashboard/adminpanel_dashboard/dmc/dmc_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -330,7 +335,75 @@ public function checkmobile(){
 	}
 
 	
+	public function getTu()
+	{
+		if($this->session->userdata('user_data'))
+		{
+				$block_ids = $this->input->post('blockids');
+
+
+				$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_block'])) {
+				$block_ids = $dataArry['sel_block'];
+				
+
+            $data['tuList'] = $this->tuunit->getAllTuunitListINBlock($block_ids);
+			}else{
+
+           $data['tuList'] = []; 
+			}
+
+    
+      // pre($data['tuList']);
+       $viewTemp = $this->load->view('dashboard/adminpanel_dashboard/dmc/tu_view',$data);
+			echo $viewTemp;
+		}
+		else
+		{
+			redirect('login','refresh');
+		}
+	}
 	
 
-}
+	public function getDmcList()
+	{
+		$session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+			$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_tu'])) {
+				$in_tu = $dataArry['sel_tu'];
+				
+
+            $result['dmcList'] = $this->dmc->getAllDmcINTu($in_tu);
+			}else{
+				if (isset($dataArry['sel_block'])) {
+					$block_ids = $dataArry['sel_block'];
+					$result['dmcList'] = $this->dmc->getAllDmcINblock($block_ids);
+				}else{
+					$result['dmcList'] = $this->dmc->getAllDMC(); 
+				}
+
+         
+			}
+
+
+			
+			$page = "dashboard/adminpanel_dashboard/dmc/dmc_list_data";
+			$partial_view = $this->load->view($page,$result);
+			echo $partial_view;
+		}
+		else
+		{
+			redirect('administratorpanel','refresh');
+		}
+	}
+
+}//end of class
 ?>

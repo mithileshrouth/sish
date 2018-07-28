@@ -69,10 +69,10 @@ element {
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Cordinator</b> <a class="pull-right"><?php echo $value->coordinator_name;?></a>
+                  <b>Group Cordinator</b> <a class="pull-right"><?php echo $value->coordinator_name;?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>NQPP</b> <a class="pull-right"><?php echo $value->nqpp_name;?></a>
+                  <b>NFHP</b> <a class="pull-right"><?php echo $value->nqpp_name;?></a>
                 </li>
                  <li class="list-group-item">
                   <b>Reg. Date</b> <a class="pull-right"><?php echo ($value->patient_reg_date == NULL ? "" : date("d-m-Y", strtotime($value->patient_reg_date)));?></a>
@@ -183,12 +183,12 @@ element {
                      
                     <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-2">Sputum Collection :<?php echo ($value->dmc_sputum_date == NULL ? "" : date("d-m-Y", strtotime($value->dmc_sputum_date)));?></div>
+                        <div class="col-sm-3">Sputum Collection :<?php echo ($value->dmc_sputum_date == NULL ? "" : date("d-m-Y", strtotime($value->dmc_sputum_test_date)));?></div>
                         <div class="col-sm-4">DMC :<?php echo $value->dmcname;?></div>
                         
                       </div>
                        <div class="row">
-                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">Sputum Test Date  :<?php echo ($value->dmc_sputum_test_date == NULL ? "" : date("d-m-Y", strtotime($value->dmc_sputum_date)));?></div>
                         <div class="col-sm-2  " style="font-size: 12px;">
                           <div class="box box-primary contact" style="">
                  <div class="box-body box-profile" style="padding:8px;">
@@ -267,21 +267,22 @@ element {
 
                     <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-2">X-Ray Date :<?php echo ($value->xray_date == NULL ? "" : date("d-m-Y", strtotime($value->xray_date)));?></div>
+                        <div class="col-sm-3">X-Ray Date :<?php echo ($value->xray_date == NULL ? "" : date("d-m-Y", strtotime($value->xray_date)));?></div>
                         <div class="col-sm-4">Center :<?php echo $value->xraycntname;?></div>
                         
                       </div>
                        <div class="row">
                         <div class="col-sm-3"></div>
                         <div class="col-sm-2" style="font-size: 12px;">
-                          <div class="box box-primary contact" style="">
-                 <div class="box-body box-profile" style="padding:8px;">
-                           <strong><i class="fa fa-phone margin-r-5"></i>Contact</strong>
-                    
-                       <p class="text-muted">
-                        <?php echo $value->xraylt_name."<br>".$value->xraymobile_no;?>
-                       </p>
-                     </div></div>
+                       <!--    <div class="box box-primary contact" style="">
+                                        <div class="box-body box-profile" style="padding:8px;">
+                        <strong><i class="fa fa-phone margin-r-5"></i>Contact</strong>
+                                           
+                                              <p class="text-muted">
+                                               <?php echo $value->xraylt_name."<br>".$value->xraymobile_no;?>
+                                              </p>
+                                            </div>
+                                          </div> -->
                         </div>
                         
                       </div>
@@ -343,21 +344,21 @@ element {
                        
                     <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-2">CBNAAT Date :<?php echo ($value->cbnaat_date == NULL ? "" : date("d-m-Y", strtotime($value->cbnaat_date)));?></div>
+                        <div class="col-sm-3">CBNAAT Date :<?php echo ($value->cbnaat_date == NULL ? "" : date("d-m-Y", strtotime($value->cbnaat_date)));?></div>
                         <div class="col-sm-4">Center :<?php echo $value->cbnaatname;?></div>
                         
                       </div>
                        <div class="row">
-                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">CBNAAT Test Date :<?php echo ($value->cbnaat_test_date == NULL ? "" : date("d-m-Y", strtotime($value->cbnaat_test_date)));?></div>
                         <div class="col-sm-2" style="font-size: 12px;">
-                          <div class="box box-primary contact" style="">
-                 <div class="box-body box-profile" style="padding:8px;">
+                          <!-- <div class="box box-primary contact" style="">
+                                           <div class="box-body box-profile" style="padding:8px;">
                            <strong><i class="fa fa-phone margin-r-5"></i>Contact</strong>
-                    
-                       <p class="text-muted">
-                        <?php echo $value->cbnaatlt_name."<br>".$value->cbnaatmobile_no;?>
-                       </p>
-                     </div></div>
+                                              
+                                                 <p class="text-muted">
+                                                  <?php echo $value->cbnaatlt_name."<br>".$value->cbnaatmobile_no;?>
+                                                 </p>
+                                               </div></div> -->
                         </div>
                         
                       </div>

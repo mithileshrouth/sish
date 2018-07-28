@@ -51,6 +51,146 @@ class nqppmodel extends CI_Model{
 	        return $data;
 	       
 	}
+
+	
+	public function getAllNfhpINCordinator($cordinator_ids){
+		$data = [];
+		
+		$query = $this->db->select("
+					nqpp.id as nqppid,
+					nqpp.name as nqppname,
+					nqpp.mobile_no as nqppmobile,
+					nqpp.post_office,
+					nqpp.pin_code,
+					nqpp.village,
+					nqpp.panchayat,
+					nqpp.full_address,
+					nqpp.aadhar_no,
+					nqpp.voter_id,
+					nqpp.is_active as active,
+					block.name as blockname,
+					coordinator.name as cordinatorname,
+					district.name as districtname,
+					state.state,
+					user_master.password as cordpsw
+					")
+				->from('nqpp')
+				
+				->join('block','block.id = nqpp.block_id','INNER')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where_in('nqpp.coordinator_id', $cordinator_ids)
+				->order_by('coordinator.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+
+	public function getAllNfhpINBlock($block_ids){
+		$data = [];
+		
+		$query = $this->db->select("
+					nqpp.id as nqppid,
+					nqpp.name as nqppname,
+					nqpp.mobile_no as nqppmobile,
+					nqpp.post_office,
+					nqpp.pin_code,
+					nqpp.village,
+					nqpp.panchayat,
+					nqpp.full_address,
+					nqpp.aadhar_no,
+					nqpp.voter_id,
+					nqpp.is_active as active,
+					block.name as blockname,
+					coordinator.name as cordinatorname,
+					district.name as districtname,
+					state.state,
+					user_master.password as cordpsw
+					")
+				->from('nqpp')
+				
+				->join('block','block.id = nqpp.block_id','INNER')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where_in('nqpp.block_id', $block_ids)
+				->order_by('coordinator.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+		public function getAllNfhpINDistrict($district_ids){
+		$data = [];
+		
+		$query = $this->db->select("
+					nqpp.id as nqppid,
+					nqpp.name as nqppname,
+					nqpp.mobile_no as nqppmobile,
+					nqpp.post_office,
+					nqpp.pin_code,
+					nqpp.village,
+					nqpp.panchayat,
+					nqpp.full_address,
+					nqpp.aadhar_no,
+					nqpp.voter_id,
+					nqpp.is_active as active,
+					block.name as blockname,
+					coordinator.name as cordinatorname,
+					district.name as districtname,
+					state.state,
+					user_master.password as cordpsw
+					")
+				->from('nqpp')
+				
+				->join('block','block.id = nqpp.block_id','INNER')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where_in('district.id', $district_ids)
+				->order_by('coordinator.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
 	
 	
 	public function insertIntoNqpp($data,$session){

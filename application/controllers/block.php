@@ -301,19 +301,8 @@ class block extends CI_Controller {
 			$result=[];
 			
 			if (isset($dataArry['sel_dist'])) {
-				$sel_dist = $dataArry['sel_dist'];
-				//pre($sel_dist);
-				$in_district = "";
-                   if (!empty($sel_dist)) {
-                      //echo "not empty";
-                      for($i=0;$i<sizeof($sel_dist);$i++)
-                      { 
-                        $in_district.= $sel_dist[$i];
-                        $in_district.=",";
-                      }
-                   $in_district = rtrim($in_district,',');
-                    }
-
+				$in_district = $dataArry['sel_dist'];
+				
 
          $result['blockList'] = $this->locations->getAllBlockListINDistict($in_district);
 			}else{

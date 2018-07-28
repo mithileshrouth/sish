@@ -6,6 +6,8 @@ class nqpp extends CI_Controller {
 	    parent::__construct();
 		$this->load->library('session');
 		$this->load->model('nqppmodel','nqpp',TRUE);
+		$this->load->model('coordinatormodel','coordinator',TRUE);
+		$this->load->model('locationmodel','locations',TRUE);
 		$this->load->library('excel');//load PHPExcel library 
 	}
 	
@@ -17,6 +19,10 @@ class nqpp extends CI_Controller {
 		{
 			$header = "";
 			$result['nqppList'] = $this->nqpp->getAllNQPP(); 
+			$distwhere = [
+				"district.is_active" => 1 
+				];
+			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); 
 			$page = "dashboard/adminpanel_dashboard/nqpp/nqpp_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -439,5 +445,120 @@ public function checkmobile(){
 		}
 	}	
 
-}
+public function getBlock()
+	{
+		if($this->session->userdata('user_data'))
+		{
+				$block_ids = $this->input->post('blockids');
+
+
+				$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_dist'])) {
+				$in_district = $dataArry['sel_dist'];
+				
+
+         $data['blockList'] = $this->locations->getAllBlockListINDistict($in_district);
+			}else{
+
+         $data['blockList'] = []; 
+			}
+
+    
+      // pre($data['tuList']);
+       $viewTemp = $this->load->view('dashboard/adminpanel_dashboard/nqpp/block_view',$data);
+			echo $viewTemp;
+		}
+		else
+		{
+			redirect('login','refresh');
+		}
+	}
+
+
+public function getCoordinator()
+	{
+		if($this->session->userdata('user_data'))
+		{
+				$block_ids = $this->input->post('blockids');
+
+
+				$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_block'])) {
+				$block_ids = $dataArry['sel_block'];
+				
+
+         $data['cordinatorList'] = $this->coordinator->getAllCoordinatorINblock($block_ids);
+			}else{
+
+         $data['cordinatorList'] = []; 
+			}
+
+    
+      // pre($data['tuList']);
+       $viewTemp = $this->load->view('dashboard/adminpanel_dashboard/nqpp/cordinator_view',$data);
+			echo $viewTemp;
+		}
+		else
+		{
+			redirect('login','refresh');
+		}
+	}
+
+
+public function getNfhpList()
+	{
+		$session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+			$formData = $this->input->post('formDatas');
+			parse_str($formData, $dataArry);
+			$result=[];
+			
+			if (isset($dataArry['sel_coordinator'])) {
+				$cordinator_ids = $dataArry['sel_coordinator'];
+				
+				
+            $result['nqppList'] = $this->nqpp->getAllNfhpINCordinator($cordinator_ids);
+			}else{
+					if (isset($dataArry['sel_block'])) {
+						$block_ids = $dataArry['sel_block'];
+							
+						 $result['nqppList'] = $this->nqpp->getAllNfhpINBlock($block_ids);
+					}else{
+
+							  if (isset($dataArry['sel_dist'])) {
+							    	$district_ids = $dataArry['sel_dist'];
+							  		
+							  		$result['nqppList'] = $this->nqpp->getAllNfhpINDistrict($district_ids);
+							  }else{
+							  	
+							  	$result['nqppList'] = $this->nqpp->getAllNQPP(); 
+							  }
+
+					}
+
+         
+			}
+
+
+			
+			$page = "dashboard/adminpanel_dashboard/nqpp/nqpp_list_data.php";
+			$partial_view = $this->load->view($page,$result);
+			echo $partial_view;
+		}
+		else
+		{
+			redirect('administratorpanel','refresh');
+		}
+	}	
+
+
+
+}//end of class
 ?>

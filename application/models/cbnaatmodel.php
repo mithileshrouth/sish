@@ -49,7 +49,7 @@ class cbnaatmodel extends CI_Model{
 			$cbnaatcntr_data = [];
 			$user_data = [];
 			
-			$user_data = [
+			/*$user_data = [
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
 				"password" => trim(htmlspecialchars($data['ltpass'])),
 				"role_id" => $this->rolemodel->getRoleIDByRoleType("CBNAAT"),
@@ -58,15 +58,15 @@ class cbnaatmodel extends CI_Model{
 			];
 			
 			$this->db->insert('user_master', $user_data);
-			$user_id = $this->db->insert_id();
+			$user_id = $this->db->insert_id();*/
 			
 			$cbnaatcntr_data = [
 				"name" => trim(htmlspecialchars($data['cbnatcntrname'])),
 				"address" => trim(htmlspecialchars($data['cbnatcntradd'])),
 				"tuid" => trim(htmlspecialchars($data['seltu'])),
-				"lt_name" => trim(htmlspecialchars($data['ltname'])),
-				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
-				"userid" => $user_id,
+				"lt_name" => NULL,
+				"mobile_no" => NULL,
+				"userid" => NULL,
 				"project_id" => 1, // need to change dynamically according to requirement
 				"is_active" => 1,
 				"created_by" => $session['userid']
@@ -110,15 +110,13 @@ class cbnaatmodel extends CI_Model{
 					`cbnaat`.`address` AS cbnat_add,
 					`cbnaat`.`lt_name`,
 					`cbnaat`.`mobile_no` AS ltmobile,
-					`cbnaat`.tuid,
-					user_master.id as userid,
-					user_master.password as userpass
+					`cbnaat`.tuid
+				
 					
 				   ")
 
 				->from('cbnaat')
-			
-				->join('user_master','user_master.id = cbnaat.userid','INNER')
+
 				->where('cbnaat.id',$id)
 				->order_by('cbnaat.name')
 				->get();
@@ -139,25 +137,25 @@ class cbnaatmodel extends CI_Model{
 			$cbnaatcntr_data = [];
 			$user_data = [];
 			
-			$user_data = [
+			/*$user_data = [
 				"mobile_no" => trim(htmlspecialchars($data['mobile'])),
 				"password" => trim(htmlspecialchars($data['ltpass']))
 			];
 			
 			$userid = trim(htmlspecialchars($data['uid']));
-			$cbnatId = trim(htmlspecialchars($data['cbnatId']));
+			
 			
 			$this->db->where('user_master.id', $userid);
-			$this->db->update('user_master', $user_data); 
-			
+			$this->db->update('user_master', $user_data);*/
+
+			$cbnatId = trim(htmlspecialchars($data['cbnatId']));
 			
 			
 			$cbnaatcntr_data = [
 				"name" => trim(htmlspecialchars($data['cbnatcntrname'])),
 				"address" => trim(htmlspecialchars($data['cbnatcntradd'])),
-				"tuid" => trim(htmlspecialchars($data['seltu'])),
-				"lt_name" => trim(htmlspecialchars($data['ltname'])),
-				"mobile_no" => trim(htmlspecialchars($data['mobile']))
+				"tuid" => trim(htmlspecialchars($data['seltu']))
+				
 				
 			];
                         

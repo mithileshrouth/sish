@@ -48,6 +48,93 @@ class coordinatormodel extends CI_Model{
 	        return $data;
 	       
 	}
+
+
+public function getAllCoordinatorINblock($block_ids){
+		$data = [];
+		
+		$query = $this->db->select("
+					coordinator.id as cordid,
+					coordinator.name as cordname,
+					coordinator.mobile_no as cordmobile,
+					coordinator.post_office,
+					coordinator.pin_code,
+					coordinator.gender,
+					coordinator.village,
+					coordinator.full_address,
+					coordinator.aadhar_no,
+					coordinator.voter_id,
+					coordinator.is_active as active,
+					block.name as blockname,
+					district.name as districtname,
+					state.state,
+					user_master.password as cordpsw
+					")
+				->from('coordinator')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where_in('coordinator.block_id', $block_ids)
+				->order_by('coordinator.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+	public function getAllCoordinatorINDistrict($district_ids){
+		$data = [];
+		
+		$query = $this->db->select("
+					coordinator.id as cordid,
+					coordinator.name as cordname,
+					coordinator.mobile_no as cordmobile,
+					coordinator.post_office,
+					coordinator.pin_code,
+					coordinator.gender,
+					coordinator.village,
+					coordinator.full_address,
+					coordinator.aadhar_no,
+					coordinator.voter_id,
+					coordinator.is_active as active,
+					block.name as blockname,
+					district.name as districtname,
+					state.state,
+					user_master.password as cordpsw
+					")
+				->from('coordinator')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where_in('district.id', $district_ids)
+				->order_by('coordinator.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
 	
 	
 	public function insertIntoCoordinator($data,$session){

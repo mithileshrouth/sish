@@ -95,13 +95,11 @@ class cbnaat extends CI_Controller {
 			$seltu = trim(htmlspecialchars($dataArry['seltu']));
 			$cbnatcntrname = trim(htmlspecialchars($dataArry['cbnatcntrname']));
 			$cbnatcntradd = trim(htmlspecialchars($dataArry['cbnatcntradd']));
-			$ltname = trim(htmlspecialchars($dataArry['ltname']));
-			$mobile = trim(htmlspecialchars($dataArry['mobile']));
-			$ltpass = trim(htmlspecialchars($dataArry['ltpass']));
+			
 			
 
 
-			if($seltu!="0" && $cbnatcntrname!="" && $cbnatcntradd!="" && $ltname!="" &&  $mobile!="" &&  $ltpass!="" )
+			if($seltu!="0" && $cbnatcntrname!="" && $cbnatcntradd!="")
 			{
 	
 				
