@@ -284,7 +284,26 @@ class dmcmodel extends CI_Model{
 	}
 
 	
+	/*----------------------API--------------------*/
 	
+	public function getDMCbyTU($tuid){
+		$data = [];
+		$where_param = [
+			"dmc.is_active" => 1,
+			"dmc.tuid" => $tuid
+		];
+				
+		$query = $this->db->select("dmc.*")
+				->from('dmc')
+				->where($where_param)
+				->order_by('dmc.name')
+				->get();
+				foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+				return $data;
+	}
 	
 	
 }

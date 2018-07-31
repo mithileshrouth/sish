@@ -300,35 +300,18 @@ public function getAllCoordinatorINblock($block_ids){
 	
 	/*-----------For API------------*/
 	
-	public function getCoordinatorByPM(){
+	public function getCoordinatorByPM($distid){
 		$data = [];
 		$where = [
-			"is_active"=>1
+			"coordinator.is_active"=>1,
+			"block.district_id"=>$distid
 		
 		];
 		$query = $this->db->select("coordinator.id,coordinator.name")
 				->from('coordinator')
+				->join('block','block.id=coordinator.block_id','INNER')
 				->where($where)
-				->get();
-			
-			//echo $this->db->last_query();
-			if($query->num_rows()> 0)
-			{
-				$data = $query->row();
-	        }
-			
-	        return $data;
-	}
-	
-	public function getCoordinatorBYId($corduserid){
-		$data = [];
-		$where = [
-			"is_active"=>1,
-			"coordinator.userid"=>$corduserid
-		];
-		$query = $this->db->select("coordinator.id,coordinator.name")
-				->from('coordinator')
-				->where($where)
+				->order_by('coordinator.name','ASC')
 				->get();
 			
 			//echo $this->db->last_query();
@@ -344,11 +327,40 @@ public function getAllCoordinatorINblock($block_ids){
 	        return $data;
 	}
 	
-	public function getCoordinatorByDistCode($distcodeuserid){
+	public function getCoordinatorBYId($corduserid,$distid){
 		$data = [];
 		$where = [
 			"coordinator.is_active"=>1,
-			"district.userid"=>$distcodeuserid
+			"coordinator.userid"=>$corduserid,
+			"block.district_id"=>$distid
+		];
+		$query = $this->db->select("coordinator.id,coordinator.name")
+				->from('coordinator')
+				->join('block','block.id=coordinator.block_id','INNER')
+				->where($where)
+				->order_by('coordinator.name','ASC')
+				->get();
+			
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	}
+	
+	public function getCoordinatorByDistCode($distcodeuserid,$distid){
+		$data = [];
+		$where = [
+			"coordinator.is_active" => 1,
+			"district.userid" => $distcodeuserid,
+			"block.district_id" => $distid
+			
 		];
 		$query = $this->db->select("coordinator.id,coordinator.name")
 				->from('coordinator')
@@ -371,16 +383,19 @@ public function getAllCoordinatorINblock($block_ids){
 	        return $data;
 	}
 	
-	public function getCoordinatorOfNQPP($nqppid){
+	public function getCoordinatorOfNQPP($nqppid,$distid){
 		$data = [];
 		$where = [
 			"coordinator.is_active"=>1,
-			"nqpp.userid"=>$nqppid
+			"nqpp.userid"=>$nqppid,
+			"block.district_id" => $distid
 		];
 		$query = $this->db->select("coordinator.id,coordinator.name")
 				->from('coordinator')
 				->join('nqpp','nqpp.coordinator_id = coordinator.id','INNER')
+				->join('block','block.id=coordinator.block_id','INNER')
 				->where($where)
+				->order_by('coordinator.name','ASC')
 				->get();
 			
 			//echo $this->db->last_query();

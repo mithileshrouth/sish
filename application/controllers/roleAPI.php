@@ -106,12 +106,12 @@ public function __construct()
 		$postdata = file_get_contents("php://input");
 		$request = json_decode($postdata);
 		$apikey = $this->apimodel->getAPIkey();
-		
+		$sessiondata = $request->sdata;
 		$id = $request->id;
 		$key = $request->key;
 		
 		if(!empty($key) && $apikey == trim($key)){
-			$data = $this->location->getDistrict($id);
+			$data = $this->location->getDistrictByRole($sessiondata);
 			if(sizeof($data)>0)
 			{
 				$result = [
@@ -289,22 +289,18 @@ public function __construct()
 		exit;
   }
   
-   /* @method getBlock
-  *  @param postdata
-  */
-  
-  public function getBlockByDist(){
+   public function getDMCByTU(){
 		header('Access-Control-Allow-Origin: *');  
 		header('Content-Type: application/json');
 		$postdata = file_get_contents("php://input");
 		$request = json_decode($postdata);
 		$apikey = $this->apimodel->getAPIkey();
 		
-		$distid = $request->id;
+		$tuid = $request->id;
 		$key = $request->key;
 		
 		if(!empty($key) && $apikey == trim($key)){
-			$data = $this->location->getBlockBYDistrictID($distid);
+			$data = $this->dmc->getDMCbyTU($tuid);
 			if(sizeof($data)>0)
 			{
 				$result = [
@@ -337,6 +333,55 @@ public function __construct()
 		exit;
   }
   
+   /* @method getBlock
+  *  @param postdata
+  */
+  
+  public function getBlockByDist(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$sessiondata = $request->sdata;
+		$apikey = $this->apimodel->getAPIkey();
+		$distid = $request->id;
+		$key = $request->key;
+		
+		if(!empty($key) && $apikey == trim($key)){
+			$data = $this->location->getBlockByRoleAndDist($distid,$sessiondata);
+			if(sizeof($data)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $data
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+  }
+  
+
   /* @method getCoordinator
   *  @param postdata
   */
@@ -349,21 +394,22 @@ public function __construct()
 		$apikey = $this->apimodel->getAPIkey();
 		$sessiondata = $request->sdata;
 		$key = $request->key;
+		$distid = $request->id;
 		
 	
 		if(!empty($key) && $apikey == trim($key)){
 				
 			if($sessiondata->rcode=="CORD"){
-				$resultset = $this->coordinator->getCoordinatorBYId($sessiondata->uid);
+				$resultset = $this->coordinator->getCoordinatorBYId($sessiondata->uid,$distid);
 			}
 			elseif($sessiondata->rcode=="NQPP"){
-				$resultset = $this->coordinator->getCoordinatorOfNQPP($sessiondata->uid);
+				$resultset = $this->coordinator->getCoordinatorOfNQPP($sessiondata->uid,$distid);
 			}
 			elseif($sessiondata->rcode=="DISTCORD"){
-				$resultset = $this->coordinator->getCoordinatorByDistCode($sessiondata->uid); 
+				$resultset = $this->coordinator->getCoordinatorByDistCode($sessiondata->uid,$distid); 
 			}
 			else{
-				$resultset = $this->coordinator->getCoordinatorByPM(); // Need to change if necessary
+				$resultset = $this->coordinator->getCoordinatorByPM($distid); // Need to change if necessary
 			}
 			
 			
@@ -468,12 +514,12 @@ public function __construct()
 		$postdata = file_get_contents("php://input");
 		$request = json_decode($postdata);
 		$apikey = $this->apimodel->getAPIkey();
-		
+		$sessiondata = $request->sdata;
 		$coordid = $request->id;
 		$key = $request->key;
 		
 		if(!empty($key) && $apikey == trim($key)){
-			$data = $this->nqpp->getNqppByCoordID($coordid);
+			$data = $this->nqpp->getNqppByCoordAndRole($coordid,$sessiondata);
 			if(sizeof($data)>0)
 			{
 				$result = [
@@ -506,6 +552,52 @@ public function __construct()
 		exit;
   }
   
+    public function getOutcomeCountByID(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		$sessiondata = $request->sdata;
+		$outcomeid = $request->id;
+		$key = $request->key;
+		
+		if(!empty($key) && $apikey == trim($key)){
+			$data = $this->apimodel->getOutcomeByIDAndRole(1,$sessiondata);
+			
+			
+			if(sizeof($data)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $data,
+				 "totalno" => count($data)
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL,
+				 "totalno" => 0
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL,
+				  "totalno" => 0
+			];
+		}
+
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+  }
  
  public function getAllPTBPhase(){
 		header('Access-Control-Allow-Origin: *');  
@@ -745,7 +837,8 @@ public function __construct()
 	$request = json_decode($postdata);
 	$apikey = $this->apimodel->getAPIkey();
 	$key = $request->key;
-		
+	//$sessiondata = $request->session;
+			
 	
 		if(!empty($key) && $apikey == trim($key)){
 			
@@ -1635,7 +1728,96 @@ public function getPendingReferralData(){
 		echo $resultdata;
 		exit;
 	}
- 
+	
+	
+	public function getOutComeListWithCount(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$sessiondata = $request->session;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getOutComeListWithCount($sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+		
+	}
+	
+	
+	public function getOutComeWisePTBList(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$outcomeid = $request->id;
+		$sessiondata = $request->session;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getOutcomeListByIDAndRole($outcomeid,$sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
  
  
   private function generateToken()

@@ -134,7 +134,12 @@ class adminpanel extends CI_Controller {
  
  public function logmeout(){
 	 $this->session->sess_destroy();
-	 redirect("adminpanel","refresh");
+	
+	
+	//redirect('adminpanel','location');
+	header('location:');
+	exit;
+	
  }
  
 

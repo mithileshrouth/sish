@@ -129,6 +129,84 @@ class locationmodel extends CI_Model{
 					}
 					return $data;
 		}
+		
+		
+		/*-- @method getBlockByRoleAndDist
+		 *-- @date   26.07.2018
+		 *-- @by     Mithilesh
+		*/  
+		
+		public function getBlockByRoleAndDist($distid,$sessiondata){
+			$data = [];
+			$role = $sessiondata->rcode;
+			$userid = $sessiondata->uid;
+			
+			if($role=="DISTCORD"){
+				$where_param = [
+					"block.is_active" => 1,
+					"district.userid" => $userid,
+					"block.district_id" => $distid
+				];
+				$query = $this->db->select("block.*")
+								  ->from('block')
+								  ->join('district','district.id','block.district_id','INNER')
+								  ->where($where_param)
+								  ->order_by('block.name')
+								  ->get();
+			}
+			elseif($role=="CORD"){
+				$where_param = [
+					"block.is_active" => 1,
+					"coordinator.userid" => $userid,
+					"block.district_id" => $distid
+				];
+				$query = $this->db->select("block.*")
+								  ->from('block')
+								  ->join('coordinator','coordinator.block_id = block.id','INNER')
+								  ->where($where_param)
+								  ->order_by('block.name')
+								  ->get();
+			}
+			
+			elseif($role=="NQPP"){
+				$where_param = [
+					"block.is_active" => 1,
+					"nqpp.userid" => $userid,
+					"block.district_id" => $distid
+				];
+				$query = $this->db->select("block.*")
+								  ->from('block')
+								  ->join('nqpp','nqpp.block_id = block.id','INNER')
+								  ->where($where_param)
+								  ->order_by('block.name')
+								  ->get();
+			}
+			else{
+				$where_param = [
+					"block.is_active" => 1,
+					"block.district_id" => $distid
+					
+				];
+				$query = $this->db->select("block.*")
+								  ->from('block')
+								  ->where($where_param)
+								  ->order_by('block.name')
+								  ->get();
+			}
+			
+			//echo $this->db->last_query();
+			
+			if($query->num_rows()> 0)
+			{
+				foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+			}
+				
+			
+			return $data;
+		}
 
 		/********************************************************/
 		/**************************STATE*************************/
@@ -228,7 +306,7 @@ class locationmodel extends CI_Model{
 		
 	}
 
-
+		// All District
 		public function getDistrict($id=NULL){
 			$data = [];
 			
@@ -265,6 +343,80 @@ class locationmodel extends CI_Model{
 			}
 			return $data;
 		}
+		
+		/*-- @method getDistrictByRole
+		 *-- @date   26.07.2018
+		 *-- @by     Mithilesh
+		*/  
+		
+		public function getDistrictByRole($sessiondata){
+			$data = [];
+			$role = $sessiondata->rcode;
+			$userid = $sessiondata->uid;
+			
+			if($role=="DISTCORD"){
+				$where_param = [
+					"district.is_active" => 1,
+					"district.userid" => $userid
+				];
+				$query = $this->db->select("district.*")
+								  ->from('district')
+								  ->where($where_param)
+								  ->order_by('district.name')
+								  ->get();
+			}
+			elseif($role=="CORD"){
+				$where_param = [
+					"district.is_active" => 1,
+					"coordinator.userid" => $userid
+				];
+				$query = $this->db->select("district.*")
+								  ->from('district')
+								  ->join('block','block.district_id = district.id','INNER')
+								  ->join('coordinator','coordinator.block_id = block.id','INNER')
+								  ->where($where_param)
+								  ->order_by('district.name')
+								  ->get();
+			}
+			
+			elseif($role=="NQPP"){
+				$where_param = [
+					"district.is_active" => 1,
+					"nqpp.userid" => $userid
+				];
+				$query = $this->db->select("district.*")
+								  ->from('district')
+								  ->join('block','block.district_id = district.id','INNER')
+								  ->join('nqpp','nqpp.block_id = block.id','INNER')
+								  ->where($where_param)
+								  ->order_by('district.name')
+								  ->get();
+			}
+			else{
+				$where_param = [
+					"district.is_active" => 1
+				];
+				$query = $this->db->select("district.*")
+								  ->from('district')
+								  ->where($where_param)
+								  ->order_by('district.name')
+								  ->get();
+			}
+			
+			//echo $this->db->last_query();
+			
+			if($query->num_rows()> 0)
+			{
+				foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+				}
+				
+			
+			return $data;
+		}
+		
 		
 		// Save District Data
 		public function insertIntoDistrict($data,$session){

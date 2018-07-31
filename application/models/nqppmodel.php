@@ -588,5 +588,69 @@ public function insertImportFileDataIntoNqpp($insertArray,$objReader,$session)
 		return $blockid;
 	}
 	
+	/*
+		@by Mithilesh
+		@date 26.07.2018
+	*/
+	public function getNqppByCoordAndRole($coordid,$sessiondata){
+		$data = [];
+			$role = $sessiondata->rcode;
+			$userid = $sessiondata->uid;
+			
+			
+			if($role=="CORD"){
+				$where_param = [
+					"nqpp.is_active" => 1,
+					"coordinator.userid" => $userid,
+					"nqpp.coordinator_id" => $coordid
+				];
+				$query = $this->db->select("nqpp.*")
+								  ->from('nqpp')
+								  ->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+								  ->where($where_param)
+								  ->order_by('nqpp.name')
+								  ->get();
+			}
+			
+			elseif($role=="NQPP"){
+				$where_param = [
+					"nqpp.is_active" => 1,
+					"nqpp.userid" => $userid,
+					"nqpp.coordinator_id" => $coordid
+				];
+				$query = $this->db->select("nqpp.*")
+								  ->from('nqpp')
+								  ->where($where_param)
+								  ->order_by('nqpp.name')
+								  ->get();
+			}
+			else{
+				$where_param = [
+					"nqpp.is_active" => 1,
+					"nqpp.coordinator_id" => $coordid
+					
+				];
+				$query = $this->db->select("nqpp.*")
+								  ->from('nqpp')
+								  ->where($where_param)
+								  ->order_by('nqpp.name')
+								  ->get();
+			}
+			
+			//echo $this->db->last_query();
+			
+			
+			if($query->num_rows()> 0)
+			{
+				foreach($query->result() as $rows)
+					{
+						$data[] = $rows;
+					}
+			}
+				
+			
+			return $data;
+	}
+	
 	
 }

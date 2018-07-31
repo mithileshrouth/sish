@@ -160,6 +160,7 @@ class apimodel extends CI_Model {
 				//$state = $addressdata->state;
 				$village = $addressdata->village;
 				$grampanchayat = $addressdata->grampanchayat;
+				$dmcid = $addressdata->selecteddmc;
 				
 				// Document Data Info
 				$documentdata = $data->documentInfo;
@@ -176,7 +177,6 @@ class apimodel extends CI_Model {
 				$nqppdata = $referaldata->refferedbynqpp;
 				
 				$refferedbynqpp = $nqppdata->id;
-				$dmcid = $referaldata->selecteddmc;
 				$symptom = $referaldata->symptom;
 				
 				
@@ -254,7 +254,11 @@ class apimodel extends CI_Model {
 					if(sizeof($coordinator_row)>0){
 						$coordinator_mobile = $coordinator_row->cordmobile;
 						
+<<<<<<< HEAD
+						/* $sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
+=======
 						$sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -264,7 +268,11 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $coordinator_mobile,
 							"is_sent" => $sms_status
 						];
+<<<<<<< HEAD
+						$this->db->insert('sms_sent_report', $sms_log); */
+=======
 						$this->db->insert('sms_sent_report', $sms_log);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						
 						
 						
@@ -276,7 +284,11 @@ class apimodel extends CI_Model {
 					if(sizeof($distcord_row)>0){
 						$distcord_mobile = $distcord_row->dist_cordinator_mbl;
 						
+<<<<<<< HEAD
+						/* $sms_status = $this->sendSMS($distcord_mobile,$smstext);	
+=======
 						$sms_status = $this->sendSMS($distcord_mobile,$smstext);	
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -286,7 +298,11 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $distcord_mobile,
 							"is_sent" => $sms_status
 						];
+<<<<<<< HEAD
+						$this->db->insert('sms_sent_report', $sms_log); */
+=======
 						$this->db->insert('sms_sent_report', $sms_log);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						
 						
 					}
@@ -297,7 +313,11 @@ class apimodel extends CI_Model {
 					if(sizeof($nqpp_row)>0){
 						$nqpp_mobile = $nqpp_row->nqppmobile;
 						
+<<<<<<< HEAD
+						/* $sms_status = $this->sendSMS($nqpp_mobile,$smstext);
+=======
 						$sms_status = $this->sendSMS($nqpp_mobile,$smstext);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -307,7 +327,11 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $nqpp_mobile,
 							"is_sent" => $sms_status
 						];
+<<<<<<< HEAD
+						$this->db->insert('sms_sent_report', $sms_log); */
+=======
 						$this->db->insert('sms_sent_report', $sms_log);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						
 					}
 					
@@ -317,7 +341,11 @@ class apimodel extends CI_Model {
 					if(sizeof($dmc_row)>0){
 						$dmc_lt_mobile = $dmc_row->ltmobile;
 						
+<<<<<<< HEAD
+						/* $sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
+=======
 						$sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -327,7 +355,11 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $dmc_lt_mobile,
 							"is_sent" => $sms_status
 						];
+<<<<<<< HEAD
+						$this->db->insert('sms_sent_report', $sms_log); */
+=======
 						$this->db->insert('sms_sent_report', $sms_log);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 						
 						
 					}
@@ -335,7 +367,11 @@ class apimodel extends CI_Model {
 				}
 				elseif($sendsms_to_role->role_code=="PTB"){
 					
+<<<<<<< HEAD
+					/* $sms_status = $this->sendSMS($mobile,$smstext);
+=======
 					$sms_status = $this->sendSMS($mobile,$smstext);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 					$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -345,7 +381,11 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $mobile,
 							"is_sent" => $sms_status
 						];
+<<<<<<< HEAD
+					$this->db->insert('sms_sent_report', $sms_log); */
+=======
 					$this->db->insert('sms_sent_report', $sms_log);
+>>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
 					
 				}
 				
@@ -984,6 +1024,7 @@ class apimodel extends CI_Model {
 			if($updFrom=="SPUTUM"){
 				$upd_data = [
 					"dmc_sputum_done" => "Y",
+					"dmc_sputum_test_date" => date("Y-m-d",strtotime($updateDatas->sputumTestDate)),
 					"dmc_sputum_date" => date("Y-m-d",strtotime($updateDatas->sputumColDate))
 					//"dmc_id" => $updateDatas->sputumDmc
 				];
@@ -1022,6 +1063,7 @@ class apimodel extends CI_Model {
 			if($updFrom=="CBNAAT"){
 				$upd_data = [
 					"is_cbnaat_done" => "Y",
+					"cbnaat_test_date" => date("Y-m-d",strtotime($updateDatas->cbnaatTestdate)),
 					"cbnaat_date" => date("Y-m-d",strtotime($updateDatas->cbnaatColdate)),
 					"cbnaat_id" => $updateDatas->cbnaatCenterName
 				];
@@ -1182,6 +1224,7 @@ class apimodel extends CI_Model {
 			if($updFrom=="SPUTUM"){
 				$upd_data = [
 					"dmc_sputum_done" => "N",
+					"dmc_sputum_test_date" => NULL,
 					"dmc_sputum_date" => NULL
 				];
 			
@@ -1219,6 +1262,7 @@ class apimodel extends CI_Model {
 			if($updFrom=="CBNAAT"){
 				$upd_data = [
 					"is_cbnaat_done" => "N",
+					"cbnaat_test_date" => NULL,
 					"cbnaat_date" => NULL,
 					"cbnaat_id" => NULL
 				];
@@ -1576,7 +1620,185 @@ class apimodel extends CI_Model {
 		return $data;
 	}
 	
+	public function getOutcomeByIDAndRole($outcomeid,$localsession){
+		$data = [];
+		$no = 0;
+		$userid = $localsession->uid;
+		$rcode = $localsession->rcode;
+		
+		if($rcode=="CORD"){
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid,
+				"coordinator.userid" => $userid
+				
+			];
+			$query = $this->db->select("COUNT(*) AS total")
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->join('coordinator','coordinator.id = patient.group_cord_id','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		
+		elseif($rcode=="NQPP"){
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid,
+				"nqpp.userid" => $userid
+				
+			];
+			$query = $this->db->select("COUNT(*) AS total")
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->join('nqpp','nqpp.id = patient.nqpp_id','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		elseif($rcode=="DISTCORD"){
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid,
+				"district.userid" => $userid
+				
+			];
+			$query = $this->db->select("COUNT(*) AS total")
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->join('district','district.id = patient.patient_district','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		else{
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid
+				
+			];
+			$query = $this->db->select("COUNT(*) AS total")
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		
 	
+		
+		if($query->num_rows()> 0)
+		{
+			$row = $query->row();
+			$no = $row->total;
+			
+			
+			
+		}
+		
+		return $no;
+		
+		
+		
+	}
+	
+	public function getOutcomeListByIDAndRole($outcomeid,$localsession){
+		$data = [];
+		$no = 0;
+		$userid = $localsession->uid;
+		$rcode = $localsession->rcode;
+		
+		if($rcode=="CORD"){
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid,
+				"coordinator.userid" => $userid
+				
+			];
+			$query = $this->db->select("patient.*,DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->join('coordinator','coordinator.id = patient.group_cord_id','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		
+		elseif($rcode=="NQPP"){
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid,
+				"nqpp.userid" => $userid
+				
+			];
+			$query = $this->db->select("patient.*,DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->join('nqpp','nqpp.id = patient.nqpp_id','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		elseif($rcode=="DISTCORD"){
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid,
+				"district.userid" => $userid
+				
+			];
+			$query = $this->db->select("patient.*,DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->join('district','district.id = patient.patient_district','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		else{
+			$where_param = [
+				"ptb_treatment_detail.outcome" => $outcomeid
+				
+			];
+			$query = $this->db->select("patient.*,DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+							->from('ptb_treatment_detail')
+							->join('patient','ptb_treatment_detail.patient_id = patient.patient_id','INNER')
+							->where($where_param)
+							->order_by('patient.patient_name')
+							->get();
+		}
+		
+	
+		
+		if($query->num_rows()> 0)
+		{
+			foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+			
+		}
+		
+		return $data;
+	}
+	
+	
+	public function getOutComeListWithCount($sessdata){
+		$data = [];
+		$query = $this->db->select("*")
+					->from("outcome_master")
+					->where("outcome_master.is_active",1)
+					->order_by("outcome_master.name","ASC")
+					->get();
+		
+		if($query->num_rows()> 0)
+		{
+	        foreach($query->result() as $rows)
+			{
+				//$data[] = $rows;
+				$data[] = [
+					"listdata" => $rows,
+					"total" => $this->getOutcomeByIDAndRole($rows->id,$sessdata)
+				];
+			}
+	            
+	    }
+			
+	    return $data;
+	}
 
 	
 	
