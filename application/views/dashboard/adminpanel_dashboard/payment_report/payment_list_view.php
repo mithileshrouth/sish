@@ -1,8 +1,18 @@
   <script src="<?php echo base_url(); ?>application/assets/js_scripts/adm_scripts/payment_report.js"></script>
+  <link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/admin_style.css" /> 
+ <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css"> 
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>   
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>   
 
 
   <style type="text/css">
-    
+    .exportExcel{
+  padding: 5px;
+  border: 1px solid grey;
+  margin: 5px;
+  cursor: pointer;
+}
     .formBlock{
       box-shadow: -1px -1px 5px 6px #939393;
     }
@@ -38,7 +48,7 @@ tr.group:hover {
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo base_url(); ?>dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">List of Payment Report(s)</li>
+        <li class="active">Payment Report(s)</li>
       </ol>
     </section>
 
@@ -49,7 +59,7 @@ tr.group:hover {
       <div class="col-md-12">
         <div class="box box-primary formBlock">
               <div class="box-header with-border">
-                <h3 class="box-title">List of Payment Report(s)</h3>
+                <h3 class="box-title">Payment Report(s)</h3>
                 
               </div>
               <!-- /.box-header -->
@@ -63,7 +73,7 @@ tr.group:hover {
 
                   <div class="form-group">
                      <label for="coordinatorList">Group Coordinator</label> 
-                        <select id="coordinator" name="coordinator" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                        <select id="coordinator" name="coordinator[]" class="form-control selectpicker" data-show-subtext="true" data-actions-box="true" data-live-search="true" multiple="multiple">
                         <option value="0">Select</option>
                           <?php 
                             if($bodycontent['coordinatorList'])
@@ -77,15 +87,33 @@ tr.group:hover {
                           ?>
                         </select>
                   </div>
-                       <div class="form-group">
-                     <label for="nqppList">NQPP</label> 
+                 <div class="form-group">
+                     <label for="nqppList">NFHP</label> 
                      <div id="nqppview">
-                        <select id="sel_nqpp" name="sel_nqpp" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
-                      <option value="0">Select</option>
+                        <select id="sel_nqpp" name="sel_nqpp[]" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
+                     
                          
                         </select>
                         </div>
                   </div>
+
+                 <div class="row">
+                   <div class="col-md-6">
+                <div class="form-group">
+                  <label for="fromdate"> From Date </label> 
+                    <input type="text" id="frndt"  class="form-control custom_frm_input datepicker"  name="from_date"  placeholder=""  />
+                     
+                    </div>
+                    </div>
+                  <div class="col-md-6">
+                 <div class="form-group">
+                  <label for="fromdate"> To Date </label> 
+                    <input type="text" id="todt"  class="form-control custom_frm_input datepicker"  name="to_date"  placeholder=""  />
+                     </div>
+                    </div>
+                  
+                  </div> 
+           
                 
                   <p id="payment_manual_err_msg" class="form_error"></p>
 

@@ -10,11 +10,12 @@ $('.selectpicker').selectpicker({dropupAuto: false});
 
 
 
+
 /* On select Coordinator select NQPP */
  $(document).on("change","#coordinator",function(event){
         event.preventDefault();
 
-           var formDataserialize = $("#PaymentReportForm" ).serialize();
+           var formDataserialize = $("#PaymentGenReportForm" ).serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
             var formData = {formDatas: formDataserialize};
@@ -22,7 +23,7 @@ $('.selectpicker').selectpicker({dropupAuto: false});
 
 	$.ajax({
 	type: "POST",
-	url: basepath+'payment_report/getNqppMultiple',
+	url: basepath+'payment_generation_report/getNqppMultiple',
 	data: formData,
 	
 	success: function(data){
@@ -57,12 +58,12 @@ $('.selectpicker').selectpicker({dropupAuto: false});
 
 
 // For Listing of payment details
-    $(document).on("submit","#PaymentReportForm",function(event){
+    $(document).on("submit","#PaymentGenReportForm",function(event){
         event.preventDefault();
 
         if(1) {
         	
-            var formDataserialize = $("#PaymentReportForm" ).serialize();
+            var formDataserialize = $("#PaymentGenReportForm" ).serialize();
             formDataserialize = decodeURI(formDataserialize);
             console.log(formDataserialize);
             var formData = {formDatas: formDataserialize};
@@ -71,7 +72,7 @@ $('.selectpicker').selectpicker({dropupAuto: false});
 
             $.ajax({
                 type: "POST",
-                url: basepath+'payment_report/getPaymentList',
+                url: basepath+'payment_generation_report/getPaymentGenerationList',
                 data: formData,
                 dataType: 'html',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
@@ -149,28 +150,4 @@ $('.selectpicker').selectpicker({dropupAuto: false});
 
 
 
-
-}); // end od document ready
-
-function validateView()
-{
-
-    var coordinator = $("#coordinator").val();
-    var sel_nqpp = $("#sel_nqpp").val();
-   
-
-    if(coordinator=="0")
-    {
-        $("#payment_manual_err_msg").css("display","block").text("Error : Select Coordinator");
-        return false;
-    }
-    if(sel_nqpp=="0")
-    {
-        $("#payment_manual_err_msg").css("display","block").text("Error : Select NQPP");
-        return false;
-    }
-
-    
-    $("#payment_manual_err_msg").css("display","none").text("");
-    return true;
-}
+}); //end of document ready

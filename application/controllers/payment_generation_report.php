@@ -1,11 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class payment_report extends CI_Controller {
+class payment_generation_report extends CI_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
 		$this->load->library('session');
 		$this->load->model('paymentreportmodel','paymentreport',TRUE);
+		$this->load->model('paymentgenerationreportmodel','paymengentreport',TRUE);
 	}
 
 
@@ -16,7 +17,7 @@ class payment_report extends CI_Controller {
 		{
 			$header = "";
 			$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');
-			$page = "dashboard/adminpanel_dashboard/payment_report/payment_list_view";
+			$page = "dashboard/adminpanel_dashboard/payment_generation_report/payment_generation_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
 		else
@@ -25,24 +26,9 @@ class payment_report extends CI_Controller {
 		}
 	}
 
-	public function getNqpp()
-	{
-		if($this->session->userdata('user_data'))
-		{
-				$coordinatorid = $this->input->post('coordinatorid');
 
-       $data['nqppList'] = $this->paymentreport->getNqppListByCoordinator($coordinatorid);
-       
-       $viewTemp = $this->load->view('dashboard/adminpanel_dashboard/payment_report/nqpp_view',$data);
-			echo $viewTemp;
-		}
-		else
-		{
-			redirect('login','refresh');
-		}
-	}
 
-public function getPaymentList()
+public function getPaymentGenerationList()
 	{
 		$session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data') && isset($session['token']))
@@ -73,24 +59,26 @@ public function getPaymentList()
 			 	
 			 	$nqpp_ids = $dataArry['sel_nqpp'];
 			    $wherein='payment_gen_master.nqpp_id';
-			 	$result['paymentlistData']=$this->paymentreport->getPaymentListBymultipleSelect($wherein,$nqpp_ids,$from_dt,$to_date);
+			 	$result['paymentgenerationlistData']=$this->paymengentreport->getPaymentGenerationListBymultipleSelect($wherein,$nqpp_ids,$from_dt,$to_date);
 			 }elseif (isset($dataArry['coordinator'])) {
 			 	
 			 	$coordinator_ids = $dataArry['coordinator'];
 				$wherein='nqpp.coordinator_id';
 
-			 	$result['paymentlistData']=$this->paymentreport->getPaymentListBymultipleSelect($wherein,$coordinator_ids,$from_dt,$to_date);
+			 	$result['paymentgenerationlistData']=$this->paymengentreport->getPaymentGenerationListBymultipleSelect($wherein,$coordinator_ids,$from_dt,$to_date);
 			 
 			 }elseif(isset($dataArry['from_date']) && isset($dataArry['to_date'])){
 			 	
-			  	$result['paymentlistData'] = $this->paymentreport->getPaymentListByPaymentDate($from_dt,$to_date);
+			 $result['paymentgenerationlistData'] = $this->paymengentreport->getPaymentGenerationListByGenerationDate($from_dt,$to_date);
+
 			  }
 			 else{
 			 	
-			 	$result['paymentlistData']=[];
+			 	$result['paymentgenerationlistData']=[];
 			 }
 
-			$page = "dashboard/adminpanel_dashboard/payment_report/payment_list_details_view";
+			
+			$page = "dashboard/adminpanel_dashboard/payment_generation_report/payment_generation_details_view";
 			$partial_view = $this->load->view($page,$result);
 			echo $partial_view;
 		}
@@ -100,7 +88,7 @@ public function getPaymentList()
 		}
 	}
 
-
+/* working progress... */
 public function getNqppMultiple()
 	{
 		if($this->session->userdata('user_data'))

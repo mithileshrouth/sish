@@ -48,6 +48,7 @@
   <link href="<?php echo base_url(); ?>application/assets/css/transition.min.css" rel="stylesheet">
    <link href="<?php echo base_url(); ?>application/assets/css/typeahead.css" rel="stylesheet">
    <link rel="stylesheet" href="<?php echo base_url();?>application/assets/css/bootstrap-timepicker.min.css" />
+ 
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -987,7 +988,8 @@
 		//$(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
 		$(this).parent().find('.userfilesname').val($(this).val().replace(/C:\\fakepath\\/i, ''));
     });	
-	
+
+
 	function numericFilter(txb) 
 	{
 		txb.value = txb.value.replace(/[^\0-9]/ig, "");
@@ -1024,6 +1026,18 @@
         direction: 'upward'
       });
 
+/* onclick menu selected*/
+var url = window.location;
+
+// for sidebar menu entirely but not cover treeview
+$('ul.sidebar-menu a').filter(function() {
+   return this.href == url;
+}).parent().addClass('active');
+
+// for treeview
+$('ul.treeview-menu a').filter(function() {
+   return this.href == url;
+}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
 
 </script>
 </body>

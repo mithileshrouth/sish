@@ -26,6 +26,29 @@ class paymentreportmodel extends CI_Model{
 		
 	}
 
+	public function getNqppListByMultipleCoordinator($coordinator_ids){
+		$data = [];
+		
+		$query = $this->db->select("*")
+				->from('nqpp')
+				->where_in('nqpp.coordinator_id', $coordinator_ids)
+				->order_by('nqpp.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
 
 		public function getPaymentListByNqpp($nqppid){
 			$where = array(
@@ -71,6 +94,101 @@ class paymentreportmodel extends CI_Model{
 		
 	}
 
+	/*get payment List report by selected ids*/
+	public function getPaymentListBymultipleSelect($wherein,$selected_ids,$frmdt=NULL,$todt=NULL){
+		$data = [];
+		
+		if ($frmdt!=NULL && $todt!=NULL) {
+			$where_date ="payment_master.payment_dt BETWEEN '".$frmdt."' AND '".$todt."'";
+		}else{
+			$where_date = [];
+		}
+		$where_pmtdone = array(
+						'payment_gen_master.is_payment_done' => 'Y'
+						 );
+		$query = $this->db->select("payment_gen_master.*,
+									nqpp.name AS nqppname,
+									coordinator.name as coordinator_name,
+									payment_master.amount,
+									payment_master.due,
+									payment_master.payment_dt,
+									payment_master.remarks
+								   ")
+				->from('payment_gen_master')
+				->join('payment_master','payment_master.payment_gen_id = payment_gen_master.id','INNER')
+				->join('nqpp','nqpp.id = payment_gen_master.nqpp_id','INNER')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->where($where_pmtdone)
+				->where($where_date)
+				->where_in($wherein, $selected_ids)
+				->order_by('payment_gen_master.id')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+				{
+		          foreach($query->result() as $rows)
+					{
+						//$data[] = $rows;
+						$data[] = array(
+                        "paymentmstData" => $rows,
+                        "paymentDetailsData" =>$this->getPaymentGenDetails($rows->id)
+                    
+				      ); 
+					}
+		             
+		        }
+			
+	        return $data;
+	       
+		
+	}
+
+
+/*get payment List report by selected ids*/
+	public function getPaymentListByPaymentDate($frmdt,$todt){
+		$data = [];
+		
+		
+		$where_date ="payment_master.payment_dt BETWEEN '".$frmdt."' AND '".$todt."'";
+		
+		$where_pmtdone = array(
+						'payment_gen_master.is_payment_done' => 'Y'
+						 );
+		$query = $this->db->select("payment_gen_master.*,
+									nqpp.name AS nqppname,
+									coordinator.name as coordinator_name,
+									payment_master.amount,
+									payment_master.due,
+									payment_master.payment_dt,
+									payment_master.remarks
+								   ")
+				->from('payment_gen_master')
+				->join('payment_master','payment_master.payment_gen_id = payment_gen_master.id','INNER')
+				->join('nqpp','nqpp.id = payment_gen_master.nqpp_id','INNER')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->where($where_pmtdone)
+				->where($where_date)
+				->order_by('payment_gen_master.id')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+				{
+		          foreach($query->result() as $rows)
+					{
+						//$data[] = $rows;
+						$data[] = array(
+                        "paymentmstData" => $rows,
+                        "paymentDetailsData" =>$this->getPaymentGenDetails($rows->id)
+                    
+				      ); 
+					}
+		             
+		        }
+			
+	        return $data;
+	       
+		
+	}
 
 	public function getPaymentGenDetails($payment_gen_id){
      $data = [];

@@ -84,7 +84,7 @@
                         </select>
                   </div>
                        <div class="form-group">
-                     <label for="nqppList">NQPP</label> 
+                     <label for="nqppList">NFHP</label> 
                      <div id="nqppview">
                         <select id="sel_nqpp" name="sel_nqpp" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                       <option value="0">Select</option>
@@ -131,7 +131,7 @@
                         </select>
                   </div>
                        <div class="form-group">
-                     <label for="nqppList">NQPP</label> 
+                     <label for="nqppList">NFHP</label> 
                      <div id="nqppviewt2">
                         <select id="sel_nqppt2" name="sel_nqppt2" class="form-control selectpicker" data-show-subtext="true" data-live-search="true">
                       <option value="0">Select</option>

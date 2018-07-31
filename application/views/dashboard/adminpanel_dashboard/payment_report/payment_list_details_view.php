@@ -15,17 +15,19 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
          
          
           <div >
-              <table class="table table-bordered table-striped table-responsive dataTables" id="PatientlistTbl" style="border-collapse: collapse !important;" >
+              <table class="table table-bordered table-striped table-responsive nowrap dataTables" id="PatientlistTbl" style="border-collapse: collapse !important;" >
                 <thead>
                 <tr style="color: #4a356c;">
                   <th style="width:10%;">Sl</th>
+                  <th style="width:10%;">Group Coordinator</th>
+                  <th style="width:10%;">NFHP</th>
                   
-                  <th style="text-align:left;width:20%;">Transaction No</th>
+                  <th style="text-align:left;width:20%;">Payment Date</th>
                   <th style="text-align:left;width:20%;">Patient Name</th>
                   <th style="text-align:left;width:20%;">Patient ID</th>
-                  <th style="text-align:left;width:20%;">Mobile</th>
+                  <th style="text-align:left;width:10%;">Mobile</th>
                   <th style="text-align:left;width:20%;">Village</th>
-                  <th style="text-align:left;width:20%;">Amount</th>
+                  <th style="text-align:left;width:10%;">Amount</th>
                   
                     
                 </tr>
@@ -47,9 +49,11 @@ text-align:center;padding:10px;padding: 10px;margin-bottom: 50px;display:none;
       ?>      
           <tr>
             <td><?php echo $sl; ?></td>
+            <td><?php echo $payment_list['paymentmstData']->coordinator_name;?></td>
+            <td><?php echo $payment_list['paymentmstData']->nqppname;?></td>
 
              <td align="left">
-             <b style="color:#7d3c98;">Transaction ID : <?php echo $payment_list['paymentmstData']->transaction_id;?><b>&nbsp;&nbsp; <b style="color:#d35400;float: right;">Payment Date : <?php echo date('d-m-Y', strtotime($payment_list['paymentmstData']->payment_dt));?></b>
+             <b style="color:#7d3c98;float: left;">Payment Date : <?php echo date('d-m-Y', strtotime($payment_list['paymentmstData']->payment_dt));?></b>
            
 
 

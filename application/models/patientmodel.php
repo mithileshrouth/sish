@@ -48,6 +48,102 @@ class patientmodel extends CI_Model{
 	       
 	}
 
+
+	/*get patient report*/
+	public function getAllPatientReportBymultipleSelect($wherein,$selected_ids,$frmdt=NULL,$todt=NULL){
+		$data = [];
+		
+		if ($frmdt!=NULL && $todt!=NULL) {
+			$where_date ="patient.patient_reg_date BETWEEN '".$frmdt."' AND '".$todt."'";
+		}else{
+			$where_date = [];
+		}
+		$query = $this->db->select("patient.*,
+									district.name as district_name,
+									coordinator.name as coordinator_name,
+									block.name as block_name,
+									dmc.name as dmc_name,
+									xray_center.name as xray_center_name,
+									cbnaat.name as cbnaat_center_name,
+									outcome_master.name as outcome
+
+								   ")
+				->from('patient')
+				->join('district','district.id = patient.patient_district','INNER')
+				->join('block','block.id = patient.patient_block','INNER')
+				->join('coordinator','coordinator.id = patient.group_cord_id','INNER')
+				->join('dmc','dmc.id = patient.dmc_id','LEFT')
+				->join('xray_center','xray_center.id = patient.xray_cntr_id','LEFT')
+				->join('cbnaat','cbnaat.id = patient.cbnaat_id','LEFT')
+				->join('ptb_treatment_detail','ptb_treatment_detail.id = patient.patient_id','LEFT')
+				->join('outcome_master','outcome_master.id = ptb_treatment_detail.outcome','LEFT')
+				->where($where_date)
+				->where_in($wherein, $selected_ids)
+				->order_by('patient.patient_id')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+	
+
+	public function getAllPatientReportByDate($frmdt,$todt){
+		$data = [];
+		
+		
+			$where_date ="patient.patient_reg_date BETWEEN '".$frmdt."' AND '".$todt."'";
+		
+		$query = $this->db->select("patient.*,
+									district.name as district_name,
+									coordinator.name as coordinator_name,
+									block.name as block_name,
+									dmc.name as dmc_name,
+									xray_center.name as xray_center_name,
+									cbnaat.name as cbnaat_center_name,
+									outcome_master.name as outcome
+
+								   ")
+				->from('patient')
+				->join('district','district.id = patient.patient_district','INNER')
+				->join('block','block.id = patient.patient_block','INNER')
+				->join('coordinator','coordinator.id = patient.group_cord_id','INNER')
+				->join('dmc','dmc.id = patient.dmc_id','LEFT')
+				->join('xray_center','xray_center.id = patient.xray_cntr_id','LEFT')
+				->join('cbnaat','cbnaat.id = patient.cbnaat_id','LEFT')
+				->join('ptb_treatment_detail','ptb_treatment_detail.id = patient.patient_id','LEFT')
+				->join('outcome_master','outcome_master.id = ptb_treatment_detail.outcome','LEFT')
+				->where($where_date)
+				->order_by('patient.patient_id')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+
+
+	/*------------------------------------------*/
+
 	public function getPatientDetailsById($patientid)
 	{
 		$where = array('patient.patient_id' => $patientid );
