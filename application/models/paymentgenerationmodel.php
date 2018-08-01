@@ -150,7 +150,8 @@ class paymentgenerationmodel extends CI_Model{
 
 
 		public function getNqppIncentive(){
-			$where = array('incentive.role_id' => 4 );
+			$where = array('incentive.role_id' => 4,
+						   'incentive.is_active' => 1 );
 			$data = [];
 			$query = $this->db->select("*")
 					->from('incentive')

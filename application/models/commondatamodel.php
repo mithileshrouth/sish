@@ -34,6 +34,7 @@ class commondatamodel extends CI_Model{
 			for($i=0;$i<sizeof($insertArray);$i++)
 			{
 				 $this->db->insert($tblnameArry[$i], $insertArray[$i]);
+				 
 			}
 			if($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
