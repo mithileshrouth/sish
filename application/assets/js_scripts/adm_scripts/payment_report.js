@@ -1,5 +1,6 @@
 $(document).ready(function(){
 var basepath = $("#basepath").val();
+$('.selectpicker').selectpicker('deselectAll');
 $('.selectpicker').selectpicker({dropupAuto: false});
  $('.datepicker').datepicker({
                      format: 'dd/mm/yyyy',
