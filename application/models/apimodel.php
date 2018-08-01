@@ -177,6 +177,7 @@ class apimodel extends CI_Model {
 				$nqppdata = $referaldata->refferedbynqpp;
 				
 				$refferedbynqpp = $nqppdata->id;
+				$pulmonary = $referaldata->pulmonarytype;
 				$symptom = $referaldata->symptom;
 				
 				
@@ -193,7 +194,7 @@ class apimodel extends CI_Model {
 					$district_code = $district_row->dist_code;
 					$block_code = $block_row->block_code;
 					
-					$patient_uniqID = "PTB/".$district_code."/".$block_code."/".$latest_serial;
+					$patient_uniqID = "PTC/".$district_code."/".$block_code."/".$latest_serial;
 				}
 			
 			$state_id = $this->location->getStateByDistrictID($district);
@@ -218,6 +219,7 @@ class apimodel extends CI_Model {
 				"patient_adhar" => trim(htmlspecialchars($aadharno)),
 				"patient_voter" => trim(htmlspecialchars($voterid)),
 				"patient_ration" => trim(htmlspecialchars($rationno)),
+				"patient_pulmonary" => trim(htmlspecialchars($pulmonary)),
 				"patient_symptom" => NULL,
 				"nqpp_id" =>  $refferedbynqpp,
 				"group_cord_id" =>  $refferedbycord,
@@ -254,11 +256,9 @@ class apimodel extends CI_Model {
 					if(sizeof($coordinator_row)>0){
 						$coordinator_mobile = $coordinator_row->cordmobile;
 						
-<<<<<<< HEAD
+
 						/* $sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
-=======
-						$sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -268,11 +268,9 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $coordinator_mobile,
 							"is_sent" => $sms_status
 						];
-<<<<<<< HEAD
+
 						$this->db->insert('sms_sent_report', $sms_log); */
-=======
-						$this->db->insert('sms_sent_report', $sms_log);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
 						
 						
 						
@@ -284,11 +282,9 @@ class apimodel extends CI_Model {
 					if(sizeof($distcord_row)>0){
 						$distcord_mobile = $distcord_row->dist_cordinator_mbl;
 						
-<<<<<<< HEAD
+
 						/* $sms_status = $this->sendSMS($distcord_mobile,$smstext);	
-=======
-						$sms_status = $this->sendSMS($distcord_mobile,$smstext);	
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -298,11 +294,9 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $distcord_mobile,
 							"is_sent" => $sms_status
 						];
-<<<<<<< HEAD
+
 						$this->db->insert('sms_sent_report', $sms_log); */
-=======
-						$this->db->insert('sms_sent_report', $sms_log);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
 						
 						
 					}
@@ -313,11 +307,9 @@ class apimodel extends CI_Model {
 					if(sizeof($nqpp_row)>0){
 						$nqpp_mobile = $nqpp_row->nqppmobile;
 						
-<<<<<<< HEAD
 						/* $sms_status = $this->sendSMS($nqpp_mobile,$smstext);
-=======
-						$sms_status = $this->sendSMS($nqpp_mobile,$smstext);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
+
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -327,11 +319,9 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $nqpp_mobile,
 							"is_sent" => $sms_status
 						];
-<<<<<<< HEAD
+
 						$this->db->insert('sms_sent_report', $sms_log); */
-=======
-						$this->db->insert('sms_sent_report', $sms_log);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
 						
 					}
 					
@@ -341,11 +331,10 @@ class apimodel extends CI_Model {
 					if(sizeof($dmc_row)>0){
 						$dmc_lt_mobile = $dmc_row->ltmobile;
 						
-<<<<<<< HEAD
+
 						/* $sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
-=======
-						$sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
+
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -355,11 +344,11 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $dmc_lt_mobile,
 							"is_sent" => $sms_status
 						];
-<<<<<<< HEAD
+
 						$this->db->insert('sms_sent_report', $sms_log); */
-=======
-						$this->db->insert('sms_sent_report', $sms_log);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
+					
+
 						
 						
 					}
@@ -367,11 +356,11 @@ class apimodel extends CI_Model {
 				}
 				elseif($sendsms_to_role->role_code=="PTB"){
 					
-<<<<<<< HEAD
+
 					/* $sms_status = $this->sendSMS($mobile,$smstext);
-=======
-					$sms_status = $this->sendSMS($mobile,$smstext);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
+
+
 					$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
@@ -381,11 +370,9 @@ class apimodel extends CI_Model {
 							"receiver_mobile_no" => $mobile,
 							"is_sent" => $sms_status
 						];
-<<<<<<< HEAD
+
 					$this->db->insert('sms_sent_report', $sms_log); */
-=======
-					$this->db->insert('sms_sent_report', $sms_log);
->>>>>>> 17ba2c64071c01802b442189814433918a78bd6b
+
 					
 				}
 				
@@ -528,11 +515,14 @@ class apimodel extends CI_Model {
 			$where = [
 				"coordinator.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
@@ -541,28 +531,33 @@ class apimodel extends CI_Model {
 			$where = [
 				"district.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->join("block","block.id = coordinator.block_id","INNER")
 					->join("district","district.id = block.district_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
-			//echo $this->db->last_query();		
-					
+		
 		}
 		
 		elseif($localsession->rcode=="NQPP"){
 			$where = [
 				"nqpp.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
@@ -570,11 +565,14 @@ class apimodel extends CI_Model {
 			$where = [
 				"dmc.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
@@ -582,12 +580,15 @@ class apimodel extends CI_Model {
 			$where = [
 				"xray_center.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->join("xray_center","xray_center.id = patient.xray_cntr_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
@@ -595,22 +596,28 @@ class apimodel extends CI_Model {
 			$where = [
 				"cbnaat.userid" =>$localsession->uid
 			];
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->join("cbnaat","cbnaat.id = patient.cbnaat_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->where($where)
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
 		else{
 			// Role = Project Manager
-			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date",FALSE)
+			$query = $this->db->select("patient.*,dmc.name AS dmcname,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname, DATE_FORMAT(patient.`patient_reg_date`,'%d/%m%/%Y') AS patient_reg_date,payment_gen_details.`payment_id` AS paymentgenID,payment_master.`id` AS paymentDoneID",FALSE)
 					->from("patient")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
 					->join("dmc","dmc.id = patient.dmc_id","INNER")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
+					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
+					->join("payment_gen_master","payment_gen_master.id = payment_gen_details.payment_id","LEFT")
+					->join("payment_master","payment_master.payment_gen_id = payment_gen_master.id","LEFT")
 					->order_by("patient.patient_reg_date","DESC")->get();
 		}
 		//echo $this->db->last_query();
