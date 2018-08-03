@@ -107,7 +107,7 @@ class projetstatus_reportmodel extends CI_Model{
 				->where_in($wherein, $selected_ids)
 				->group_by('patient.nqpp_id')
 				->get();
-			q();
+			#q();
 			if($query->num_rows()> 0)
 				{
 		          foreach($query->result() as $rows)

@@ -174,16 +174,6 @@ public function getProjectReportList()
 
 		}
 
-
-
-			/*if (isset($dataArry['sel_nqpp'])) {
-				$nqpp_ids = $dataArry['sel_nqpp'];
-
-				$wherein='patient.nqpp_id';
-			$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$nqpp_ids,$from_dt,$to_date);
-			}*/
-       
-       		pre($data['projectReportList']);
        
        $viewTemp = $this->load->view('dashboard/adminpanel_dashboard/project_report/project_list_data',$data);
 			echo $viewTemp;
