@@ -136,7 +136,7 @@ class adminpanel extends CI_Controller {
 	 $this->session->sess_destroy();
 	
 	
-	//redirect('adminpanel','location');
+	redirect('adminpanel','location');
 	header('location:');
 	exit;
 	

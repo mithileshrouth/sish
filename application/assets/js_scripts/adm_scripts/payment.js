@@ -1,6 +1,6 @@
 $(document).ready(function(){
 var basepath = $("#basepath").val();
-
+$('.selectpicker').selectpicker('deselectAll');
  $('.selectpicker').selectpicker({dropupAuto: false});
   $('.datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
 

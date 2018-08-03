@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var basepath = $("#basepath").val();
-	
+	$('.selectpicker').selectpicker('deselectAll');
 	
 	$(document).on('submit','#nqppForm',function(e){
 		e.preventDefault();
