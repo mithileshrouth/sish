@@ -257,7 +257,7 @@ class apimodel extends CI_Model {
 						$coordinator_mobile = $coordinator_row->cordmobile;
 						
 
-						 $sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
+						/*  $sms_status = $this->sendSMS($coordinator_mobile,$smstext);	
 
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -269,7 +269,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 
-						$this->db->insert('sms_sent_report', $sms_log); 
+						$this->db->insert('sms_sent_report', $sms_log);  */
 
 						
 						
@@ -283,7 +283,7 @@ class apimodel extends CI_Model {
 						$distcord_mobile = $distcord_row->dist_cordinator_mbl;
 						
 
-						 $sms_status = $this->sendSMS($distcord_mobile,$smstext);	
+						 /* $sms_status = $this->sendSMS($distcord_mobile,$smstext);	
 
 						$sms_log = [
 							"performed_by_user_id" => $localsession->uid,
@@ -295,7 +295,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 
-						$this->db->insert('sms_sent_report', $sms_log); 
+						$this->db->insert('sms_sent_report', $sms_log);  */
 
 						
 						
@@ -307,10 +307,11 @@ class apimodel extends CI_Model {
 					if(sizeof($nqpp_row)>0){
 						$nqpp_mobile = $nqpp_row->nqppmobile;
 						
+						/*
 						 $sms_status = $this->sendSMS($nqpp_mobile,$smstext);
 
 
-						$sms_log = [
+						 $sms_log = [
 							"performed_by_user_id" => $localsession->uid,
 							"sms_sent_against_ptb_id" => $ptb_inserted_id,
 							"sms_action_mst_id" => $sms_row->id,
@@ -320,7 +321,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 
-						$this->db->insert('sms_sent_report', $sms_log); 
+						$this->db->insert('sms_sent_report', $sms_log);  */
 
 						
 					}
@@ -332,7 +333,7 @@ class apimodel extends CI_Model {
 						$dmc_lt_mobile = $dmc_row->ltmobile;
 						
 
-						 $sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
+						/*  $sms_status = $this->sendSMS($dmc_lt_mobile,$smstext);
 
 
 						$sms_log = [
@@ -346,7 +347,7 @@ class apimodel extends CI_Model {
 						];
 
 						$this->db->insert('sms_sent_report', $sms_log); 
-
+ */
 					
 
 						
@@ -357,7 +358,7 @@ class apimodel extends CI_Model {
 				elseif($sendsms_to_role->role_code=="PTB"){
 					
 
-					 $sms_status = $this->sendSMS($mobile,$smstext);
+					 /* $sms_status = $this->sendSMS($mobile,$smstext);
 
 
 
@@ -371,7 +372,7 @@ class apimodel extends CI_Model {
 							"is_sent" => $sms_status
 						];
 
-					$this->db->insert('sms_sent_report', $sms_log); 
+					$this->db->insert('sms_sent_report', $sms_log);  */
 
 					
 				}
@@ -994,26 +995,36 @@ class apimodel extends CI_Model {
 				"patient.patient_id" =>$pid
 			];
 			//$this->db->_protect_identifiers=true;
-		$query = $this->db->select("patient.*,ptb_treatment_detail.*,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname,
+		 $query = $this->db->select("patient.*,ptb_treatment_detail.*,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname,
+						 DATE_FORMAT(patient.`dmc_sputum_test_date`,'%d %M% %Y') AS sputumTestDate,
+						 DATE_FORMAT(patient.`dmc_sputum_date`,'%d %M% %Y') AS sputumColDate,
+						 DATE_FORMAT(patient.`xray_date`,'%d %M% %Y') AS xrayDate,
+						 DATE_FORMAT(patient.`cbnaat_test_date`,'%d %M% %Y') AS cbnaatTestDt,
+						 DATE_FORMAT(patient.`cbnaat_date`,'%d %M% %Y') AS cbnaatColDt,
 						 DATE_FORMAT(ptb_treatment_detail.`first_followup_dt`,'%d/%m%/%Y') AS first_followup_dt,
 						 IFNULL (DATE_FORMAT(ptb_treatment_detail.first_followup_taken_on,'%d/%m%/%Y'),NULL) AS firstfollowuptaken,
 					
 					DATE_FORMAT(ptb_treatment_detail.`second_followup_dt`, '%d/%m%/%Y') AS second_followup_dt,
-					IFNULL (DATE_FORMAT(ptb_treatment_detail.second_followup_taken_on,'%d/%m%/%Y'),NULL) AS secondfollowuptaken,payment_gen_details.id AS ptb_payment_gen_dtl_id
+					IFNULL (DATE_FORMAT(ptb_treatment_detail.second_followup_taken_on,'%d/%m%/%Y'),NULL) AS secondfollowuptaken,payment_gen_details.id AS ptb_payment_gen_dtl_id,
+					xray_center.name as xraycenter,
+					cbnaat.name as cbnaatname,
+					treatment_category.category_name,
+					outcome_master.name as outcomename
 						",FALSE)
 					->from("patient")
 					->join("ptb_treatment_detail","ptb_treatment_detail.patient_id = patient.patient_id","LEFT")
 					->join("nqpp","nqpp.id = patient.nqpp_id","INNER")
 					->join("coordinator","coordinator.id = patient.group_cord_id","INNER")
+					->join("xray_center","xray_center.id=patient.xray_cntr_id","LEFT")
+					->join("cbnaat","cbnaat.id=patient.cbnaat_id","LEFT")
+					->join("treatment_category","treatment_category.id = ptb_treatment_detail.category_id","LEFT")
+					->join("outcome_master","outcome_master.id = ptb_treatment_detail.outcome","LEFT")
 					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
 					->where($where)
 					->get();
-			
-
-		 if($query->num_rows()>0){
+		
+		if($query->num_rows()>0){
             $data = $query->row();
-           
-                    
         }
         return $data;
 	}
@@ -1079,10 +1090,22 @@ class apimodel extends CI_Model {
 				$this->db->update('patient', $upd_data); 
 			}
 			if($updFrom=="CBNAAT_RESULT"){
-				$upd_data = [
+				if($updateDatas->cbnaatResultFeed=="Y"){
+					$upd_data = [
 					"cbnaat_result_done" => "Y",
-					"cbnaat_pstv" => $updateDatas->cbnaatResultFeed
-				];
+					"cbnaat_pstv" => $updateDatas->cbnaatResultFeed,
+					"rif_value" => $updateDatas->selectedRIF
+					];
+				}
+				else{
+					$upd_data = [
+					"cbnaat_result_done" => "Y",
+					"cbnaat_pstv" => $updateDatas->cbnaatResultFeed,
+					"rif_value" => NULL
+					];
+				}
+				
+				
 				
 				$this->db->where('patient.patient_id', $patientid);
 				$this->db->update('patient', $upd_data); 
@@ -1280,7 +1303,8 @@ class apimodel extends CI_Model {
 			if($updFrom=="CBNAAT_RESULT"){
 				$upd_data = [
 					"cbnaat_result_done" => "N",
-					"cbnaat_pstv" => NULL
+					"cbnaat_pstv" => NULL,
+					"rif_value" => NULL
 				];
 				
 				$this->db->where('patient.patient_id', $patientid);
@@ -1876,6 +1900,392 @@ class apimodel extends CI_Model {
 	  }
 
       return($response);
+	}
+	
+	
+	/************************************************************************/
+	/********************************MMU************************************/
+	/**********************************************************************/
+	
+	
+
+	public function insertIntoMMU($data,$localsession,$mode,$masterID){
+		try {
+			
+			$this->db->trans_begin();
+				
+				$mmudate = substr($data->muuentrydate,0,10); // substr because time format is coming as ISO
+			
+				
+				$reg_data = [];
+				$muuentrydate =date("Y-m-d",strtotime($mmudate)); 
+				$carclusture = $data->carclusture;
+				$opd = $data->opd;
+				$anc = $data->anc;
+				$ocp = $data->ocp;
+				$cc = $data->cc;
+				$ms = $data->ms;
+				$lab = $data->lab;
+				$rdt = $data->rdt;
+				$refd = $data->refd;
+				$ncd = $data->ncd;
+				
+		
+			if($mode=="EDIT"){
+				$mmu_data = [
+					"mmu_date" => $muuentrydate,
+					"car_cluster_id" => trim(htmlspecialchars($carclusture)),
+					"opd" => trim(htmlspecialchars($opd)),
+					"anc" => trim(htmlspecialchars($anc)),
+					"ocp" => trim(htmlspecialchars($ocp)),
+					"cc" => trim(htmlspecialchars($cc)),
+					"ms" => trim(htmlspecialchars($ms)),
+					"lab" => trim(htmlspecialchars($lab)),
+					"rdt" => trim(htmlspecialchars($rdt)),
+					"refd" =>  trim(htmlspecialchars($refd)),
+					"ncd" => trim(htmlspecialchars($ncd))
+					
+				];
+				
+				$this->db->where('mmu_shis.id', $masterID);
+				$this->db->update('mmu_shis', $mmu_data); 
+				
+			}
+			else{
+				$grpcordinatorid = $this->getGroupCordinatorID($localsession->uid);
+				$mmu_data = [
+				"mmu_date" => date("Y-m-d",strtotime($muuentrydate)),
+				"car_cluster_id" => trim(htmlspecialchars($carclusture)),
+				"opd" => trim(htmlspecialchars($opd)),
+				"anc" => trim(htmlspecialchars($anc)),
+				"ocp" => trim(htmlspecialchars($ocp)),
+				"cc" => trim(htmlspecialchars($cc)),
+				"ms" => trim(htmlspecialchars($ms)),
+				"lab" => trim(htmlspecialchars($lab)),
+				"rdt" => trim(htmlspecialchars($rdt)),
+				"refd" =>  trim(htmlspecialchars($refd)),
+				"ncd" => trim(htmlspecialchars($ncd)),
+				"grpcord_id" => $grpcordinatorid,
+				"created_by" => $localsession->uid
+			];
+				$this->db->insert('mmu_shis', $mmu_data);
+			}
+			
+			
+			
+			
+			$user_activity = array(
+					"activity_module" => 'MMU',
+					"action" => "Insert",
+					"from_method" => "roleAPI/saveMMU/insertIntoMMU",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+				return false;
+            } else {
+				$this->db->trans_commit();
+                return true;
+            }
+        } 
+		catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
+	public function getMMUList($localsession){
+		$data = [];
+		$grpcordinatorid = $this->getGroupCordinatorID($localsession->uid);
+		
+		$where = [
+			"mmu_shis.grpcord_id" => $grpcordinatorid
+		];
+		
+		$query = $this->db->select("mmu_shis.*,clusture_car.*,mmu_shis.id AS mmumastid,DATE_FORMAT(mmu_shis.`mmu_date`,'%d-%m-%Y') AS mmudate",FALSE)
+					->from("mmu_shis")
+					->join('clusture_car','clusture_car.id = mmu_shis.car_cluster_id','INNER')
+					->where($where)
+					->order_by("mmu_shis.mmu_date","DESC")
+					->get();
+					
+		if($query->num_rows()> 0)
+		{
+	        foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+	            
+	    }
+			
+	    return $data;
+	}
+	
+	
+	public function getMMUDetailByID($masterid){
+		$data = [];
+		$where = [
+			"mmu_shis.id" => $masterid
+		];
+		
+		$query = $this->db->select("mmu_shis.*,mmu_shis.id AS mmumastid,DATE_FORMAT(mmu_shis.`mmu_date`,'%Y-%m-%d') AS mmudate",FALSE)
+					->from("mmu_shis")
+					->where($where)
+					->order_by("mmu_shis.mmu_date","DESC")
+					->get();
+		
+		
+		if($query->num_rows()> 0)
+		{
+			$row = $query->row();
+			$data = $row;
+		}
+		
+		return $data;
+		
+	}
+	
+	
+	public function deleteMMU($mid,$localsession){
+				try {
+				$this->db->trans_begin();
+				$this->db->where('mmu_shis.id', $mid);
+				$this->db->delete('mmu_shis'); 
+				
+				
+				$user_activity = array(
+					"module_master_id" => $mid,
+					"activity_module" => "EYE",
+					"action" => "Delete",
+					"from_method" => "roleAPI/deleteMMU/deleteMMU",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	/************************************************************************/
+	/********************************SHIS EYE************************************/
+	/**********************************************************************/
+	
+	
+
+	public function insertIntoSHISEye($data,$localsession,$mode,$masterID){
+		try {
+			
+			$this->db->trans_begin();
+				
+				$shiseyedate = substr($data->shiseyeentrydate,0,10); // substr because time format is coming as ISO
+			
+				
+				$reg_data = [];
+				$shiseyeentrydate =date("Y-m-d",strtotime($shiseyedate)); 
+				$carclusture = $data->carclusture;
+				$cataret = $data->cataret;
+				$spectacles = $data->spectacles;
+				
+				
+		
+			if($mode=="EDIT"){
+				$shiseye_data = [
+					"given_date" => $shiseyeentrydate,
+					"car_cluster_id" => trim(htmlspecialchars($carclusture)),
+					"catarat_no" => trim(htmlspecialchars($cataret)),
+					"spectacles_no" => trim(htmlspecialchars($spectacles))
+				];
+				
+				$this->db->where('shis_eye_record.id', $masterID);
+				$this->db->update('shis_eye_record', $shiseye_data); 
+				
+			}
+			else{
+				$grpcordinatorid = $this->getGroupCordinatorID($localsession->uid);
+				
+				$shiseye_data = [
+					"given_date" => $shiseyeentrydate,
+					"car_cluster_id" => trim(htmlspecialchars($carclusture)),
+					"catarat_no" => trim(htmlspecialchars($cataret)),
+					"spectacles_no" => trim(htmlspecialchars($spectacles)),
+					"grpcord_id" => $grpcordinatorid,
+					"created_by" => $localsession->uid
+					];
+					
+				$this->db->insert('shis_eye_record', $shiseye_data);
+				
+			}
+			
+			
+			
+			
+			$user_activity = array(
+					"activity_module" => 'EYE',
+					"action" => "Insert",
+					"from_method" => "roleAPI/saveEyeData/insertIntoSHISEye",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+				return false;
+            } else {
+				$this->db->trans_commit();
+                return true;
+            }
+        } 
+		catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
+	public function getShisEyeList($localsession){
+		$data = [];
+		$grpcordinatorid = $this->getGroupCordinatorID($localsession->uid);
+		
+		$where = [
+			"shis_eye_record.grpcord_id" => $grpcordinatorid
+		];
+		
+		$query = $this->db->select("shis_eye_record.*,clusture_car.*,shis_eye_record.id AS shiseyemstid,DATE_FORMAT(shis_eye_record.`given_date`,'%d-%m-%Y') AS shiseyedate",FALSE)
+					->from("shis_eye_record")
+					->join('clusture_car','clusture_car.id = shis_eye_record.car_cluster_id','INNER')
+					->where($where)
+					->order_by("shis_eye_record.given_date","DESC")
+					->get();
+					
+		if($query->num_rows()> 0)
+		{
+	        foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+	            
+	    }
+			
+	    return $data;
+	}
+	
+	
+	
+	public function getShisEyeDetail($masterid){
+		$data = [];
+		$where = [
+			"shis_eye_record.id" => $masterid
+		];
+		
+		$query = $this->db->select("shis_eye_record.*,shis_eye_record.id AS shiseyemstid,DATE_FORMAT(shis_eye_record.`given_date`,'%d-%m-%Y') AS shiseyedate,DATE_FORMAT(shis_eye_record.`given_date`,'%Y-%m-%d') AS givendate",FALSE)
+					->from("shis_eye_record")
+					->where($where)
+					->order_by("shis_eye_record.given_date","DESC")
+					->get();
+		
+		
+		if($query->num_rows()> 0)
+		{
+			$row = $query->row();
+			$data = $row;
+		}
+		
+		return $data;
+		
+	}
+	
+	public function deleteShisEye($mid,$localsession){
+				try {
+				$this->db->trans_begin();
+				$this->db->where('shis_eye_record.id', $mid);
+				$this->db->delete('shis_eye_record'); 
+				
+				
+				$user_activity = array(
+					"module_master_id" => $mid,
+					"activity_module" => "EYE",
+					"action" => "Delete",
+					"from_method" => "roleAPI/deleteShisEye/deleteShisEye",
+					"user_id" => $localsession->uid,
+					"ip_address" => getUserIPAddress(),
+					"user_browser" => getUserBrowserName(),
+					"user_platform" => getUserPlatform()
+				);
+			
+			$this->db->insert('activity_log', $user_activity);
+           
+            if($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+	}
+	
+	
+	private function getGroupCordinatorID($user_id){
+		$groupcorid = 0;
+		$where = [
+			"coordinator.userid" => $user_id
+		];
+	
+		
+		$query = $this->db->select("*")
+					->from("coordinator")
+					->where($where)
+					->get();
+		
+		if($query->num_rows()>0){
+			$row = $query->row();
+			$groupcorid = $row->id;
+		}
+		return $groupcorid;
+		
+	}
+	
+	public function getCarCluster(){
+		$data = [];
+		$query = $this->db->select("*")
+					->from("clusture_car")
+					->where("clusture_car.is_active",1)
+					->order_by("clusture_car.name","ASC")
+					->get();
+		
+		if($query->num_rows()> 0)
+		{
+	        foreach($query->result() as $rows)
+			{
+				$data[] = $rows;
+			}
+	            
+	    }
+			
+	    return $data;
 	}
 	
 	

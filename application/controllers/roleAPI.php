@@ -1909,6 +1909,424 @@ public function getPendingReferralData(){
  
  
  
+   /***************************************************************
+	 *************************MMU********************************** 
+	 **************************************************************
+	*/
+	
+	public function saveMMU(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$data = $request->data;
+	$session = $request->session;
+	$mode = $request->mode;
+	$masterID = $request->mastid;
+	
+	
+	
+	if(!empty($key) && $apikey == trim($key)){
+		
+		$insert = $this->apimodel->insertIntoMMU($data,$session,$mode,$masterID);
+		if($insert){
+			$result = [
+			"status"=>200,
+            "statuscode"=>"SUCCESS",
+			"data"=> NULL
+			];
+		}
+		else{
+			$result = [
+			"status"=>400,
+            "statuscode"=>"ERROR",
+			"data"=> NULL
+			];
+		}
+
+	}
+	else{
+		$result = [
+			"status"=>403,
+            "statuscode"=>"KEY_MISSING",
+			"data"=> NULL,
+			"token"=>NULL
+			];
+	}
+		
+	$resultdata = json_encode($result);
+	echo $resultdata;
+	exit;
+	
+ }
+ 
+ 
+ 	public function getMMUList(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$sessiondata = $request->session;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getMMUList($sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
+	
+	
+	public function getMMUDetailByID(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$mmumasterid =  $request->id;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getMMUDetailByID($mmumasterid);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
+	
+	
+	public function deleteMMU(){
+			header('Access-Control-Allow-Origin: *');  
+			header('Content-Type: application/json');
+			$postdata = file_get_contents("php://input");
+			$request = json_decode($postdata);
+			$key = $request->key;
+			$apikey = $this->apimodel->getAPIkey();
+			$mid = $request->mid;
+			$sessiondata = $request->session;
+	
+			if(!empty($key) && $apikey == trim($key)){
+				
+				$resultset = $this->apimodel->deleteMMU($mid,$sessiondata);
+				if(sizeof($resultset)>0)
+				{
+					$result = [
+					 "status"=>200,
+					 "statuscode"=>"SUCCESS",
+					 "data"=> $resultset
+					];
+				}
+				else{
+					$result = [
+					 "status"=>400,
+					 "statuscode"=>"ERROR",
+					 "data"=> NULL
+					];
+				}
+				
+			}
+			else{
+				$result = [
+					 "status"=>403,
+					 "statuscode"=>"KEY_MISSING",
+					 "data"=> NULL
+				];
+			}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
+	
+	
+	 /***************************************************************
+	 *************************SHIS EYE****************************** 
+	 **************************************************************
+	*/
+	
+	public function saveEyeData(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$data = $request->data;
+	$session = $request->session;
+	$mode = $request->mode;
+	$masterID = $request->mastid;
+	
+	
+	
+	if(!empty($key) && $apikey == trim($key)){
+		
+		$insert = $this->apimodel->insertIntoSHISEye($data,$session,$mode,$masterID);
+		if($insert){
+			$result = [
+			"status"=>200,
+            "statuscode"=>"SUCCESS",
+			"data"=> NULL
+			];
+		}
+		else{
+			$result = [
+			"status"=>400,
+            "statuscode"=>"ERROR",
+			"data"=> NULL
+			];
+		}
+
+	}
+	else{
+		$result = [
+			"status"=>403,
+            "statuscode"=>"KEY_MISSING",
+			"data"=> NULL,
+			"token"=>NULL
+			];
+	}
+		
+	$resultdata = json_encode($result);
+	echo $resultdata;
+	exit;
+	
+ }
+ 
+ 
+	public function getShisEyeList(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$sessiondata = $request->session;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getShisEyeList($sessiondata);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
+	
+	public function getShisEyeDetail(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$key = $request->key;
+		$apikey = $this->apimodel->getAPIkey();
+		$shiseyemasterid =  $request->id;
+		
+			
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getShisEyeDetail($shiseyemasterid);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+					"status"=>200,
+					"statuscode"=>"SUCCESS",
+					"data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+					"status"=>400,
+					"statuscode"=>"NO DATA FOUND",
+					"data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
+	
+	
+	
+	
+	public function deleteShisEye(){
+			header('Access-Control-Allow-Origin: *');  
+			header('Content-Type: application/json');
+			$postdata = file_get_contents("php://input");
+			$request = json_decode($postdata);
+			$key = $request->key;
+			$apikey = $this->apimodel->getAPIkey();
+			$mid = $request->mid;
+			$sessiondata = $request->session;
+	
+			if(!empty($key) && $apikey == trim($key)){
+				
+				$resultset = $this->apimodel->deleteShisEye($mid,$sessiondata);
+				if(sizeof($resultset)>0)
+				{
+					$result = [
+					 "status"=>200,
+					 "statuscode"=>"SUCCESS",
+					 "data"=> $resultset
+					];
+				}
+				else{
+					$result = [
+					 "status"=>400,
+					 "statuscode"=>"ERROR",
+					 "data"=> NULL
+					];
+				}
+				
+			}
+			else{
+				$result = [
+					 "status"=>403,
+					 "statuscode"=>"KEY_MISSING",
+					 "data"=> NULL
+				];
+			}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
+	
+	
+	public function getCarCluster(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		$key = $request->key;
+		
+	
+		if(!empty($key) && $apikey == trim($key)){
+			
+			
+			$resultset = $this->apimodel->getCarCluster();
+			
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+	
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+	}
  
  
 }
