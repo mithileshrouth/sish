@@ -9,8 +9,9 @@ class patientmodel extends CI_Model{
 	}
 	
 	
-	public function getAllPatient(){
+	public function getAllPatient($arrayName){
 		$data = [];
+		#$arrayName=[];
 		$query = $this->db->select("
 									patient.patient_id,
 									patient.patient_name,
@@ -31,7 +32,11 @@ class patientmodel extends CI_Model{
 				->from('patient')
 				->join('nqpp','nqpp.id = patient.nqpp_id','LEFT')
 				->join('coordinator','coordinator.id = patient.group_cord_id','LEFT')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				
 				->order_by('patient.patient_reg_date','desc')
+				->where($arrayName)
 				->get();
 			
 			#echo $this->db->last_query();
@@ -97,7 +102,7 @@ class patientmodel extends CI_Model{
 	}
 	
 
-	public function getAllPatientReportByDate($frmdt,$todt){
+	public function getAllPatientReportByDate($frmdt,$todt,$where_dist){
 		$data = [];
 		
 		
@@ -123,6 +128,7 @@ class patientmodel extends CI_Model{
 				->join('ptb_treatment_detail','ptb_treatment_detail.id = patient.patient_id','LEFT')
 				->join('outcome_master','outcome_master.id = ptb_treatment_detail.outcome','LEFT')
 				->where($where_date)
+				->where($where_dist)
 				->order_by('patient.patient_id')
 				->get();
 			#q();

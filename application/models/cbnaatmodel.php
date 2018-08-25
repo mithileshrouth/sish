@@ -40,6 +40,40 @@ class cbnaatmodel extends CI_Model{
 	        return $data;
 	       
 	}
+
+	public function getAllCbnaatByRole($where_dist){
+		$data = [];
+		$query = $this->db->select("
+					`cbnaat`.`id` AS cbnat_id,
+					`cbnaat`.`name` AS cbnat_name,
+					`cbnaat`.`address` AS cbnat_add,
+					`cbnaat`.`lt_name`,
+					`cbnaat`.`mobile_no` AS ltmobile,
+					`cbnaat`.`is_active` AS active,
+						tu_unit.name AS tuname,
+						block.name as blockname
+						")
+				->from('cbnaat')
+				->join('tu_unit','tu_unit.id = cbnaat.tuid','INNER')
+				->join('block','block.id = tu_unit.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($where_dist)
+				->order_by('cbnaat.tuid')
+				->get();
+				 //q();
+			
+			if($query->num_rows()> 0)
+			{
+                            foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+                        }
+			
+	        return $data;
+	       
+	}
 	
 	
 	public function insertIntoCbnaatCenter($data,$session){
@@ -210,6 +244,28 @@ class cbnaatmodel extends CI_Model{
 	       
 	}
 
-	
+		public function getAllTUListbyDist($whereAry){
+		$data = [];
+		$query = $this->db->select("tu_unit.*")
+				->from('tu_unit')
+				->join('block','block.id = tu_unit.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($whereAry)
+			    ->order_by('tu_unit.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
 	
 }

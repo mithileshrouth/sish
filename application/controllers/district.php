@@ -16,7 +16,17 @@ class district extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['districtList'] = $this->locations->getAllDistrictList(); 
+			
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+			$result['districtList'] = $this->locations->getAllDistrictListbyRole($whereAry); 
 			$page = "dashboard/adminpanel_dashboard/district/district_list_view";
 			createbody_method($result, $page, $header, $session);
 			

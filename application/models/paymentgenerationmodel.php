@@ -98,7 +98,7 @@ class paymentgenerationmodel extends CI_Model{
 					->where($where)
 				    ->order_by('patient.patient_name')
 					->get();
-				//q();
+				#q();
 				if($query->num_rows()> 0)
 				{
 		          foreach($query->result() as $rows)
@@ -133,7 +133,7 @@ class paymentgenerationmodel extends CI_Model{
 					->join('block','block.id = patient.patient_block','LEFT')
 					->where($where)
 					->get();
-				//q();
+				#q();
 				if($query->num_rows()> 0)
 				{
 		          foreach($query->result() as $rows)

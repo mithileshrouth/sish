@@ -65,8 +65,9 @@ function loginRequired()
 {
 	var mbl = $("#mobileno").val();
 	var pass = $("#password").val();
+	var role = $("#role").val();
 	
-	$("#mobileno,#password").removeClass("login_input_err");
+	$("#mobileno,#password,#role").removeClass("login_input_err");
 	
 	if(mbl=="")
 	{
@@ -76,6 +77,11 @@ function loginRequired()
 	if(pass=="")
 	{
 		$("#password").focus().addClass("login_input_err");
+		return false;	
+	}
+	if(role=="")
+	{
+		$("#role").focus().addClass("login_input_err");
 		return false;	
 	}
 	

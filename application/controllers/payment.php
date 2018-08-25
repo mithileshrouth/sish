@@ -6,6 +6,7 @@ class payment extends CI_Controller {
 	    parent::__construct();
 		$this->load->library('session');
 		$this->load->model('paymentmodel','paymentmodel',TRUE);
+		$this->load->model('coordinatormodel','coordmodel',TRUE);
 	}
 
 	public function index()
@@ -14,7 +15,16 @@ class payment extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+			$result['coordinatorList'] = $this->coordmodel->getAllCoordinatorByDistrict($whereAry);
+			/*$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');*/
 			$page = "dashboard/adminpanel_dashboard/payment/payment_list_view";
 			createbody_method($result, $page, $header, $session);
 		}

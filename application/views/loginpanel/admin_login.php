@@ -51,6 +51,16 @@
         <input type="password" class="form-control " placeholder="Password" name="password" id="password" autocomplete="false" required="true"/>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
+      <div class="form-group has-feedback">
+        <select name="role" id="role" class="form-control ">
+          <option value="">Select</option>
+          <?php
+              foreach ($roleList as  $value) {
+          ?>
+          <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+          <?php } ?>
+        </select>
+      </div>
 	 
 		
 	  

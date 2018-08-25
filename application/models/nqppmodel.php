@@ -52,7 +52,50 @@ class nqppmodel extends CI_Model{
 	       
 	}
 
-	
+		public function getAllNQPPByRoll($where_dist){
+		$data = [];
+		$query = $this->db->select("
+					nqpp.id as nqppid,
+					nqpp.name as nqppname,
+					nqpp.mobile_no as nqppmobile,
+					nqpp.post_office,
+					nqpp.pin_code,
+					nqpp.village,
+					nqpp.panchayat,
+					nqpp.full_address,
+					nqpp.aadhar_no,
+					nqpp.voter_id,
+					nqpp.is_active as active,
+					block.name as blockname,
+					coordinator.name as cordinatorname,
+					district.name as districtname,
+					state.state,
+					user_master.password as cordpsw
+					")
+				->from('nqpp')
+				/*->join('block','block.id = coordinator.block_id','INNER')*/
+				->join('block','block.id = nqpp.block_id','INNER')
+				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where($where_dist)
+				->order_by('coordinator.name')
+				->get();
+			
+		
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+	}
 	public function getAllNfhpINCordinator($cordinator_ids){
 		$data = [];
 		
@@ -97,6 +140,56 @@ class nqppmodel extends CI_Model{
 	        return $data;
 	       
 		
+	}
+
+
+	public function getAllBlockListByRole($where_dist){
+		$data = [];
+		$query = $this->db->select("block.*")
+				->from('block')
+				->join('district','district.id = block.district_id','INNER')
+				->where($where_dist)
+			    ->order_by('block.name')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+	public function getAllCoordinatorbyRole($distwhere){
+		$data = [];
+		$query = $this->db->select("coordinator.*")
+				->from('coordinator')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->join('state','state.id = district.state_id','INNER')
+				->join('user_master','user_master.id = coordinator.userid','INNER')
+				->where($distwhere)
+				->order_by('coordinator.name')
+				->get();
+			
+		
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
 	}
 
 

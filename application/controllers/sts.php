@@ -15,7 +15,20 @@ class sts extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['stsList'] = $this->sts->getAllSTS(); 
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					
+				);
+				
+			 }else{
+				$distwhere = [];
+			
+			 }
+			$result['stsList'] = $this->sts->getAllSTSByRoll($distwhere); 
 			$page = "dashboard/adminpanel_dashboard/sts/sts_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -58,11 +71,24 @@ class sts extends CI_Controller {
 			}
 
 			$header = "";
-			$tuwhere = [
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'tu_unit.is_active' => 1 
+				);
+				
+			 }else{
+				$distwhere = [];
+			
+			 }
+			/*$tuwhere = [
 				"tu_unit.is_active" => 1 
-				];
+				];*/
 			//getAllRecordWhereOrderBy($table,$where,$orderby)
-			$result['tuList'] = $this->commondatamodel->getAllRecordWhereOrderBy('tu_unit',$tuwhere,'tu_unit.name'); 
+			$result['tuList'] = $this->sts->getAllTUListbyDist($distwhere); 
 			
 			$page = "dashboard/adminpanel_dashboard/sts/sts_add_edit_view";
 			createbody_method($result, $page, $header,$session);

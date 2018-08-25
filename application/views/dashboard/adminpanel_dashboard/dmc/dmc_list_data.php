@@ -2,7 +2,7 @@
               <table class="table table-bordered table-striped dataTables" style="border-collapse: collapse !important;">
                 <thead>
                 <tr>
-                  <th style="width:10%;">Sl</th>
+                  <th style="width:5%;">Sl</th>
                   <th>DMC</th>
                   <th>Address</th>
                   <th>LT Name</th>

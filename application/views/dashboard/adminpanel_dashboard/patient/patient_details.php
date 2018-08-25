@@ -28,6 +28,9 @@ element {
 }
 .vill{
   height:60px;
+}
+ .gpco{
+  height:60px;
 } 
 </style>
    <section class="content-header">
@@ -68,7 +71,7 @@ element {
               
 
               <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
+                <li class="list-group-item gpco">
                   <b>Group Cordinator</b> <a class="pull-right"><?php echo $value->coordinator_name;?></a>
                 </li>
                 <li class="list-group-item">

@@ -106,6 +106,32 @@ class menumodel extends CI_Model{
 		   }
 		   return $data;
 	}
+
+
+	public function getAllRoleById(){
+		$data = [];
+		$session = $this->session->userdata('user_data');
+		$where = array('role_master.id' =>$session['roleid']);
+		$query = $this->db->select("*")
+				->from('role_master')
+				->where($where)
+				->get();
+				 //q();
+			
+		if($query->num_rows()> 0)
+		{
+           $row = $query->row();
+           return $data = $row;
+             
+        }
+		else
+		{
+            return $data;
+        }
+			
+	      
+	       
+	}
 	
 	
 	

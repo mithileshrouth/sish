@@ -16,7 +16,19 @@ class projetstatus_report extends CI_Controller {
 		{
 			$header = "";
 			$result['projectList'] = $this->commondatamodel->getAllRecordOrderBy('project','project.project','ASC');
-			$result['distCoordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('district','district.id','ASC');
+
+
+	/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				
+				$result['distCoordinatorList']=$this->projectreport->getDistrictCoordinatorbyRole($where_dist);
+			 }else{
+				$result['distCoordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('district','district.id','ASC');
+			 }
+			
+
+
 			$page = "dashboard/adminpanel_dashboard/project_report/project_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -112,7 +124,7 @@ public function getNqppList()
 	}
 
 public function getProjectReportList()
-	{
+	{   $session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data'))
 		{
 			$formData = $this->input->post('formDatas');
@@ -136,38 +148,46 @@ public function getProjectReportList()
 				 $to_date = NULL;
 			 }
 
+			  	if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
 
+				 }else{
+					$whereAry = [];
+				 }
 
 	if(isset($dataArry['project']) && isset($dataArry['distcoordinator']) && isset($dataArry['sel_block']) && isset($dataArry['grpcoordinator']) && isset($dataArry['sel_nqpp'])) {
 		 			
 		 	$nqpp_ids = $dataArry['sel_nqpp'];
 
 			$wherein='patient.nqpp_id';
-			$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$nqpp_ids,$from_dt,$to_date);
+			$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$nqpp_ids,$from_dt,$to_date,$whereAry);
 			 
 	 }elseif (isset($dataArry['project']) && isset($dataArry['distcoordinator']) && isset($dataArry['sel_block']) && isset($dataArry['grpcoordinator'])) {
 
 			 $grpcoordinator_ids = $dataArry['grpcoordinator'];
 			 $wherein='coordinator.id';
-			 $data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$grpcoordinator_ids,$from_dt,$to_date);
+			 $data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$grpcoordinator_ids,$from_dt,$to_date,$whereAry);
 
 	
 	 }elseif (isset($dataArry['project']) && isset($dataArry['distcoordinator']) && isset($dataArry['sel_block'])) {
 			 
 			 	$block_ids=$dataArry['sel_block'];
 			 	$wherein='block.id';
-			 	$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$block_ids,$from_dt,$to_date);
+			 	$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$block_ids,$from_dt,$to_date,$whereAry);
 
 	
 	 }elseif (isset($dataArry['project']) && isset($dataArry['distcoordinator'])) {
 			 	$distcoordinator_ids=$dataArry['distcoordinator'];
 			 	$wherein='district.id';
-			 	$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$distcoordinator_ids,$from_dt,$to_date);
+			 	$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$distcoordinator_ids,$from_dt,$to_date,$whereAry);
 	
 	}elseif (isset($dataArry['project'])) {
+
 			 	$project_ids=$dataArry['project'];
 			 	$wherein='project.id';
-			 	$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$project_ids,$from_dt,$to_date);
+			 	$data['projectReportList'] = $this->projectreport->getPatientCount($wherein,$project_ids,$from_dt,$to_date,$whereAry);
 			 }
 	else{
 			$data['projectReportList']=[];

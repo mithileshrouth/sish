@@ -41,6 +41,63 @@ class dmcmodel extends CI_Model{
 	       
 	}
 
+		public function getAllDMCbyRoll($where_dist){
+		$data = [];
+		$query = $this->db->select("
+					dmc.id as dmcid,
+					dmc.name as dmcname,
+					dmc.address as dmcadd,
+					dmc.mobile_no as ltmobile,
+					dmc.lt_name ,
+					dmc.is_active as active,
+					tu_unit.name AS tuname,
+					block.name as blockname
+					")
+				->from('dmc')
+				->join('tu_unit','tu_unit.id = dmc.tuid','INNER')
+				->join('block','block.id = tu_unit.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($where_dist)
+				->order_by('dmc.name')
+				->get();
+			
+			#echo $this->db->last_query();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+	}
+
+	public function getAllTUListbyDist($whereAry){
+		$data = [];
+		$query = $this->db->select("tu_unit.*")
+				->from('tu_unit')
+				->join('block','block.id = tu_unit.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($whereAry)
+			    ->order_by('tu_unit.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
 
 	public function getAllDmcINTu($tu_ids){
 		$data = [];

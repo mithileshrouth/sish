@@ -17,8 +17,18 @@ class patient extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$whereAry = array();
-			$result['patientList'] = $this->patientmodel->getAllPatient(); 
+			
+		  	/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+			
+			$result['patientList'] = $this->patientmodel->getAllPatient($whereAry); 
 			$page = "dashboard/adminpanel_dashboard/patient/patient_list_view.php";
 			//pre($result['patientList']);exit;
 			createbody_method($result, $page, $header, $session);
@@ -73,9 +83,20 @@ class patient extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$whereAry = array();
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'district.is_active' => 1
+				);
+
+			 }else{
+				$distwhere = ["district.is_active" => 1 ];
+			 }
+
 			
-			$distwhere = ["district.is_active" => 1 ];
+			
 			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); 
 			$page = "dashboard/adminpanel_dashboard/patient/patient_report_list_view.php";
 			
@@ -212,7 +233,18 @@ public function getPatientReportList()
 
 			  }
 			  elseif(isset($dataArry['from_date']) && isset($dataArry['to_date'])){
-			  	$result['patientList'] = $this->patientmodel->getAllPatientReportByDate($from_dt,$to_date);
+
+			  	if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+
+
+			  	$result['patientList'] = $this->patientmodel->getAllPatientReportByDate($from_dt,$to_date,$whereAry);
 			  }else{
 			  	$result['patientList']=[];
 			  }

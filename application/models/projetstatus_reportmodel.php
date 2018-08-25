@@ -2,6 +2,30 @@
 
 class projetstatus_reportmodel extends CI_Model{
 
+	public function getDistrictCoordinatorbyRole($where_dist)
+	{
+		$data = array();
+		$this->db->select("*")
+				->from('district')
+				->where($where_dist)
+				->order_by('district.id','ASC');
+		$query = $this->db->get();
+		#echo $this->db->last_query();
+
+		if($query->num_rows()> 0)
+		{
+            foreach ($query->result() as $rows)
+			{
+				$data[] = $rows;
+            }
+            return $data;
+             
+        }
+		else
+		{
+             return $data;
+         }
+	}
 
 		public function getBlockListByMulDistCoordinator($distcoordinator_ids){
 		$data = [];
@@ -76,8 +100,8 @@ class projetstatus_reportmodel extends CI_Model{
 
 
 
-	/*get payment List report by selected ids*/
-	public function getPatientCount($wherein,$selected_ids,$frmdt=NULL,$todt=NULL){
+	/*get patient List report by selected ids*/
+	public function getPatientCount($wherein,$selected_ids,$frmdt=NULL,$todt=NULL,$where_dist){
 		$data = [];
 		
 		if ($frmdt!=NULL && $todt!=NULL) {
@@ -105,6 +129,7 @@ class projetstatus_reportmodel extends CI_Model{
 				
 				->where($where_date)
 				->where_in($wherein, $selected_ids)
+				->where($where_dist)
 				->group_by('patient.nqpp_id')
 				->get();
 			#q();

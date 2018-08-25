@@ -42,7 +42,37 @@ class locationmodel extends CI_Model{
 		
 	}
 
-	public function getAllBlockListINDistict($district_ids){
+	public function getAllBlockListByRole($where_dist){
+		$data = [];
+		$query = $this->db->select("
+					block.id as blockid,
+					block.name as blockname,
+					block.block_code,
+					block.is_active,
+					district.name as districtname
+					
+					")
+				->from('block')
+				->join('district','district.id = block.district_id','INNER')
+				->where($where_dist)
+			    ->order_by('block.name')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+	public function getAllBlockListINDistict($district_ids,$whereAry=[]){
 		$data = [];
 		
 		$query = $this->db->select("
@@ -56,6 +86,7 @@ class locationmodel extends CI_Model{
 				->from('block')
 				->join('district','district.id = block.district_id','INNER')
 				->where_in('block.district_id', $district_ids)
+				->where($whereAry)
 			    ->order_by('block.name')
 				->get();
 			#q();
@@ -289,6 +320,37 @@ class locationmodel extends CI_Model{
 					")
 				->from('district')
 				->join('state','state.id = district.state_id','INNER')
+			    ->order_by('district.name')
+				->get();
+			#echo $this->db->last_query();	
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
+
+	public function getAllDistrictListbyRole($where_dist){
+		$data = [];
+		$query = $this->db->select("
+							 district.id,
+							 district.dist_code,
+							 district.is_active,
+							 district.name,
+							 district.dist_coordinator,
+							 district.dist_cordinator_mbl,
+							 state.state as state
+					")
+				->from('district')
+				->join('state','state.id = district.state_id','INNER')
+				->where($where_dist)
 			    ->order_by('district.name')
 				->get();
 			#echo $this->db->last_query();	

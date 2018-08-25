@@ -53,7 +53,7 @@ class paymentgenerationreportmodel extends CI_Model{
 	}
 
 	/*get payment generation List report by selected ids*/
-	public function getPaymentGenerationListByGenerationDate($frmdt,$todt){
+	public function getPaymentGenerationListByGenerationDate($frmdt,$todt,$where_dist){
 		$data = [];
 		
 		
@@ -77,9 +77,12 @@ class paymentgenerationreportmodel extends CI_Model{
 				->join('payment_gen_details','payment_gen_details.payment_id = payment_gen_master.id','INNER')
 				->join('nqpp','nqpp.id = payment_gen_master.nqpp_id','INNER')
 				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
 				->join('patient','patient.patient_id = payment_gen_details.patient_id','INNER')
 				->where($where_pmtdone)
 				->where($where_date)
+				->where($where_dist)
 				->order_by('payment_gen_master.id')
 				->get();
 			#q();

@@ -8,7 +8,7 @@ $(document).ready(function() {
         validateInvestigation(basepath, formData)
     });
 
-    //
+    
     $(document).on("submit", "#investigationManualForm", function(event) {
         event.preventDefault();
 

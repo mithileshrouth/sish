@@ -17,11 +17,21 @@ class tuberculosisunit extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['tuList'] = $this->tuunit->getAllTUList(); 
+			
 
-			$blockwhere = [
-				"block.is_active" => 1 
-				];
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+				$blockwhere = ["block.district_id" =>$rowDistrict->id,"block.is_active" => 1];
+
+			 }else{
+			 	$whereAry=[];
+				$blockwhere = ["block.is_active" => 1];
+			 }
+
+			$result['tuList'] = $this->tuunit->getAllTUListbyDist($whereAry); 
 			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
 			$page = "dashboard/adminpanel_dashboard/tu_unit/tuunit_list_view";
 			createbody_method($result, $page, $header, $session);
@@ -65,9 +75,17 @@ class tuberculosisunit extends CI_Controller {
 			}
 
 			$header = "";
-			$blockwhere = [
-				"block.is_active" => 1 
-				];
+				/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+				$blockwhere = ["block.district_id" =>$rowDistrict->id,"block.is_active" => 1];
+
+			 }else{
+			 	$whereAry=[];
+				$blockwhere = ["block.is_active" => 1];
+			 }
 			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
 			
 			$page = "dashboard/adminpanel_dashboard/tu_unit/tuunit_add_edit_view";
@@ -298,6 +316,20 @@ public function getTuList()
 			$formData = $this->input->post('formDatas');
 			parse_str($formData, $dataArry);
 			$result=[];
+
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+				$blockwhere = ["block.district_id" =>$rowDistrict->id,"block.is_active" => 1];
+
+			 }else{
+			 	$whereAry=[];
+				$blockwhere = ["block.is_active" => 1];
+			 }
+
+		
 			
 			if (isset($dataArry['sel_block'])) {
 				$block_ids = $dataArry['sel_block'];
@@ -305,7 +337,8 @@ public function getTuList()
             $result['tuList'] = $this->tuunit->getAllTuunitListINBlock($block_ids);
 			}else{
 
-            $result['tuList'] = $this->tuunit->getAllTUList(); 
+           // $result['tuList'] = $this->tuunit->getAllTUList(); 
+           	$result['tuList'] = $this->tuunit->getAllTUListbyDist($whereAry); 
 			}
 
 			//pre($result['tuList']);

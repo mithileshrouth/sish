@@ -39,8 +39,64 @@ class xraycentermodel extends CI_Model{
 	        return $data;
 	       
 	}
+
+
+	public function getAllXrayCenterByRoll($where_dist){
+		$data = [];
+		$query = $this->db->select("
+					xray_center.id as xraycenter_id,
+                                        xray_center.name as xray_center_name,
+                                        xray_center.address as xray_center_add,
+                                        xray_center.lt_name,
+                                        xray_center.mobile_no as ltmobile,
+                                        xray_center.is_active as active,
+					tu_unit.name AS tuname,
+					block.name as blockname
+					")
+				->from('xray_center')
+				->join('tu_unit','tu_unit.id = xray_center.tuid','INNER')
+				->join('block','block.id = tu_unit.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($where_dist)
+				->order_by('xray_center.tuid')
+				->get();
+			
+			if($query->num_rows()> 0)
+			{
+                            foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+                        }
+			
+	        return $data;
+	       
+	}
 	
-	
+		public function getAllTUListbyDist($whereAry){
+		$data = [];
+		$query = $this->db->select("tu_unit.*")
+				->from('tu_unit')
+				->join('block','block.id = tu_unit.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+				->where($whereAry)
+			    ->order_by('tu_unit.name')
+				->get();
+			#q();
+			if($query->num_rows()> 0)
+			{
+	          foreach($query->result() as $rows)
+				{
+					$data[] = $rows;
+				}
+	             
+	        }
+			
+	        return $data;
+	       
+		
+	}
 	public function insertIntoXrayCenter($data,$session){
 		try {
             $this->db->trans_begin();

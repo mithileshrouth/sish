@@ -1,24 +1,25 @@
 <?php
 class loginmodel extends CI_Model{
     
-	 public function verifymobilelogin($mobileno,$password,$projectid){
+	 public function verifymobilelogin($mobileno,$password,$role,$projectid){
         //$this->db->escape($login)
         $userid= 0;
-        $sql="SELECT user_master.`id` FROM
-				user_master 
+        $sql="SELECT user_master_web.`id` FROM
+				user_master_web 
 				INNER JOIN role_master
-				ON role_master.`id` = user_master.`role_id`
+				ON role_master.`id` = user_master_web.`role_id`
 				WHERE 
-                user_master.`mobile_no`=".trim($this->db->escape($mobileno))."
+                user_master_web.`mobile_no`=".trim($this->db->escape($mobileno))."
                 AND
-                user_master.`password` =".trim($this->db->escape($password))."
+                user_master_web.`password` =".trim($this->db->escape($password))."
 				AND 
-				user_master.project_id =".(int)$projectid."
-                AND
-                role_master.`role_code`='ADMIN'";
+				user_master_web.project_id =".(int)$projectid."
+                AND user_master_web.role_id='".$role."'
+               
+                ";
         
         $query = $this->db->query($sql);
-		//echo $this->db->last_query();
+		#echo $this->db->last_query();
          if($query->num_rows()>0){
              $row = $query->row();
              $userid = $row->id;

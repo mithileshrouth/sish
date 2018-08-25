@@ -370,7 +370,11 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="user-image" alt="User Image">
-              <span class="hidden-xs">Admin</span>
+              <span class="hidden-xs">
+                <?php 
+                echo $web_user_role->name;
+                ?>
+              </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -378,7 +382,9 @@
                 <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="img-circle" alt="User Image">
 
                 <p>
-                  Admin
+                 <?php 
+                echo $web_user_role->name;
+                ?>
                  
                 </p>
               </li>
@@ -425,7 +431,9 @@
           <img src="<?php echo base_url();?>application/assets/images/admdashboard/default-avatar.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Admin</p>
+          <p><?php 
+                echo $web_user_role->name;
+                ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>

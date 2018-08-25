@@ -18,11 +18,27 @@ class nqpp extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['nqppList'] = $this->nqpp->getAllNQPP(); 
-			$distwhere = [
+			
+			/*$distwhere = [
 				"district.is_active" => 1 
 				];
-			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); 
+			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); */
+
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'district.is_active' => 1
+				);
+				
+			 }else{
+				$distwhere = ['district.is_active' => 1];
+			
+			 }
+			$result['nqppList'] = $this->nqpp->getAllNQPPByRoll($distwhere); 
+			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name');
 			$page = "dashboard/adminpanel_dashboard/nqpp/nqpp_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -63,8 +79,22 @@ class nqpp extends CI_Controller {
 			}
 
 			$header = "";
-			
-			$blockwhere = [
+				
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'district.is_active' => 1
+				);
+				$blockwhere=['block.district_id'=>$rowDistrict->id];
+			 }else{
+				$blockwhere = ["block.is_active" => 1 ];
+				$distwhere =['district.is_active' => 1];
+			 }
+
+			/*$blockwhere = [
 				"block.is_active" => 1 
 				];
 			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
@@ -72,7 +102,9 @@ class nqpp extends CI_Controller {
 			$coordinatorwhere = [
 				"coordinator.is_active" => 1 
 				];
-			$result['coordinatorList'] = $this->commondatamodel->getAllRecordWhereOrderBy('coordinator',$coordinatorwhere,'coordinator.name'); 
+			$result['coordinatorList'] = $this->commondatamodel->getAllRecordWhereOrderBy('coordinator',$coordinatorwhere,'coordinator.name'); */
+			$result['blockList'] = $this->nqpp->getAllBlockListByRole($blockwhere);  
+			$result['coordinatorList'] = $this->nqpp->getAllCoordinatorbyRole($distwhere); 
 			
 			
 			$page = "dashboard/adminpanel_dashboard/nqpp/nqpp_add_edit_view";
@@ -519,6 +551,20 @@ public function getNfhpList()
 			$formData = $this->input->post('formDatas');
 			parse_str($formData, $dataArry);
 			$result=[];
+
+			 /* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'district.is_active' => 1
+				);
+				
+			 }else{
+				$distwhere = ['district.is_active' => 1];
+			
+			 }
 			
 			if (isset($dataArry['sel_coordinator'])) {
 				$cordinator_ids = $dataArry['sel_coordinator'];
@@ -538,7 +584,9 @@ public function getNfhpList()
 							  		$result['nqppList'] = $this->nqpp->getAllNfhpINDistrict($district_ids);
 							  }else{
 							  	
-							  	$result['nqppList'] = $this->nqpp->getAllNQPP(); 
+							  //	$result['nqppList'] = $this->nqpp->getAllNQPP(); 
+			
+			                   $result['nqppList'] = $this->nqpp->getAllNQPPByRoll($distwhere); 
 							  }
 
 					}

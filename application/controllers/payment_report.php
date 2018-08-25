@@ -6,6 +6,7 @@ class payment_report extends CI_Controller {
 	    parent::__construct();
 		$this->load->library('session');
 		$this->load->model('paymentreportmodel','paymentreport',TRUE);
+		$this->load->model('coordinatormodel','coordmodel',TRUE);
 	}
 
 
@@ -15,7 +16,18 @@ class payment_report extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+			$result['coordinatorList'] = $this->coordmodel->getAllCoordinatorByDistrict($whereAry);
+
+			/*$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');*/
 			$page = "dashboard/adminpanel_dashboard/payment_report/payment_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -82,14 +94,23 @@ public function getPaymentList()
 			 	$result['paymentlistData']=$this->paymentreport->getPaymentListBymultipleSelect($wherein,$coordinator_ids,$from_dt,$to_date);
 			 
 			 }elseif(isset($dataArry['from_date']) && isset($dataArry['to_date'])){
+
+			 		if ($session['roleid']==9) {
+						$where_dist = array('district.web_userid' => $session['userid'], );
+						$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+						$whereAry = array('district.id' =>$rowDistrict->id);
+
+					 }else{
+						$whereAry = [];
+					 }
 			 	
-			  	$result['paymentlistData'] = $this->paymentreport->getPaymentListByPaymentDate($from_dt,$to_date);
+			  	$result['paymentlistData'] = $this->paymentreport->getPaymentListByPaymentDate($from_dt,$to_date,$whereAry);
 			  }
 			 else{
 			 	
 			 	$result['paymentlistData']=[];
 			 }
-
+			 
 			$page = "dashboard/adminpanel_dashboard/payment_report/payment_list_details_view";
 			$partial_view = $this->load->view($page,$result);
 			echo $partial_view;

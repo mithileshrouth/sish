@@ -7,6 +7,7 @@ class payment_generation_report extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('paymentreportmodel','paymentreport',TRUE);
 		$this->load->model('paymentgenerationreportmodel','paymengentreport',TRUE);
+		$this->load->model('coordinatormodel','coordmodel',TRUE);
 	}
 
 
@@ -16,7 +17,19 @@ class payment_generation_report extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');
+				/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+			$result['coordinatorList'] = $this->coordmodel->getAllCoordinatorByDistrict($whereAry);
+
+			/*$result['coordinatorList'] = $this->commondatamodel->getAllRecordOrderBy('coordinator','coordinator.name','ASC');*/
+
 			$page = "dashboard/adminpanel_dashboard/payment_generation_report/payment_generation_list_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -68,8 +81,16 @@ public function getPaymentGenerationList()
 			 	$result['paymentgenerationlistData']=$this->paymengentreport->getPaymentGenerationListBymultipleSelect($wherein,$coordinator_ids,$from_dt,$to_date);
 			 
 			 }elseif(isset($dataArry['from_date']) && isset($dataArry['to_date'])){
+			 	if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
 			 	
-			 $result['paymentgenerationlistData'] = $this->paymengentreport->getPaymentGenerationListByGenerationDate($from_dt,$to_date);
+			 $result['paymentgenerationlistData'] = $this->paymengentreport->getPaymentGenerationListByGenerationDate($from_dt,$to_date,$whereAry);
 
 			  }
 			 else{

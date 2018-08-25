@@ -145,7 +145,7 @@ class paymentreportmodel extends CI_Model{
 
 
 /*get payment List report by selected ids*/
-	public function getPaymentListByPaymentDate($frmdt,$todt){
+	public function getPaymentListByPaymentDate($frmdt,$todt,$where_dist){
 		$data = [];
 		
 		
@@ -166,8 +166,11 @@ class paymentreportmodel extends CI_Model{
 				->join('payment_master','payment_master.payment_gen_id = payment_gen_master.id','INNER')
 				->join('nqpp','nqpp.id = payment_gen_master.nqpp_id','INNER')
 				->join('coordinator','coordinator.id = nqpp.coordinator_id','INNER')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
 				->where($where_pmtdone)
 				->where($where_date)
+				->where($where_dist)
 				->order_by('payment_gen_master.id')
 				->get();
 			#q();

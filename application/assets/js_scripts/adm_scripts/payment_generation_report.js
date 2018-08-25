@@ -88,7 +88,7 @@ $('.selectpicker').selectpicker({dropupAuto: false});
                         buttons: [ {
                             extend: 'excelHtml5',
                             customize: function ( xlsx ){
-                                var sheet = xlsx.xl.worksheets['payment_report.xml'];
+                                var sheet = xlsx.xl.worksheets['payment_generation_report.xml'];
                  
                               
                             }

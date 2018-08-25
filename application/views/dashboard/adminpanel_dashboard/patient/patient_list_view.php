@@ -117,7 +117,7 @@ tfoot input {
                   <th style="width:20%;">Patient</th>
                   <th style="width:5%;">Mobile</th>
                   <th>Group Coordinator</th>
-                  <th>NQPP</th>
+                  <th>NFHP</th>
                   <th>Reg.Date</th>
                   <th>Village</th>
 

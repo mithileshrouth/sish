@@ -41,6 +41,46 @@ class usermastermodel extends CI_Model{
            }
            return $row;
     }
+
+      public function getWebUserById($userId=""){
+        $row=array();
+			$query = $this->db->select("
+						user_master_web.id AS userid,
+						role_master.id AS roleid,
+						user_master_web.*,
+						role_master.*,
+						CASE WHEN (coordinator.`name` IS NOT NULL) THEN coordinator.`name`
+						 WHEN (nqpp.`name` IS NOT NULL) THEN nqpp.`name`
+						/*
+						 WHEN (dmc.`name` IS NOT NULL) THEN dmc.`name`
+						 WHEN (`xray_center`.`name` IS NOT NULL) THEN `xray_center`.`name`
+						 WHEN (`cbnaat`.`name`IS NOT NULL) THEN `cbnaat`.`name`
+						*/
+						 WHEN (`district`.`dist_coordinator`IS NOT NULL) THEN `district`.`dist_coordinator`
+						 WHEN (`project`.`prj_mng_name`IS NOT NULL) THEN `project`.`prj_mng_name`
+						 END AS username
+						",FALSE)
+				->from("user_master_web")
+                ->join("role_master","user_master_web.role_id=role_master.id","LEFT")    
+                ->join("coordinator","coordinator.userid=user_master_web.id","LEFT")    
+                ->join("nqpp","nqpp.userid=user_master_web.id","LEFT") 
+				/*				
+                ->join("dmc","dmc.userid=user_master.id","LEFT")    
+                ->join("xray_center","xray_center.userid=user_master.id","LEFT")    
+                ->join("cbnaat","cbnaat.userid=user_master.id","LEFT")    
+				*/
+                ->join("district","district.userid=user_master_web.id","LEFT")    
+                ->join("project","project.userid=user_master_web.id","LEFT")    
+				->where('user_master_web.id',$userId )
+                ->where('user_master_web.is_active','Y')
+				->get(); 
+			
+		#echo $this->db->last_query();
+        if($query->num_rows()>0){
+            $row = $query->row();
+           }
+           return $row;
+    }
 	
 	public function getActiveUserData($userId){
 		 $row = [];

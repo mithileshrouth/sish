@@ -15,7 +15,17 @@ class xraycenter extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['xraycntrlist'] = $this->xray->getAllXrayCenter(); 
+
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }
+			$result['xraycntrlist'] = $this->xray->getAllXrayCenterByRoll($whereAry); 
 			$page = "dashboard/adminpanel_dashboard/xray/xraylist_view";
 			createbody_method($result, $page, $header, $session);
 		}
@@ -60,12 +70,21 @@ class xraycenter extends CI_Controller {
 			}
 
 			$header = "";
-			$tuwhere = [
-				"tu_unit.is_active" => 1 
-				];
-			//getAllRecordWhereOrderBy($table,$where,$orderby)
-			$result['tuList'] = $this->commondatamodel->getAllRecordWhereOrderBy('tu_unit',$tuwhere,'tu_unit.name'); 
+						/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'tu_unit.is_active' => 1 
+				);
+				
+			 }else{
+				$distwhere = ["tu_unit.is_active" => 1 ];
 			
+			 }
+			
+			$result['tuList'] = $this->xray->getAllTUListbyDist($distwhere); 					
 			$page = "dashboard/adminpanel_dashboard/xray/xray_add_edit_view";
 			createbody_method($result, $page, $header,$session);
 		}

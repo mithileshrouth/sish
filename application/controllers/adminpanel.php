@@ -15,7 +15,10 @@ class adminpanel extends CI_Controller {
  {
     $page = 'loginpanel/admin_login';
 	//$result['roles'] = $this->role->getActiveRole();
-	$result = NULL;
+	
+	$result = [];
+	$where = ["role_master.is_visible_web" => 'Y' ];
+	$result['roleList'] = $this->commondatamodel->getAllRecordWhereOrderBy('role_master',$where,'role_master.name'); 
 	$this->load->view($page,$result);
  }
 
@@ -27,6 +30,7 @@ class adminpanel extends CI_Controller {
 	parse_str($formData, $dataArry);
 	$mobileno =  htmlspecialchars($dataArry['mobileno']);
 	$password =  htmlspecialchars($dataArry['password']);
+	$role =  htmlspecialchars($dataArry['role']);
 	//$role =  htmlspecialchars($dataArry['role']);
 	
 	
@@ -42,10 +46,10 @@ class adminpanel extends CI_Controller {
 	else
 	{
 		$userID = 0;
-		$userID = $this->login->verifymobilelogin($mobileno,$password,1); // 1== will change later dyanamically
+		$userID = $this->login->verifymobilelogin($mobileno,$password,$role,1); // 1== will change later dyanamically
 		if($userID>0)
 		{
-			$userdata = $this->user->getUserById($userID);
+			$userdata = $this->user->getWebUserById($userID);
 			
 			
 			

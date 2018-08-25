@@ -16,10 +16,19 @@ class dmc extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['dmcList'] = $this->dmc->getAllDMC(); 
-			$blockwhere = [
-				"block.is_active" => 1 
-				];
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+				$blockwhere = ["block.district_id" =>$rowDistrict->id,"block.is_active" => 1];
+
+			 }else{
+			 	$whereAry=[];
+				$blockwhere = ["block.is_active" => 1];
+			 }
+			$result['dmcList'] = $this->dmc->getAllDMCbyRoll($whereAry); 
+			//$blockwhere = ["block.is_active" => 1];
 			$result['blockList'] = $this->commondatamodel->getAllRecordWhereOrderBy('block',$blockwhere,'block.name'); 
 			$page = "dashboard/adminpanel_dashboard/dmc/dmc_list_view";
 			createbody_method($result, $page, $header, $session);
@@ -65,11 +74,20 @@ class dmc extends CI_Controller {
 			}
 
 			$header = "";
-			$tuwhere = [
-				"tu_unit.is_active" => 1 
-				];
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id,'tu_unit.is_active' => 1 );
+				
+			 }else{
+			 	$whereAry=['tu_unit.is_active' => 1];
+				
+			 }
+		
 			//getAllRecordWhereOrderBy($table,$where,$orderby)
-			$result['tuList'] = $this->commondatamodel->getAllRecordWhereOrderBy('tu_unit',$tuwhere,'tu_unit.name'); 
+			$result['tuList'] = $this->dmc->getAllTUListbyDist($whereAry); 
+			//$result['tuList'] = $this->commondatamodel->getAllRecordWhereOrderBy('tu_unit',$tuwhere,'tu_unit.name'); 
 			
 			$page = "dashboard/adminpanel_dashboard/dmc/dmc_add_edit_view";
 			createbody_method($result, $page, $header,$session);
@@ -376,6 +394,18 @@ public function checkmobile(){
 			$formData = $this->input->post('formDatas');
 			parse_str($formData, $dataArry);
 			$result=[];
+
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+				$blockwhere = ["block.district_id" =>$rowDistrict->id,"block.is_active" => 1];
+
+			 }else{
+			 	$whereAry=[];
+				$blockwhere = ["block.is_active" => 1];
+			 }
+			
 			
 			if (isset($dataArry['sel_tu'])) {
 				$in_tu = $dataArry['sel_tu'];
@@ -387,7 +417,8 @@ public function checkmobile(){
 					$block_ids = $dataArry['sel_block'];
 					$result['dmcList'] = $this->dmc->getAllDmcINblock($block_ids);
 				}else{
-					$result['dmcList'] = $this->dmc->getAllDMC(); 
+					//$result['dmcList'] = $this->dmc->getAllDMC(); 
+					$result['dmcList'] = $this->dmc->getAllDMCbyRoll($whereAry); 
 				}
 
          

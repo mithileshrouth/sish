@@ -15,11 +15,23 @@ class block extends CI_Controller {
 		if($this->session->userdata('user_data') && isset($session['token']))
 		{
 			$header = "";
-			$result['blockList'] = $this->locations->getAllBlockList(); 
-			$distwhere = [
-				"district.is_active" => 1 
-				];
-			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); 
+			
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'district.is_active' => 1
+				);
+				$where_dist=['block.district_id'=>$rowDistrict->id];
+			 }else{
+				$distwhere = [];
+				$where_dist=[];
+			 }
+			$result['districtList'] = $this->locations->getAllDistrictListbyRole($distwhere); 
+			
+			$result['blockList'] = $this->locations->getAllBlockListByRole($where_dist);  
 
 			$page = "dashboard/adminpanel_dashboard/block/block_list_view";
 			createbody_method($result, $page, $header, $session);
@@ -64,9 +76,19 @@ class block extends CI_Controller {
 			}
 
 			$header = "";
-			$distwhere = [
-				"district.is_active" => 1 
-				];
+				/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$distwhere = array(
+					'district.id' =>$rowDistrict->id,
+					'district.is_active' => 1
+				);
+
+			 }else{
+				$distwhere = ["district.is_active" => 1 ];
+				
+			 }
 			$result['districtList'] = $this->commondatamodel->getAllRecordWhereOrderBy('district',$distwhere,'district.name'); 
 			
 			$page = "dashboard/adminpanel_dashboard/block/block_add_edit_view";
@@ -299,15 +321,26 @@ class block extends CI_Controller {
 			$formData = $this->input->post('formDatas');
 			parse_str($formData, $dataArry);
 			$result=[];
+
+			/* Role id 9: District Coordinator*/
+			if ($session['roleid']==9) {  
+				$where_dist = array('district.web_userid' => $session['userid'], );
+				$rowDistrict=$this->commondatamodel->getSingleRowByWhereCls('district',$where_dist);
+				$whereAry = array('district.id' =>$rowDistrict->id);
+
+			 }else{
+				$whereAry = [];
+			 }	
 			
 			if (isset($dataArry['sel_dist'])) {
 				$in_district = $dataArry['sel_dist'];
-				
+
+		
 
          $result['blockList'] = $this->locations->getAllBlockListINDistict($in_district);
 			}else{
 
-         $result['blockList'] = $this->locations->getAllBlockList(); 
+         $result['blockList'] = $this->locations->getAllBlockListByRole($whereAry); 
 			}
 
 
