@@ -4,7 +4,11 @@
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>   
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>   
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Title of the document</title>
 
   <style type="text/css">
   .exportExcel{
@@ -17,30 +21,16 @@
       box-shadow: -1px -1px 5px 6px #939393;
     }
 
-.nav-tabs { border-bottom: 2px solid #DDD; }
-    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { border-width: 0; }
-    .nav-tabs > li > a { border: none; color: #ffffff;background: #5a4080; }
-        .nav-tabs > li.active > a, .nav-tabs > li > a:hover { border: none;  color: #5a4080 !important; background: #fff; }
-        .nav-tabs > li > a::after { content: ""; background: #5a4080; height: 2px; position: absolute; width: 100%; left: 0px; bottom: -1px; transition: all 250ms ease 0s; transform: scale(0); }
-    .nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after { transform: scale(1); }
-.tab-nav > li > a::after { background: ##5a4080 none repeat scroll 0% 0%; color: #fff; }
-.tab-pane { padding: 15px 0; }
-.tab-content{padding:20px}
-.nav-tabs > li  {width:20%; text-align:center;}
-.card {background: #FFF none repeat scroll 0% 0%; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); margin-bottom: 30px; }
-
-
-@media all and (max-width:724px){
-.nav-tabs > li > a > span {display:none;} 
-.nav-tabs > li > a {padding: 5px 5px;}
-}
 
 /* tr.group,
 tr.group:hover {
     background-color: #ddd !important;
 } */
 
-  </style>   
+  </style>
+  </head>
+
+<body>   
   <section class="content-header">
       <h1>
         Dashboard
@@ -160,7 +150,9 @@ tr.group:hover {
          
     </section>
 
+</body>
 
+</html>
 
 
 

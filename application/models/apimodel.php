@@ -2276,7 +2276,7 @@ class apimodel extends CI_Model {
 					->where("clusture_car.is_active",1)
 					->order_by("clusture_car.name","ASC")
 					->get();
-		
+		#q();
 		if($query->num_rows()> 0)
 		{
 	        foreach($query->result() as $rows)

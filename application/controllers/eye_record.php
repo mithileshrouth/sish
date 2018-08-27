@@ -28,6 +28,10 @@ class eye_record extends CI_Controller {
 		}
 	}
 
+
+public function test(){
+	echo "string";
+}
 public function getEyeRecordList()
 	{   $session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data'))
