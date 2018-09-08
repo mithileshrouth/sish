@@ -60,7 +60,23 @@
                     <input type="hidden" name="oldmobile" id="oldmobile" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['stsEditdata']->mobile;}?>">
                     <input type="text" class="form-control forminputs typeahead numchk" id="stsmobile" name="stsmobile" placeholder="Enter Mobile No" autocomplete="off" value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['stsEditdata']->mobile;}?>" maxlength="10">
                   </div>
-
+                  <p class="formSubTitle"><span class="glyphicon glyphicon-pencil"></span> Login Info</p>
+                  
+                 <div class="row">
+                      <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                          <label for="cordpassword">Password</label>
+                          <input type="password" class="form-control forminputs" id="stspassword" name="stspassword"
+                                 placeholder="" autocomplete="off" 
+                                 value="<?php if($bodycontent['mode']=="EDIT"){echo $bodycontent['stsEditdata']->password; } ?>" 
+                                 <?php if($bodycontent['mode']=="EDIT"){echo ("disabled"); } ?>
+                                 />
+                        </div>
+                      </div>
+                     
+                </div>
+                  
+                  
                   <p id="stsmsg" class="form_error"></p>
 
                   <div class="btnDiv">

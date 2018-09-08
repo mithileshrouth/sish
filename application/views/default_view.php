@@ -455,7 +455,7 @@
         <li class="header">MAIN NAVIGATION</li>
 		
 		<?php 
-		
+		//pre($leftmenu);
 		if(sizeof($leftmenu)>0)
 		{
 			
@@ -465,12 +465,26 @@
 				{ ?>
 					
 					<li class="treeview">
+                                          <?php if($firstlevel['FirstLevelMenuData']->adm_menu_name=='Get Ready') {
+                                              $session = $this->session->userdata('user_data');
+              //pre($session); 
+                                                                    $accessable = getAccess($session["roleid"]);
+                                                                    if($accessable=='Y'){
+                                              ?>  
 					  <a href="javascript:;">
 						<i class="fa fa-share"></i> <span><?php echo $firstlevel['FirstLevelMenuData']->adm_menu_name; ?></span>
 						<span class="pull-right-container">
 						  <i class="fa fa-angle-left pull-right"></i>
 						</span>
 					  </a>
+                                                                    <?php }}else{?>
+                                          <a href="javascript:;">
+						<i class="fa fa-share"></i> <span><?php echo $firstlevel['FirstLevelMenuData']->adm_menu_name; ?></span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
+					  </a> 
+                                          <?php } ?>
 					  <ul class="treeview-menu">
 						
 						<?php 
@@ -525,8 +539,19 @@
 								}
 								else
 								{
-									echo '<li><a href="'.base_url().$second_lvl['secondLevelMenuData']->adm_menu_link.'"><i class="fa fa-circle-o"></i>'.$second_lvl['secondLevelMenuData']->adm_menu_name.'</a></li>';
-								}
+                                                                    if($second_lvl['secondLevelMenuData']->parent_id=='1'){
+									$session = $this->session->userdata('user_data');
+              //pre($session); 
+                                                                    $accessable = getAccess($session["roleid"]);
+                                                                    if($accessable=='Y'){
+                                                                        echo '<li><a href="'.base_url().$second_lvl['secondLevelMenuData']->adm_menu_link.'"><i class="fa fa-circle-o"></i>'.$second_lvl['secondLevelMenuData']->adm_menu_name.'</a></li>';
+                                                                    
+                                                                    }
+                                                                    }else{
+                                                                        echo '<li><a href="'.base_url().$second_lvl['secondLevelMenuData']->adm_menu_link.'"><i class="fa fa-circle-o"></i>'.$second_lvl['secondLevelMenuData']->adm_menu_name.'</a></li>';
+                                                                    }
+                                                                
+                                                                    }
 							}
 						?>
 					  </ul>

@@ -60,7 +60,22 @@ class rolemastermodel extends CI_Model{
 	}
 	
 	
-	
+        public function getRoleAccessibility($roleId){
+            $isAccessable = 'N';
+		$query = $this->db->select("*")
+				->from("role_master")
+				->where('role_master.id', $roleId)
+				->limit(1)
+				->get();
+				
+		if ($query->num_rows() > 0) 
+		{
+		   $roledata = $query->row();
+		   $isAccessable = $roledata->is_action_active;
+		}
+		
+		return $isAccessable;
+        }
 	
 	
 	

@@ -46,7 +46,7 @@ table.DTFC_Cloned tfoot{
 
 
   tfoot {
-   // display: table-header-group;
+  
    display: none;
 }
 tfoot input {
@@ -104,7 +104,14 @@ tfoot input {
 		    <div class="box">
             <div class="box-header">
               <h3 class="box-title">List of Patient(s)</h3>
+              <?php
+              $session = $this->session->userdata('user_data');
+              //pre($session); 
+              $accessable = getAccess($session["roleid"]);
+              if($accessable=='Y'){
+              ?>
               <a href="<?php echo base_url();?>patient" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
+              <?php }?>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

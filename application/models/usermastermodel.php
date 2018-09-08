@@ -117,4 +117,13 @@ class usermastermodel extends CI_Model{
            }
         return $row;
 	}
+        
+        public function insertNewUser($user_data)
+        {
+            $user_id = 0;
+            $this->db->insert("user_master_web",$user_data);
+            $user_id = $this->db->insert_id();
+            return $user_id;
+            
+        }
 }

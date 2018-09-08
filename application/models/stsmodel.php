@@ -86,7 +86,33 @@ class stsmodel extends CI_Model{
 	       
 		
 	}
-	
+        public function insertSTS($data){
+            $insertId = 0;
+            $this->db->insert("sts",$data);
+            $insertId = $this->db->insert_id();
+            return $insertId;
+         }
+         
+         public function insertActivityLog($data){
+             $insertid=0;
+             $this->db->insert("activity_log",$data);
+             $insertid = $this->db->insert_id();
+             return $insertid;
+         }
+        public function getStsData($stsId){
+            $sts="";
+            $query = $this->db->select("sts.*,user_master_web.*")
+                    ->from("sts")
+                    ->join("user_master_web","sts.user_id=user_master_web.id","LEFT")
+                    ->where("sts.id",$stsId)
+                    ->get();
+            if($query->num_rows()>0){
+                $sts= $query->row();
+            }
+            return $sts;
+        }
+        
+        
 	
 	
 

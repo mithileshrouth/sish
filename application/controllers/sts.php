@@ -6,6 +6,7 @@ class sts extends CI_Controller {
 	    parent::__construct();
 		$this->load->library('session');
 		$this->load->model('stsmodel','sts',TRUE);
+                $this->load->model('usermastermodel','webuser',TRUE);
 	}
 	
 	
@@ -66,7 +67,7 @@ class sts extends CI_Controller {
 					'sts.id' => $stsID
 				);
 				// getSingleRowByWhereCls(tablename,where params)
-				$result['stsEditdata'] = $this->commondatamodel->getSingleRowByWhereCls('sts',$whereAry); 
+				$result['stsEditdata'] = $this->sts->getStsData($stsID);//$this->commondatamodel->getSingleRowByWhereCls('sts',$whereAry); 
 				
 			}
 
@@ -117,7 +118,7 @@ class sts extends CI_Controller {
 			$tuID = trim(htmlspecialchars($dataArry['seltu']));
 			$stsname = trim(htmlspecialchars($dataArry['stsname']));
 			$stsmobile = trim(htmlspecialchars($dataArry['stsmobile']));
-			
+			$stspassword = trim(htmlspecialchars($dataArry['stspassword']));
 
 
 			if($tuID!="0" && $stsname!="" && $stsmobile!="")
@@ -186,13 +187,7 @@ class sts extends CI_Controller {
 					*/
 
 
-					$array_insert = array(
-						"name" => $stsname,
-						"mobile" => $stsmobile,
-						"tu_id" => $tuID,
-						"is_active" => 1,
-						"created_by" => $session['userid']
-					);
+					
 					
 					
 	
@@ -206,11 +201,32 @@ class sts extends CI_Controller {
 						"user_platform" => getUserPlatform()
 						
 					 );
-
+                                        
+                                        $user = [
+                                          "mobile_no"=>$stsmobile,
+                                          "PASSWORD"=>$stspassword,  
+                                          "role_id" => 10,
+                                          "project_id"=>1,
+                                          "is_active"  =>'Y'
+                                        ];
+                                        $user_id_sts = $this->webuser->insertNewUser($user);
+                                        $array_insert = array(
+						"name" => $stsname,
+						"mobile" => $stsmobile,
+						"tu_id" => $tuID,
+						"is_active" => 1,
+						"created_by" => $session['userid'],
+                                                "user_id"=>$user_id_sts
+					);
+                                        
+                                        $insertData = $this->sts->insertSTS($array_insert);
+                                        $this->sts->insertActivityLog($user_activity);
+                                        
+                                        //insertNewUser
 						
-					$tbl_name = array('sts','activity_log');
-					$insert_array = array($array_insert,$user_activity);
-					$insertData = $this->commondatamodel->insertMultiTableData($tbl_name,$insert_array);
+//					$tbl_name = array('sts','activity_log');
+//					$insert_array = array($array_insert,$user_activity);
+//					$insertData = $this->commondatamodel->insertMultiTableData($tbl_name,$insert_array);
 
 					if($insertData)
 					{

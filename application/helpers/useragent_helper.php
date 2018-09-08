@@ -49,3 +49,14 @@ if(!function_exists('getUserPlatform'))
 	}
 }
 
+if(!function_exists('getAccess'))
+{
+	function getAccess($roleId)
+	{
+		$CI =& get_instance();
+		$CI->load->model('rolemastermodel','',TRUE);
+                $isAccess = 'N';
+		$isAccess = $CI->rolemastermodel->getRoleAccessibility($roleId);
+                return $isAccess ;
+	}
+}
