@@ -1055,6 +1055,55 @@ public function __construct()
  }
  
  
+  public function updatePTB(){
+	header('Access-Control-Allow-Origin: *');  
+	header('Content-Type: application/json');
+	$postdata = file_get_contents("php://input");
+	$request = json_decode($postdata);
+	$key = $request->key;
+	$apikey = $this->apimodel->getAPIkey();
+	$data = $request->data;
+	$session = $request->session;
+	$ptcid = $request->ptc;
+	
+	
+	
+	if(!empty($key) && $apikey == trim($key)){
+		
+		// Insert Into Patient // Registration Of New patient
+		$register = $this->apimodel->updatePTCData($ptcid,$data,$session);
+		if($register){
+			$result = [
+			"status"=>200,
+            "statuscode"=>"SUCCESS",
+			"data"=> NULL
+			];
+		}
+		else{
+			$result = [
+			"status"=>400,
+            "statuscode"=>"ERROR",
+			"data"=> NULL
+			];
+		}
+
+	}
+	else{
+		$result = [
+			"status"=>403,
+            "statuscode"=>"KEY_MISSING",
+			"data"=> NULL,
+			"token"=>NULL
+			];
+	}
+		
+	$resultdata = json_encode($result);
+	echo $resultdata;
+	exit;
+	
+ }
+ 
+ 
  public function getPatientList(){
 	header('Access-Control-Allow-Origin: *');  
 	header('Content-Type: application/json');
@@ -1820,7 +1869,52 @@ public function getPendingReferralData(){
 	}
  
  
-  private function generateToken()
+	public function getPatientSymptomByPtc(){
+		header('Access-Control-Allow-Origin: *');  
+		header('Content-Type: application/json');
+		$postdata = file_get_contents("php://input");
+		$request = json_decode($postdata);
+		$apikey = $this->apimodel->getAPIkey();
+		$key = $request->key;
+		$ptcid = $request->ptc;
+		
+		
+		if(!empty($key) && $apikey == trim($key)){
+			
+			$resultset = $this->apimodel->getPatientSymptomByPtc($ptcid);
+			if(sizeof($resultset)>0)
+			{
+				$result = [
+				 "status"=>200,
+                 "statuscode"=>"SUCCESS",
+				 "data"=> $resultset
+				];
+			}
+			else{
+				$result = [
+				 "status"=>400,
+                 "statuscode"=>"NO DATA FOUND",
+				 "data"=> NULL
+				];
+			}
+			
+		}
+		else{
+			$result = [
+				 "status"=>403,
+                 "statuscode"=>"KEY_MISSING",
+				 "data"=> NULL
+			];
+		}
+		
+		$resultdata = json_encode($result);
+		echo $resultdata;
+		exit;
+		
+	}
+ 
+ 
+ private function generateToken()
  {
 	$token="";
 	$token = openssl_random_pseudo_bytes(16);
@@ -2328,5 +2422,7 @@ public function getPendingReferralData(){
 		exit;
 	}
  
+ 
+	
  
 }
