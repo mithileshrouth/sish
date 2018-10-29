@@ -110,7 +110,7 @@ tfoot input {
               $accessable = getAccess($session["roleid"]);
               if($accessable=='Y'){
               ?>
-              <a href="<?php echo base_url();?>patient" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
+              <a href="<?php echo base_url();?>patientregister/addpatient" class="link_tab"><span class="glyphicon glyphicon-plus"></span> ADD</a>
               <?php }?>
             </div>
             <!-- /.box-header -->
@@ -121,6 +121,7 @@ tfoot input {
                    <th style="width:5%;">&nbsp;</th> 
                  <!--  <th style="text-align:right;width:5%;">Action</th> -->
                    <th style="width:10%;">view</th>
+                   <th style="width:10%;">Edit</th>
                   <th style="width:20%;">Patient</th>
                   <th style="width:5%;">Mobile</th>
                   <th>Group Coordinator</th>
@@ -174,6 +175,14 @@ tfoot input {
               <td align="center"><a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="View">View
                
               </a></td>
+              
+               <td align="center">
+                   <a href="<?php echo base_url(); ?>patientregister/addpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="Edit">Edit
+               
+              </a>
+               </td>
+              
+              
 						<td><?php echo $value->patient_name; ?>
               
             </td>

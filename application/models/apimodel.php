@@ -612,7 +612,7 @@ class apimodel extends CI_Model {
 	
 	
 	
-	private function getLatestSerialNumber($from,$project_id){
+	public function getLatestSerialNumber($from,$project_id){
         $lastnumber = (int)(0);
         $serialno="";
         $sql="SELECT *
@@ -1160,7 +1160,8 @@ class apimodel extends CI_Model {
 				"patient.patient_id" =>$pid
 			];
 			//$this->db->_protect_identifiers=true;
-		 $query = $this->db->select("patient.*,ptb_treatment_detail.*,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname,
+		 $query = $this->db->select("   patient.patient_id as ptcid,
+                                                patient.*,ptb_treatment_detail.*,nqpp.name as selectednqpp,coordinator.name as selectedcoordinatorname,
 						 DATE_FORMAT(patient.`dmc_sputum_test_date`,'%d %M% %Y') AS sputumTestDate,
 						 DATE_FORMAT(patient.`dmc_sputum_date`,'%d %M% %Y') AS sputumColDate,
 						 DATE_FORMAT(patient.`xray_date`,'%d %M% %Y') AS xrayDate,
@@ -1187,7 +1188,7 @@ class apimodel extends CI_Model {
 					->join("payment_gen_details","payment_gen_details.patient_id = patient.patient_id","LEFT")
 					->where($where)
 					->get();
-		
+		//echo "Q ".$this->db->last_query();
 		if($query->num_rows()>0){
             $data = $query->row();
         }
