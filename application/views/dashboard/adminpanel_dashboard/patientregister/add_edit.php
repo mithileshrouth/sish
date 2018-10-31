@@ -174,7 +174,7 @@ tr.group:hover {
                    
                    <hr>
                    <div class="row">
-                       <div class="col-sm-6">
+                       <div class="col-sm-3">
                            <div class="form-group">
                                <label for="distcoordinatorList">District *</label> 
                                <div id="distcoordinatorview">
@@ -203,7 +203,7 @@ tr.group:hover {
                            </div>
                        </div>
                        
-                       <div class="col-sm-6">
+                       <div class="col-sm-3">
                            <div class="form-group">
                                <label for="blockList">Block *</label> 
                                <div id="blockview">
@@ -229,6 +229,32 @@ tr.group:hover {
                                </div>
                             </div>
                            
+                       </div>
+                       <div class="col-md-3">
+                          <div class="form-group">
+                               <label for="blockList">TU *</label> 
+                           <div id="blockview">
+                           <select id="patient_block" name="patient_block" 
+                                           class="form-control selectpicker"
+                                           data-show-subtext="true" data-actions-box="true" 
+                               data-live-search="true" >
+                               <option value="0">Select</option>
+                                 <?php if(!empty($bodycontent['block'])){ 
+                                         foreach ($bodycontent['block'] as  $value) {
+                                        ?>
+                                            <option value="<?php echo($value->id); ?>"
+                                            <?php if($bodycontent['mode']=="EDIT"){
+                                                   if($bodycontent['patientregister']->patient_block==$value->id){echo('selected');} 
+                                               
+                                               }?> 
+                                            >
+                                                <?php echo($value->name); ?>
+                                            </option>
+                                        
+                                       <?php } } ?>                
+                           </select>
+                           </div>
+                        </div>
                        </div>
                    </div>
                    <hr>
