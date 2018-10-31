@@ -232,19 +232,45 @@ tr.group:hover {
                        </div>
                        <div class="col-md-3">
                           <div class="form-group">
-                               <label for="blockList">TU *</label> 
-                           <div id="blockview">
-                           <select id="patient_block" name="patient_block" 
+                               <label for="tulist">TU *</label> 
+                           <div id="tuview">
+                           <select id="tubclunit" name="tubclunit" 
                                            class="form-control selectpicker"
                                            data-show-subtext="true" data-actions-box="true" 
                                data-live-search="true" >
                                <option value="0">Select</option>
-                                 <?php if(!empty($bodycontent['block'])){ 
-                                         foreach ($bodycontent['block'] as  $value) {
+                                 <?php if(!empty($bodycontent['tubclsunit'])){ 
+                                         foreach ($bodycontent['tubclsunit'] as  $value) {
                                         ?>
                                             <option value="<?php echo($value->id); ?>"
                                             <?php if($bodycontent['mode']=="EDIT"){
-                                                   if($bodycontent['patientregister']->patient_block==$value->id){echo('selected');} 
+                                                   if($bodycontent['patientregister']->patient_tuid==$value->id){echo('selected');} 
+                                               
+                                               }?> 
+                                            >
+                                                <?php echo($value->name); ?>
+                                            </option>
+                                        
+                                       <?php } } ?>                
+                           </select>
+                           </div>
+                        </div>
+                       </div>
+                       <div class="col-md-3">
+                           <div class="form-group">
+                               <label for="tulist">DMC *</label> 
+                           <div id="dmcview">
+                           <select id="dmcdrp" name="dmcdrp" 
+                                           class="form-control selectpicker"
+                                           data-show-subtext="true" data-actions-box="true" 
+                               data-live-search="true" >
+                               <option value="0">Select</option>
+                                 <?php if(!empty($bodycontent['dmc'])){ 
+                                         foreach ($bodycontent['dmc'] as  $value) {
+                                        ?>
+                                            <option value="<?php echo($value->id); ?>"
+                                            <?php if($bodycontent['mode']=="EDIT"){
+                                                   if($bodycontent['patientregister']->dmc_id==$value->id){echo('selected');} 
                                                
                                                }?> 
                                             >
@@ -547,6 +573,8 @@ tr.group:hover {
     var patient_pin = $("#patient_pin").val();
     var patient_district =$("#patient_district").val();
     var patient_block = $("#patient_block").val();
+    var tubclunit = $("#tubclunit").val();
+    var dmcdrp = $("#dmcdrp").val()
     var coordinator = $("#coordinator").val();
     var sel_nqpp = $("#sel_nqpp").val();
     
@@ -610,6 +638,27 @@ if(patient_block==0)
         .css("display", "block");
         return false;
     }
+ 
+ if(tubclunit==0)
+    {
+        $("#tubclunit").focus();
+        $("#ptcerrmsg")
+        .text("Select tuberculess unit.")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+    
+    if(dmcdrp==0)
+    {
+        $("#dmcdrp").focus();
+        $("#ptcerrmsg")
+        .text("Select dmc name.")
+        .addClass("form_error")
+        .css("display", "block");
+        return false;
+    }
+    
     
 //coordinator
 if(coordinator=="0"){
@@ -629,11 +678,92 @@ if(sel_nqpp=="0"){
         .css("display", "block");
         return false;
 }
+
+
+
     return true;
 }
   
+  $(document).on("change","#tubclunit",function(){
+      
+      var tuid = $(this).val();
+      
+      $.ajax({
+	type: "POST",
+	url: '<?php echo(base_url());?>patientregister/getDmcByTuId/'+tuid+'/1',
+	data: '',
+        dataType: 'html',
+	
+	success: function(data){
+            $("#dmcview").html("");
+	    $("#dmcview").html(data);
+	    $('.selectpicker').selectpicker({dropupAuto: false});
+	},
+	error: function (jqXHR, exception) {
+				  var msg = '';
+					if (jqXHR.status === 0) {
+						msg = 'Not connect.\n Verify Network.';
+					} else if (jqXHR.status == 404) {
+						msg = 'Requested page not found. [404]';
+					} else if (jqXHR.status == 500) {
+						msg = 'Internal Server Error [500].';
+					} else if (exception === 'parsererror') {
+						msg = 'Requested JSON parse failed.';
+					} else if (exception === 'timeout') {
+						msg = 'Time out error.';
+					} else if (exception === 'abort') {
+						msg = 'Ajax request aborted.';
+					} else {
+						msg = 'Uncaught Error.\n' + jqXHR.responseText;
+					}
+				   // alert(msg);  
+				}
+
+
+
+	});/*end ajax call*/
+      
+  });
   
-  
+  $(document).on("change","#patient_block",function(){
+      var block_id = $(this).val();
+      
+      $.ajax({
+	type: "POST",
+	url: '<?php echo(base_url());?>patientregister/getTubclsUnitByBlockId/'+block_id+'/1',
+	data: '',
+        dataType: 'html',
+	
+	success: function(data){
+            $("#tuview").html("");
+		$("#tuview").html(data);
+		$('.selectpicker').selectpicker({dropupAuto: false});
+	},
+	error: function (jqXHR, exception) {
+				  var msg = '';
+					if (jqXHR.status === 0) {
+						msg = 'Not connect.\n Verify Network.';
+					} else if (jqXHR.status == 404) {
+						msg = 'Requested page not found. [404]';
+					} else if (jqXHR.status == 500) {
+						msg = 'Internal Server Error [500].';
+					} else if (exception === 'parsererror') {
+						msg = 'Requested JSON parse failed.';
+					} else if (exception === 'timeout') {
+						msg = 'Time out error.';
+					} else if (exception === 'abort') {
+						msg = 'Ajax request aborted.';
+					} else {
+						msg = 'Uncaught Error.\n' + jqXHR.responseText;
+					}
+				   // alert(msg);  
+				}
+
+
+
+	});/*end ajax call*/
+      
+  });
   
   
   
@@ -675,7 +805,7 @@ if(sel_nqpp=="0"){
   });
   
   $(document).on("change","#patient_district",function(event){
-        //event.preventDefault();
+        event.preventDefault();
         var dist_id = $(this).val();
         //alert(dist_id);
 	$.ajax({
@@ -685,6 +815,7 @@ if(sel_nqpp=="0"){
         dataType: 'html',
 	
 	success: function(data){
+            $("#blockview").html("");
 		$("#blockview").html(data);
 		$('.selectpicker').selectpicker({dropupAuto: false});
 	},

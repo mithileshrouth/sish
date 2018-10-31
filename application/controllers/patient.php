@@ -9,6 +9,8 @@ class patient extends CI_Controller {
 		$this->load->model('nqppmodel','nqpp',TRUE);
 		$this->load->model('coordinatormodel','coordinator',TRUE);
 		$this->load->model('locationmodel','locations',TRUE);
+                
+                $this->load->model('dmcmodel','dmcmodel',TRUE);
 	}
 
 	public function index()
@@ -74,8 +76,27 @@ class patient extends CI_Controller {
 			redirect('adminpanel','refresh');
 		}
 	}
-
-
+/**
+ * @date 29/10/2018
+ * @param type $patient_id
+ * @author Abhik
+ */
+ public function patientTestProcess($patient_id){
+             $session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+                        $result["patientStaticHeader"]= $this->patientmodel->getPatientDetails($patient_id);
+                        $result["dmc"] = $this->dmcmodel->getAllDMC();
+			$header = "";
+			$page = "dashboard/adminpanel_dashboard/patient/patient_test_process";
+			createbody_method($result, $page, $header,$session);
+		}
+		else
+		{
+			redirect('administratorpanel','refresh');
+		}
+             
+         }
 
 	public function patient_report()
 	{

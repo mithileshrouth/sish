@@ -7,7 +7,26 @@ class patientmodel extends CI_Model{
 	
 		$this->load->model('rolemastermodel','rolemodel',TRUE);
 	}
-	
+        public function getPatientDetails($patient_id){
+            $patient ="";
+            $query = $this->db->select("patient.*,patient.dmc_id AS dmcid,nqpp.name as nfhp,coordinator.*,nqpp.*,"
+                    . "district.name as district_name ,coordinator.name as cordintr_name,block.name AS block_name")
+                                ->from('patient')
+                                ->join('nqpp','nqpp.id = patient.nqpp_id','LEFT')
+				->join('coordinator','coordinator.id = patient.group_cord_id','LEFT')
+				->join('block','block.id = coordinator.block_id','INNER')
+				->join('district','district.id = block.district_id','INNER')
+                                ->where("patient.patient_id",$patient_id)->get();
+            if($query->num_rows()> 0)
+               {
+                $patient = $query->row();
+                
+               }
+               
+               return $patient;   
+            
+        }
+        
 	
 	public function getAllPatient($arrayName){
 		$data = [];

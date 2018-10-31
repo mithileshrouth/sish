@@ -9,6 +9,7 @@ class Patientregister extends CI_Controller {
                 $this->load->model('patientregistrationmodel','patientregistrationmodel',TRUE);
                 $this->load->model('apimodel','apimodel',TRUE);
                 $this->load->model('locationmodel','location',TRUE);
+                $this->load->model('tuberculosisunitmodel','tu',TRUE);
                 
 	}
 	
@@ -51,6 +52,21 @@ class Patientregister extends CI_Controller {
                         }else{
                             $result["block"]="";
                         }
+                       //tuberculosisunit
+                       
+                        if($result['mode']=="EDIT"){
+                            $result["tubclsunit"]= $this->getTubclsUnitByBlockId($result['patientregister']->patient_block,0);
+                        }else{
+                            $result["tubclsunit"]="";
+                        }
+                        
+                        //dmc
+                        if($result['mode']=="EDIT"){
+                            $result["dmc"]= $this->getDmcByTuId($result['patientregister']->patient_tuid,0);
+                        }else{
+                            $result["dmc"]="";
+                        }
+                        
                         
                         $result["coordinatorList"] = $this->commondatamodel->getAllDropdownData("coordinator");
                         if($result['mode']=="EDIT"){
@@ -81,14 +97,15 @@ class Patientregister extends CI_Controller {
 			redirect('administratorpanel','refresh');
 		}
 	}
-        public function getBlockByDistrictId($districId="",$is_ajax=0){
+        public function getBlockByDistrictId($dist_id=0,$is_ajax=0){
             $block="";
 //            $is_ajax = $this->input->post('ajxtag');
-//            echo($districId."   ".$is_ajax);
-            if($districId=!""){
+            $dictrictId = (int)$dist_id;
+            if($dictrictId!=0){
+                //echo($dictrictId);
                 $table="block";
                 $where=[
-                    "district_id"=>$districId
+                    "district_id"=>$dictrictId
                 ];
                 $block = $this->commondatamodel->getAllRecordWhere($table,$where);
                 
@@ -102,7 +119,48 @@ class Patientregister extends CI_Controller {
             
             
         }
-        public function getNFHPByCoordinator($coordinatorId="",$is_ajax=0)
+        
+        public function getTubclsUnitByBlockId($blockId="",$is_ajax=0)
+         {
+            $tubclsUnit="";
+            if($blockId!=""){
+                $table = "tu_unit";
+                $where=[
+                        "block_id"=>$blockId
+                    ];
+                $tubclsUnit = $this->commondatamodel->getAllRecordWhere($table,$where);
+            }
+            
+            if($is_ajax!=0){
+                $data['rslt']=$tubclsUnit;
+                $this->load->view("dashboard/adminpanel_dashboard/patientregister/partial_tu_view",$data);
+            } else {
+                return $tubclsUnit;
+            }
+         }
+         
+         public function getDmcByTuId($tuid="",$is_ajax=0)
+         {
+             $dmc="";
+             if($tuid!=""){
+                $table = "dmc";
+                $where=[
+                        "tuid"=>$tuid
+                    ];
+                $dmc = $this->commondatamodel->getAllRecordWhere($table,$where);
+            }
+            
+            if($is_ajax!=0){
+                $data['rslt']=$dmc;
+                $this->load->view("dashboard/adminpanel_dashboard/patientregister/partial_dmc_view",$data);
+            } else {
+                return $dmc;
+            }
+             
+         }
+
+
+         public function getNFHPByCoordinator($coordinatorId="",$is_ajax=0)
         {
             //$Non-formal Health Providers
             $nonFormalHlthPrvdr =[];
@@ -161,6 +219,8 @@ class Patientregister extends CI_Controller {
                         $patient_pin = $dataArry['patient_pin'];
                         $patient_district = $dataArry['patient_district'];
                         $patient_block=$dataArry['patient_block'];
+                        $patient_tuid=$dataArry['tubclunit'];
+                        $dmc_id=$dataArry['dmcdrp'];
                         $patient_full_address = $dataArry['patient_full_address'];
                         $patient_adhar = $dataArry['patient_adhar'];
                         $patient_ration = $dataArry['patient_ration'];
@@ -192,6 +252,8 @@ class Patientregister extends CI_Controller {
                                             "patient_pin"=> $patient_pin,
                                             "patient_district"=> $patient_district,
                                             "patient_block"=> $patient_block,
+                                            "patient_tuid"=>$patient_tuid,
+                                            "dmc_id"=>$dmc_id,
                                             "patient_full_address"=> $patient_full_address,
                                             "patient_adhar"=> $patient_adhar,
                                             "patient_ration"=> $patient_ration,
@@ -273,6 +335,9 @@ class Patientregister extends CI_Controller {
                                             "patient_pin"=> $patient_pin,
                                             "patient_district"=> $patient_district,
                                             "patient_block"=> $patient_block,
+                                            "patient_tuid"=>$patient_tuid,
+                                            "dmc_id"=>$dmc_id,
+                                            
                                             "patient_full_address"=> $patient_full_address,
                                             "patient_adhar"=> $patient_adhar,
                                             "patient_ration"=> $patient_ration,
