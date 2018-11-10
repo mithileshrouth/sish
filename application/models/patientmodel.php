@@ -10,12 +10,16 @@ class patientmodel extends CI_Model{
         public function getPatientDetails($patient_id){
             $patient ="";
             $query = $this->db->select("patient.*,patient.dmc_id AS dmcid,nqpp.name as nfhp,coordinator.*,nqpp.*,"
-                    . "district.name as district_name ,coordinator.name as cordintr_name,block.name AS block_name")
+                    . "district.name as district_name ,coordinator.name as cordintr_name,block.name AS block_name,"
+                    . "dmc.name AS dmcname,tu_unit.name AS tuname,xray_center.name as xray_center_name,")
                                 ->from('patient')
                                 ->join('nqpp','nqpp.id = patient.nqpp_id','LEFT')
 				->join('coordinator','coordinator.id = patient.group_cord_id','LEFT')
 				->join('block','block.id = coordinator.block_id','INNER')
 				->join('district','district.id = block.district_id','INNER')
+                                ->join('dmc','patient.dmc_id=dmc.id','INNER')
+                                ->join('xray_center','xray_center.id = patient.xray_cntr_id','LEFT')
+                                ->join('tu_unit','patient.patient_tuid=tu_unit.id')
                                 ->where("patient.patient_id",$patient_id)->get();
             if($query->num_rows()> 0)
                {
@@ -290,5 +294,23 @@ class patientmodel extends CI_Model{
 	        return $data;
 	       
 	}
+        
+        public function testObservationUpdate($updateData,$patientId){
+        try {
+            $this->db->trans_begin();
+            $this->db->where("patient_id",$patientId);
+            $this->db->update("patient",$updateData);
+            //   echo $this->db->last_query();
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                $this->db->trans_commit();
+                return true;
+            }
+        } catch (Exception $err) {
+            echo $err->getTraceAsString();
+        }
+    }
 
 }// End of Class

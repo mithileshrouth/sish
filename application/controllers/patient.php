@@ -9,8 +9,9 @@ class patient extends CI_Controller {
 		$this->load->model('nqppmodel','nqpp',TRUE);
 		$this->load->model('coordinatormodel','coordinator',TRUE);
 		$this->load->model('locationmodel','locations',TRUE);
-                
                 $this->load->model('dmcmodel','dmcmodel',TRUE);
+                $this->load->model('xraycentermodel','xray',TRUE);
+                $this->load->model('cbnaatmodel','cbnaat',TRUE);
 	}
 
 	public function index()
@@ -87,6 +88,9 @@ class patient extends CI_Controller {
 		{
                         $result["patientStaticHeader"]= $this->patientmodel->getPatientDetails($patient_id);
                         $result["dmc"] = $this->dmcmodel->getAllDMC();
+                        $result["xray"]= $this->xray->getAllXrayCenter();
+                        $result["cbnaat"] = $this->cbnaat->getAllCbnaat();
+                        
 			$header = "";
 			$page = "dashboard/adminpanel_dashboard/patient/patient_test_process";
 			createbody_method($result, $page, $header,$session);
@@ -97,8 +101,85 @@ class patient extends CI_Controller {
 		}
              
          }
+         public function investigationUpdate(){
+            
+                $session = $this->session->userdata('user_data');
+		if($this->session->userdata('user_data') && isset($session['token']))
+		{
+                   $Data = json_decode(file_get_contents('php://input'), true);
+                   //pre($Data);
+                   $json_response;
+                   $patientId="";
+                   $update=[];
+                   //str_replace('/', '-', $var)
+                   if($Data["from"]=="dmc"){
+                       $patientId = $Data["patient_id"];
+                       $update=[
+                           "dmc_sputum_done"=>($Data["dmc_sputum_test_date"]!=""?"Y":"N"),
+                           "dmc_sputum_test_date"=>($Data["dmc_sputum_test_date"]!=""? date('Y-m-d', strtotime(str_replace('/', '-', $Data["dmc_sputum_test_date"]))):NULL),
+                           "dmc_sputum_date"=>($Data["dmc_sputum_date"]!=""? date('Y-m-d',strtotime(str_replace('/', '-', $Data["dmc_sputum_date"]))):NULL),
+                           "dmc_spt_is_positive"=>$Data["dmc_spt_is_positive"],
+                           "dmc_result_done"=>($Data["dmc_spt_is_positive"]!=""?"Y":"N")
+                       ];
+                       
+                   }else if($Data["from"]=="xray"){
+                       
+                        $patientId = $Data["patient_id"];
+                       $update=[
+                           "xray_is_done"=>($Data["xray_date"]!=""?"Y":"N"),
+                           "xray_date"=>($Data["xray_date"]!=""? date('Y-m-d', strtotime(str_replace('/', '-', $Data["xray_date"]))):NULL),
+                           "xray_cntr_id"=>$Data["xray_cntr_id"],
+                           "xray_result_done"=>($Data["xray_is_postive"]!=""?"Y":"N"),
+                           "xray_is_postive"=>$Data["xray_is_postive"]
+                       ];
+                       
+                       
+                       
+                   }else if($Data["from"]=="cbnaat"){
+                       $rif=NULL;
+                       if($Data["cbnaat_pstv"]=="Y"){
+                           $rif=$Data["rif_value"];
+                       }
+                       $patientId = $Data["patient_id"];
+                        $update=[
+                           "is_cbnaat_done"=>($Data["cbnaat_test_date"]!=""?"Y":"N"),
+                           "cbnaat_test_date"=>($Data["cbnaat_test_date"]!=""? date('Y-m-d', strtotime(str_replace('/', '-', $Data["cbnaat_test_date"]))):NULL),
+                           "cbnaat_date"=>($Data["cbnaat_date"]!=""? date('Y-m-d', strtotime(str_replace('/', '-', $Data["cbnaat_date"]))):NULL),
+                           "cbnaat_id"=>$Data["cbnaat_id"],
+                           "cbnaat_pstv"=>$Data["cbnaat_pstv"],
+                           "rif_value"=>$rif
+                        ];
+                   }
+                   $updt=$this->patientmodel->testObservationUpdate($update,$patientId) ;
+                   
+                   if($updt)
+			{
+				$json_response = array(
+					"msg_status" => 1,
+					"msg_data" => "Status updated"
+				);
+			}
+			else
+			{
+				$json_response = array(
+					"msg_status" => 0,
+					"msg_data" => "Failed to update"
+				);
+			}
+                        
+                header('Content-Type: application/json');
+		echo json_encode( $json_response );
+		exit;
+                }
+               else
+		{
+			redirect('administratorpanel','refresh');
+		}
+                   
+         }
 
-	public function patient_report()
+
+                  public function patient_report()
 	{
 		$session = $this->session->userdata('user_data');
 		if($this->session->userdata('user_data') && isset($session['token']))

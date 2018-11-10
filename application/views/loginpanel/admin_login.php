@@ -32,7 +32,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="javascript:;"><b><span style="color: #1394c8;">SHIS</span></b> ADMIN</a>
+    <a href="javascript:;"><b><span style="color: #1394c8;">SHIS GF-CTD</span></b> ADMIN</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

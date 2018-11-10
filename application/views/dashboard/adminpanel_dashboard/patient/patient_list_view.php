@@ -172,9 +172,23 @@ tfoot input {
            </a>
           
           </td> -->
-              <td align="center"><a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="View">View
+              <td align="center">
+                  
+<!--                  <a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="View">View
                
-              </a></td>
+              </a>-->
+              
+            <a href="<?php echo base_url(); ?>patient/viewpatient/<?php echo $value->patient_id; ?>" class="btn btn-primary btn-xs" data-title="View">
+		<span class="glyphicon glyphicon-eye-open" title="View"></span>
+	    </a>
+            <a href="<?php echo base_url(); ?>patient/patientTestProcess/<?php echo $value->patient_id; ?>" class="btn btn-primary btn-xs" data-title="Observation">
+                <span class="glyphicon glyphicon-export" title="Observation"></span>
+	    </a>      
+                  
+  
+  
+              
+              </td>
               
                <td align="center">
                    <a href="<?php echo base_url(); ?>patientregister/addpatient/<?php echo $value->patient_id; ?>" class="btn btn-danger btn-xs" data-title="Edit">Edit
@@ -183,7 +197,16 @@ tfoot input {
                </td>
               
               
-						<td><?php echo $value->patient_name; ?>
+						<td>
+                                                    <?php echo $value->patient_name; ?>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
               
             </td>
             <td><?php echo $value->patient_mobile_primary; ?></td>
