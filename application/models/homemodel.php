@@ -6,32 +6,24 @@ class homemodel extends CI_Model
 	{
 	    parent::__construct();
 	}
-//        public function getSearchResult($fromDate,$districtId="",$blockId=""){
-//            
-//            
-//            
-//        }
-        public function getSearchResult($fromDate,$districtId="",$blockId=""){
-            
-            $havingClause="";
+        public function getSearchResult($fromDate,$districtId="",$blockId="")
+        {
+            $data = "";
+            $whereClause = "";
             if($districtId!="" && $blockId!=""){
-                $havingClause = " HAVING patient.patient_district =".$districtId." AND patient.patient_block =".$blockId;
-            }
-            elseif ($districtId!="" && $blockId=="") 
+               $whereClause =  " WHERE district.id =".$districtId." AND block.id=".$blockId; 
+                    
+            }elseif ($districtId!="" && $blockId=="") 
             {
-                $havingClause = " HAVING patient.patient_district =".$districtId ;
+                $whereClause = " WHERE district.id =".$districtId ;
             }else{
-                $havingClause ="";
+                $whereClause ="";
             }
-           $sql = "SELECT COUNT(patient_id) AS registered,
-                    block.name AS block,district.name  AS district ,
-                    patient.patient_district,patient.patient_block,
-                    DATE_FORMAT(patient.patient_reg_date,'%d-%m-%Y') AS patient_reg_date
-                    FROM patient
-                    LEFT JOIN block ON patient.patient_block =block.id
-                    LEFT JOIN district ON patient.patient_district = district.id
-                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'".
-                    " GROUP BY patient.patient_block ".$havingClause." ORDER BY district.name,block.name";
+            
+            $sql="SELECT district.id as districtid,district.name AS district,block.name as block,
+                    block.id as blockid
+                    FROM district
+                   INNER JOIN block ON district.id = block.district_id ".$whereClause." ORDER BY district.name,block.name" ;
             
             $query = $this->db->query($sql);
            
@@ -43,15 +35,15 @@ class homemodel extends CI_Model
                                         $i=$i+1;
 					$data []= array(
                                             "serial"=>$i,
-                                            "patient_reg_date"=>$rows->patient_reg_date,
+                                            "patient_reg_date"=>"",//$rows->patient_reg_date,
                                             "district"=>$rows->district,
                                             "block"=>$rows->block,
-                                            "NFHP"=> $this->getNFHP($rows->patient_block),
-                                            "registered"=>$rows->registered,
-                                            "sputumClctDone"=>$this->getSputumCollectionCount($fromDate,$rows->patient_district,$rows->patient_block),
-                                            "xrayCount"=> $this->getXrayCount($fromDate, $rows->patient_district,$rows->patient_block),
-                                            "cbnaatCount"=> $this->getCbnaatCount($fromDate, $rows->patient_district,$rows->patient_block),
-                                            "tbCount"=> $this->getTbDignCount($fromDate, $rows->patient_district,$rows->patient_block)
+                                            "NFHP"=> $this->getNFHP($rows->blockid),
+                                            "registered"=>$this->getRegisteredPatient($fromDate,$rows->districtid,$rows->blockid),
+                                            "sputumClctDone"=>$this->getSputumCollectionCount($fromDate,$rows->districtid,$rows->blockid),
+                                            "xrayCount"=> $this->getXrayCount($fromDate, $rows->districtid,$rows->blockid),
+                                            "cbnaatCount"=> $this->getCbnaatCount($fromDate, $rows->districtid,$rows->blockid),
+                                            "tbCount"=> $this->getTbDignCount($fromDate, $rows->districtid,$rows->blockid)
                                             
                                             
                                         );
@@ -59,11 +51,41 @@ class homemodel extends CI_Model
             }
             return $data;
             
+            
+        }
+        public function getRegisteredPatient($fromDate,$districtId="",$blockId=""){
+            $numberOfRegistered=0;
+            $havingClause="";
+            if($districtId!="" && $blockId!=""){
+                $havingClause = " HAVING patient.patient_district =".$districtId." AND patient.patient_block =".$blockId;
+            }
+            elseif ($districtId!="" && $blockId=="") 
+            {
+                $havingClause = " HAVING patient.patient_district =".$districtId ;
+            }else{
+                $havingClause ="";
+            }
+           $sql = "SELECT COUNT(patient_id) AS registered,patient.patient_district,patient.patient_block
+                    FROM patient
+                    LEFT JOIN block ON patient.patient_block =block.id
+                    LEFT JOIN district ON patient.patient_district = district.id
+                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'".
+                    " GROUP BY patient.patient_block ".$havingClause." ORDER BY district.name,block.name";
+            
+            $query = $this->db->query($sql);
+           
+            if($query->num_rows()>0){
+                $data = $query->row();
+                $numberOfRegistered = $data->registered;
+               
+            }
+            return $numberOfRegistered;
+            
         }
         
         public function getSputumCollectionCount($fromDate,$districtId,$blockId)
         {
-            $sptumCount="";
+            $sptumCount=0;
             $sql = "SELECT COUNT(patient.dmc_result_done) AS no_of_spt_clct_trns,
                     patient.patient_district,
                     patient.patient_block

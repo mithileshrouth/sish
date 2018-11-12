@@ -210,6 +210,183 @@
     }
 
 </style>
+<script>
+    $(document).ready(function(){
+        var table = $('#example1').DataTable(
+            {
+        dom: 'Bfrtip',
+        buttons: [
+            'excel'
+        ]
+    } );
+    
+    $('.selectpicker').selectpicker();
+         $('.datepicker').datepicker({
+                     format: 'dd-mm-yyyy',
+                     todayHighlight: true,
+                     uiLibrary: 'bootstrap'
+                     
+                    });
+    });
+    
+    $(document).on('click','.btn-search',function(){
+        
+    var asondate = $("#asondate").val()||"";
+    var disctrict = $("#disctrict").val()||"";
+    var blocksrch = $("#block-srch").val()||"";
+    $.ajax({
+    type: "POST",
+    url: '<?php echo(base_url()); ?>home/getResultData',
+    dataType: 'html',
+    contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+    data: {
+        asondate:asondate,
+        disctrict:disctrict,
+        blocksrch:blocksrch
+    },
+    
+    success: function(data){
+        $("#rslt").html(data);
+        //$('.selectpicker').selectpicker({dropupAuto: false});
+         var table = $('#example1').DataTable(
+            {
+        dom: 'Bfrtip',
+        buttons: [
+            'excel'
+        ]
+    } );
+    },
+    error: function (jqXHR, exception) {
+                  var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                   // alert(msg);  
+                }
+
+
+
+    });/*end ajax call*/
+    });
+     
+     
+     
+
+    
+	
+                    
+     $(document).on('change','#disctrict',function(){               
+//     $("#disctrict").change(function(){
+         
+         var districtId = $(this).val();
+         $.ajax({
+    type: "POST",
+    url: '<?php echo(base_url()); ?>home/getBlock',
+    data: {districtId:districtId},
+    
+    success: function(data){
+        $("#block").html(data);
+        //$('.selectpicker').selectpicker({dropupAuto: false});
+    },
+    error: function (jqXHR, exception) {
+                  var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                   // alert(msg);  
+                }
+
+
+
+    });/*end ajax call*/
+     });
+	
+    $('.datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+    
+//    $(document).on('click', '.browse', function(){
+//      var file = $(this).parent().parent().parent().find('.file');
+//      file.trigger('click');
+//    });
+//    $(document).on('change', '.file', function(){
+//		//$(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+//		$(this).parent().find('.userfilesname').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+//    });	
+
+
+//	function numericFilter(txb) 
+//	{
+//		txb.value = txb.value.replace(/[^\0-9]/ig, "");
+//		//txb.value = txb.value.replace(/[^\0-9]/, "");
+//	}
+	
+//	$(".numchk").on("keydown",function (event) {    
+//			if (event.shiftKey == true) {
+//                event.preventDefault();
+//            }
+//
+//            if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190) {
+//
+//            }
+//			else {
+//                event.preventDefault();
+//            }
+//            
+//            if($(this).val().indexOf('.') !== -1 && event.keyCode == 190)
+//                event.preventDefault();
+//    });
+		
+
+	
+	
+//	  $('.timepickers').timepicker({
+//        //defaultTime: '08:00 AM',
+//        defaultTime: '',
+//        minuteStep: 1
+//        });
+	
+//      $('.ui.dropdown').dropdown({
+//        allowAdditions: true,
+//        direction: 'upward'
+//      });
+
+/* onclick menu selected*/
+//var url = window.location;
+//
+//// for sidebar menu entirely but not cover treeview
+//$('ul.sidebar-menu a').filter(function() {
+//   return this.href == url;
+//}).parent().addClass('active');
+//
+//// for treeview
+//$('ul.treeview-menu a').filter(function() {
+//   return this.href == url;
+//}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+</script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -270,7 +447,7 @@
                    <div class="col-md-3">
                       <label> Name of district </label> 
                       <select class="form-control" id="disctrict">
-                          <option value="">District</option>
+                          <option value="">--Select District--</option>
                            <?php if($district){
                            foreach ($district as $value) { ?>
                                    <option value="<?php echo($value->id); ?>"><?php echo($value->name); ?></option>
@@ -282,7 +459,7 @@
                        <label> Name of block </label>
                        <div id="block">
                            <select class="form-control" id="block-srch" name="block-srch">
-                               <option value="">Block</option>
+                               <option value="">--Select Block--</option>
                            </select>
                        </div>
                    </div>
@@ -297,7 +474,99 @@
 	 </div><!-- end of search -->
           
 
-        <div id="rslt"></div>
+         <div id="rslt">
+             <!-- result -->
+             <div class="" style="border: 1px solid #CCC;border-radius: 5px;width:96%;margin:0 auto;">
+            <div class="box-header header" style="background:transparent;color: #6F6F6F;font-size: 16px;letter-spacing: 1px;">
+              <h3 class="box-title">Periodical observation's</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Sl.no</th>
+<!--                  <th>Date</th>-->
+                  <th>District</th>
+                  <th>Block</th>
+                  <th>NFHP</th>
+                  <th>Registration</th>
+                  <th>Sputum collected <br>and transported</th>
+                  <th>x-ray done</th>
+                  <th>CBNAAT done</th>
+                  <th>TB case found</th>
+                </tr>
+                </thead>
+                   <tbody>
+                <?php  if($searchdata){
+                    $totalNFHP=0;
+                    $totalRegistered=0;
+                    $totalSptm=0;
+                    $xrayDone=0;
+                    $cbnaatDone=0;
+                    $tbtotal=0;
+                    foreach($searchdata as $value){
+                    ?>
+             
+                <tr>
+                    <td><?php echo($value['serial']); ?></td>
+<!--                    <td><?php echo($value['patient_reg_date']); ?></td>-->
+                    <td><?php echo($value['district']); ?></td>
+                    <td><?php echo($value['block']); ?></td>
+                    <td><?php echo($value['NFHP']); ?></td>
+                    <td><?php echo($value['registered']); ?></td>
+                    <td><?php echo($value['sputumClctDone']); ?></td>
+                    <td><?php echo($value['xrayCount']); ?></td>
+                    <td><?php echo($value['cbnaatCount']); ?></td>
+                    <td><?php echo($value['tbCount']); ?></td>
+                </tr>
+                
+                    <?php
+                        $totalNFHP=$totalNFHP + $value['NFHP'];
+                        $totalRegistered=$totalRegistered+$value['registered'];
+                        $totalSptm = $totalSptm + $value['sputumClctDone'];
+                        $xrayDone = $xrayDone + $value['xrayCount'];
+                        $cbnaatDone = $cbnaatDone + $value['cbnaatCount'];
+                        $tbtotal=$tbtotal+ $value['tbCount'];
+                    }                    
+                    }
+                    ?>
+                </tbody>
+</table>
+            </div>
+          </div> <!-- end of ajax view -->
+          
+          <section style="width:60%;margin:2% auto;">
+              <a class="btn btn-app">
+                <span class="badge bg-red"><?php echo($totalNFHP); ?></span>
+                <i class="fa fa-bullhorn"></i> NFHP
+              </a>
+               <a class="btn btn-app">
+                <span class="badge bg-red"><?php echo($totalRegistered); ?></span>
+                <i class="fa fa-bullhorn"></i> Registered
+              </a>
+               <a class="btn btn-app">
+                <span class="badge bg-yellow"><?php echo($totalSptm); ?></span>
+                <i class="fa fa-bullhorn"></i> Sputum collected & Transported
+              </a>
+              <a class="btn btn-app">
+                <span class="badge bg-yellow"><?php echo($xrayDone); ?></span>
+                <i class="fa fa-bullhorn"></i> Xray done
+              </a>
+               <a class="btn btn-app">
+                <span class="badge bg-yellow"><?php echo($cbnaatDone); ?></span>
+                <i class="fa fa-bullhorn"></i> CBNAAT done
+              </a>
+               <a class="btn btn-app">
+                <span class="badge bg-yellow"><?php echo($tbtotal); ?></span>
+                <i class="fa fa-bullhorn"></i> TB Case found
+              </a>
+          </section>  
+             
+             
+             
+             
+             <!--end result-->
+         </div>
     </section>
 
     <!--
@@ -314,166 +583,6 @@
   
  
 
-<script>
-    $(document).on('click','.btn-search',function(){
-        
-    var asondate = $("#asondate").val()||"";
-    var disctrict = $("#disctrict").val()||"";
-    var blocksrch = $("#block-srch").val()||"";
-    $.ajax({
-    type: "POST",
-    url: '<?php echo(base_url()); ?>home/getResultData',
-    dataType: 'html',
-    contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
-    data: {
-        asondate:asondate,
-        disctrict:disctrict,
-        blocksrch:blocksrch
-    },
-    
-    success: function(data){
-        $("#rslt").html(data);
-        //$('.selectpicker').selectpicker({dropupAuto: false});
-         var table = $('#example1').DataTable(
-            {
-        dom: 'Bfrtip',
-        buttons: [
-            'excel'
-        ]
-    } );
-    },
-    error: function (jqXHR, exception) {
-                  var msg = '';
-                    if (jqXHR.status === 0) {
-                        msg = 'Not connect.\n Verify Network.';
-                    } else if (jqXHR.status == 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (jqXHR.status == 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                   // alert(msg);  
-                }
 
-
-
-    });/*end ajax call*/
-    });
-     
-
-    
-	$('.selectpicker').selectpicker();
-         $('.datepicker').datepicker({
-                     format: 'dd-mm-yyyy',
-                     todayHighlight: true,
-                     uiLibrary: 'bootstrap'
-                     
-                    });
-     $("#disctrict").change(function(){
-         
-         var districtId = $(this).val();
-         $.ajax({
-    type: "POST",
-    url: '<?php echo(base_url()); ?>home/getBlock',
-    data: {districtId:districtId},
-    
-    success: function(data){
-        $("#block").html(data);
-        //$('.selectpicker').selectpicker({dropupAuto: false});
-    },
-    error: function (jqXHR, exception) {
-                  var msg = '';
-                    if (jqXHR.status === 0) {
-                        msg = 'Not connect.\n Verify Network.';
-                    } else if (jqXHR.status == 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (jqXHR.status == 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                    }
-                   // alert(msg);  
-                }
-
-
-
-    });/*end ajax call*/
-     });
-	
-    $('.datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
-    
-    $(document).on('click', '.browse', function(){
-      var file = $(this).parent().parent().parent().find('.file');
-      file.trigger('click');
-    });
-    $(document).on('change', '.file', function(){
-		//$(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
-		$(this).parent().find('.userfilesname').val($(this).val().replace(/C:\\fakepath\\/i, ''));
-    });	
-
-
-	function numericFilter(txb) 
-	{
-		txb.value = txb.value.replace(/[^\0-9]/ig, "");
-		//txb.value = txb.value.replace(/[^\0-9]/, "");
-	}
-	
-	$(".numchk").on("keydown",function (event) {    
-			if (event.shiftKey == true) {
-                event.preventDefault();
-            }
-
-            if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190) {
-
-            }
-			else {
-                event.preventDefault();
-            }
-            
-            if($(this).val().indexOf('.') !== -1 && event.keyCode == 190)
-                event.preventDefault();
-    });
-		
-
-	
-	
-	  $('.timepickers').timepicker({
-        //defaultTime: '08:00 AM',
-        defaultTime: '',
-        minuteStep: 1
-        });
-	
-      $('.ui.dropdown').dropdown({
-        allowAdditions: true,
-        direction: 'upward'
-      });
-
-/* onclick menu selected*/
-var url = window.location;
-
-// for sidebar menu entirely but not cover treeview
-$('ul.sidebar-menu a').filter(function() {
-   return this.href == url;
-}).parent().addClass('active');
-
-// for treeview
-$('ul.treeview-menu a').filter(function() {
-   return this.href == url;
-}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-
-</script>
 </body>
 </html>
