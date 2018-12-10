@@ -415,7 +415,7 @@ element {
                 <?php  if ($value->is_tb_diagnosed=='Y') { ?>
                        <li class="time-label">
                         <span class="bg-red">
-                          TREATMENT
+                          TB Diagnosed
                         </span>
                       </li>
                    <?php }elseif ($value->is_tb_diagnosed=='N') { ?>
