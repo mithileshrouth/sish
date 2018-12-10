@@ -18,7 +18,7 @@ public function __construct()
       $result=[
         "district"=>$this->locationmodel->getAllDistrictList(),  
         "NFHP"=> count($this->nqppmodel->getAllNQPP()),
-        "searchdata"=>$this->homemodel->getSearchResult($fromDate,"","")
+        "searchdata"=>$this->homemodel->getSearchResult("","","","")
       ];
       $this->load->view($page,$result);
  }
@@ -37,7 +37,8 @@ public function __construct()
  }
  
  public function getResultData(){
-     $asondate =date('Y-m-d', strtotime($this->input->post("asondate"))) ;
+     $asondate =($this->input->post("asondate")==""? "":date('Y-m-d', strtotime($this->input->post("asondate")))); 
+     $todate = ($this->input->post("todate")==""? "":date('Y-m-d', strtotime($this->input->post("todate"))));//date('Y-m-d', strtotime($this->input->post("todate"))) ;
      $disctrict = $this->input->post("disctrict");
      $blocksrch = $this->input->post("blocksrch");
 //     $test=[
@@ -47,7 +48,9 @@ public function __construct()
 //         
 //     ];
 //     pre($test);
-     $result["searchdata"] = $this->homemodel->getSearchResult($asondate,$disctrict,$blocksrch);
+     $result["searchdata"] = $this->homemodel->getSearchResult($asondate,$todate,$disctrict,$blocksrch);
+     $result["toDate"] =  ($this->input->post("todate")==""? "":date('d-m-Y', strtotime($this->input->post("todate"))));
+     $result["fromDate"] =  ($this->input->post("asondate")==""? "":date('d-m-Y', strtotime($this->input->post("asondate")))); 
      
      $page = 'home/search_result';
      $this->load->view($page,$result);

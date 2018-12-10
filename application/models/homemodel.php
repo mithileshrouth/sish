@@ -6,7 +6,7 @@ class homemodel extends CI_Model
 	{
 	    parent::__construct();
 	}
-        public function getSearchResult($fromDate,$districtId="",$blockId="")
+        public function getSearchResult($fromDate="",$todate="",$districtId="",$blockId="")
         {
             $data = "";
             $whereClause = "";
@@ -39,11 +39,11 @@ class homemodel extends CI_Model
                                             "district"=>$rows->district,
                                             "block"=>$rows->block,
                                             "NFHP"=> $this->getNFHP($rows->blockid),
-                                            "registered"=>$this->getRegisteredPatient($fromDate,$rows->districtid,$rows->blockid),
-                                            "sputumClctDone"=>$this->getSputumCollectionCount($fromDate,$rows->districtid,$rows->blockid),
-                                            "xrayCount"=> $this->getXrayCount($fromDate, $rows->districtid,$rows->blockid),
-                                            "cbnaatCount"=> $this->getCbnaatCount($fromDate, $rows->districtid,$rows->blockid),
-                                            "tbCount"=> $this->getTbDignCount($fromDate, $rows->districtid,$rows->blockid)
+                                            "registered"=>$this->getRegisteredPatient($fromDate,$todate,$rows->districtid,$rows->blockid),
+                                            "sputumClctDone"=>$this->getSputumCollectionCount($fromDate,$todate,$rows->districtid,$rows->blockid),
+                                            "xrayCount"=> $this->getXrayCount($fromDate,$todate, $rows->districtid,$rows->blockid),
+                                            "cbnaatCount"=> $this->getCbnaatCount($fromDate,$todate, $rows->districtid,$rows->blockid),
+                                            "tbCount"=> $this->getTbDignCount($fromDate,$todate, $rows->districtid,$rows->blockid)
                                             
                                             
                                         );
@@ -53,9 +53,10 @@ class homemodel extends CI_Model
             
             
         }
-        public function getRegisteredPatient($fromDate,$districtId="",$blockId=""){
+        public function getRegisteredPatient($fromDate="",$todate="",$districtId="",$blockId=""){
             $numberOfRegistered=0;
             $havingClause="";
+            $whereClause="";
             if($districtId!="" && $blockId!=""){
                 $havingClause = " HAVING patient.patient_district =".$districtId." AND patient.patient_block =".$blockId;
             }
@@ -65,11 +66,21 @@ class homemodel extends CI_Model
             }else{
                 $havingClause ="";
             }
-           $sql = "SELECT COUNT(patient_id) AS registered,patient.patient_district,patient.patient_block
+            if($fromDate!="" && $todate!=""){
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".$todate."'";
+            }elseif($fromDate!="" && $todate==""){
+               $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".date('Y-m-d')."'"; 
+            }elseif ($fromDate=="" && $todate!="") 
+            {
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
+            }
+            else{
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+            }
+            $sql = "SELECT COUNT(patient_id) AS registered,patient.patient_district,patient.patient_block
                     FROM patient
                     LEFT JOIN block ON patient.patient_block =block.id
-                    LEFT JOIN district ON patient.patient_district = district.id
-                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'".
+                    LEFT JOIN district ON patient.patient_district = district.id".$whereClause.
                     " GROUP BY patient.patient_block ".$havingClause." ORDER BY district.name,block.name";
             
             $query = $this->db->query($sql);
@@ -83,17 +94,31 @@ class homemodel extends CI_Model
             
         }
         
-        public function getSputumCollectionCount($fromDate,$districtId,$blockId)
+        public function getSputumCollectionCount($fromDate="",$todate="",$districtId,$blockId)
         {
             $sptumCount=0;
+            
+           if($fromDate!="" && $todate!=""){
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".$todate."'";
+            }elseif($fromDate!="" && $todate==""){
+               $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".date('Y-m-d')."'"; 
+            }elseif ($fromDate=="" && $todate!="") 
+            {
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
+            }
+            else{
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+            }
+            
+            
             $sql = "SELECT COUNT(patient.dmc_result_done) AS no_of_spt_clct_trns,
                     patient.patient_district,
                     patient.patient_block
                     FROM patient
                     LEFT JOIN block ON patient.patient_block =block.id
-                    LEFT JOIN district ON patient.patient_district = district.id
-                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'
-                    AND patient.dmc_result_done ='Y'
+                    LEFT JOIN district ON patient.patient_district = district.id ".$whereClause.
+                    
+                    " AND patient.dmc_result_done ='Y'
                     GROUP BY patient.patient_block
                     HAVING patient.patient_district =".$districtId."
                     AND patient.patient_block =".$blockId."
@@ -106,15 +131,29 @@ class homemodel extends CI_Model
             return $sptumCount;
         }
         
-        public function getXrayCount($fromDate,$districtId,$blockId){
+        public function getXrayCount($fromDate="",$todate="",$districtId,$blockId){
+            
+            
             $noOfCount=0;
+            
+             if($fromDate!="" && $todate!=""){
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".$todate."'";
+            }elseif($fromDate!="" && $todate==""){
+               $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".date('Y-m-d')."'"; 
+            }elseif ($fromDate=="" && $todate!="") 
+            {
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
+            }
+            else{
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+            }
             $sql="SELECT COUNT(patient.xray_is_done) AS no_of_xaray,
                     patient.patient_district,
                     patient.patient_block
                     FROM patient
                     LEFT JOIN block ON patient.patient_block =block.id
                     LEFT JOIN district ON patient.patient_district = district.id
-                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'
+                    ".$whereClause."
                     AND patient.xray_is_done='Y'
                     GROUP BY patient.patient_block
                     HAVING patient.patient_district =".$districtId."
@@ -128,15 +167,27 @@ class homemodel extends CI_Model
             }
             return $noOfCount;
         }
-        public function getCbnaatCount($fromDate,$districtId,$blockId){
+        public function getCbnaatCount($fromDate="",$todate="",$districtId,$blockId){
             $noOfCbnaat=0;
+            
+          if($fromDate!="" && $todate!=""){
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".$todate."'";
+            }elseif($fromDate!="" && $todate==""){
+               $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".date('Y-m-d')."'"; 
+            }elseif ($fromDate=="" && $todate!="") 
+            {
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
+            }
+            else{
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+            }
             $sql="SELECT COUNT(patient.is_cbnaat_done) AS no_of_cbnat,
                     patient.patient_district,
                     patient.patient_block
                     FROM patient
                     LEFT JOIN block ON patient.patient_block =block.id
                     LEFT JOIN district ON patient.patient_district = district.id
-                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'
+                    ".$whereClause."
                     AND patient.is_cbnaat_done='Y'
                     GROUP BY patient.patient_block
                     HAVING patient.patient_district =".$districtId."
@@ -151,16 +202,28 @@ class homemodel extends CI_Model
             return $noOfCbnaat;
         }
         
-        public function getTbDignCount($fromDate,$districtId,$blockId)
+        public function getTbDignCount($fromDate="",$todate="",$districtId,$blockId)
         {
             $noOftbCount=0;
+            
+         if($fromDate!="" && $todate!=""){
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".$todate."'";
+            }elseif($fromDate!="" && $todate==""){
+               $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') BETWEEN '".$fromDate."' AND '".date('Y-m-d')."'"; 
+            }elseif ($fromDate=="" && $todate!="") 
+            {
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
+            }
+            else{
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+            }
             $sql="SELECT COUNT(patient.is_tb_diagnosed) AS no_of_tb,
                     patient.patient_district,
                     patient.patient_block
                     FROM patient
                     LEFT JOIN block ON patient.patient_block =block.id
                     LEFT JOIN district ON patient.patient_district = district.id
-                    WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$fromDate."'
+                    ".$whereClause."
                     AND patient.is_tb_diagnosed='Y'
                     GROUP BY patient.patient_block
                     HAVING patient.patient_district =".$districtId."
