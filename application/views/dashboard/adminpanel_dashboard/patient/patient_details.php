@@ -390,9 +390,18 @@ element {
                       <div class="timeline-body">
                        <?php if($value->cbnaat_result_done=='Y'){
                         if($value->cbnaat_pstv=='Y'){?>
-                      <h5 style="color: #21a592;">Result : <button class="label label-danger" style="font-size: 5px;border-radius: 50% !important;border: 0;height: 20px;width: 20px;"><b style="font-size:20px;">+</b> </button> &nbsp;Positive</h5>
+                      <h5 style="color: #21a592;">Result : <button class="label label-danger" style="font-size: 5px;border-radius: 50% !important;border: 0;height: 20px;width: 20px;"><b style="font-size:20px;">+</b> </button> &nbsp;Detected
+                        <br> 
+ <!-- Changed-on : 10/12/18 , Changed-by : Sandipan Sarkar -->
+                         <?php 
+                         if ($value->cbnaat_rslt=='Y') {
+                           echo "RIF : ".$value->rif_value; 
+                         }
+                         
+                         ?>
+                      </h5>
                       <?php }else if($value->cbnaat_pstv=='N'){?>
-                       <h5 style="color: #21a592;">Result : <button class="label label-success" style="font-size: 10px;border-radius: 50% !important;border: 0;padding: 0;height: 20px;width: 20px;"><b style="font-size:20px;">-</b> </button> &nbsp;Negative</h5>
+                       <h5 style="color: #21a592;">Result : <button class="label label-success" style="font-size: 10px;border-radius: 50% !important;border: 0;padding: 0;height: 20px;width: 20px;"><b style="font-size:20px;">-</b> </button> &nbsp;Not Detected</h5>
                         
                          <p></p>
                       <?php }
@@ -401,76 +410,91 @@ element {
                      
                     </div>
                   </li>
+ <!-- Changed-on : 10/12/18 , Changed-by : Sandipan Sarkar -->
 
-
-                <?php 
-
-                    if($value->cbnaat_pstv=='Y'){
-
-                      if ($value->is_ptb_trtmnt_done=='Y') {
-
-                        ?>
-
-                  <li class="time-label">
+                <?php  if ($value->is_tb_diagnosed=='Y') { ?>
+                       <li class="time-label">
                         <span class="bg-red">
                           TREATMENT
                         </span>
+                      </li>
+                   <?php }elseif ($value->is_tb_diagnosed=='N') { ?>
+                          <li class="time-label">
+                        <span class="bg-green">
+                          Patient is Okay 
+                        </span>
                   </li>
+                   <?php } ?>
+
+                    <?php
+                    // if($value->cbnaat_pstv=='Y'){
+
+                      // if ($value->is_ptb_trtmnt_done=='Y') {
+
+                        ?>
+
+                 <!--  <li class="time-label">
+                        <span class="bg-red">
+                          TREATMENT
+                        </span>
+                  </li> -->
                   <!-- /.timeline-label -->
                   <!-- timeline item -->
 
 
                   <?php 
 
-                        if (!empty($bodycontent['patientTreatmentInfo'])) {
+                        // if (!empty($bodycontent['patientTreatmentInfo'])) {
                        
                        
-                        foreach ($bodycontent['patientTreatmentInfo'] as $value) {
+                        // foreach ($bodycontent['patientTreatmentInfo'] as $value) {
                         
                         ?>
-                    <li>
+                   <!--  <li>
                     <i class="fa fa-medkit bg-blue"></i>
                     
-                    <div class="timeline-item">
+                    <div class="timeline-item"> -->
                        
 
 
-                      <h3 class="timeline-header"><a href="#"><?php echo $value->category_name;?></a> </h3>
+                     <!--  <h3 class="timeline-header"><a href="#"><?php //echo $value->category_name;?></a> </h3>
 
                       <div class="timeline-body">
 
                        <div class="container testbox" >
                       <div class="row">
-                        <div class="col-sm-3">Start Date : <?php echo ($trtmnt_start_date == NULL ? "" : date("d-m-Y", strtotime($trtmnt_start_date)));?></div>
-                        <div class="col-sm-3">Duration :<?php echo " ".$trtmnt_duration."  Days";?></div>
+                        <div class="col-sm-3">Start Date : <?php // echo ($trtmnt_start_date == NULL ? "" : date("d-m-Y", strtotime($trtmnt_start_date)));?></div>
+                        <div class="col-sm-3">Duration :<?php //echo " ".$trtmnt_duration."  Days";?></div>
                       
                       </div>
                       <div class="row">
-                        <div class="col-sm-3">First Follow Up: <?php echo ($value->first_followup_dt == NULL ? "" : date("d-m-Y", strtotime($value->first_followup_dt)));?></div>
-                        <div class="col-sm-3">Second Follow Up : <?php echo ($value->second_followup_dt == NULL ? "" : date("d-m-Y", strtotime($value->second_followup_dt)));?></div>
+                        <div class="col-sm-3">First Follow Up: <?php //echo ($value->first_followup_dt == NULL ? "" : date("d-m-Y", strtotime($value->first_followup_dt)));?></div>
+                        <div class="col-sm-3">Second Follow Up : <?php //echo ($value->second_followup_dt == NULL ? "" : date("d-m-Y", strtotime($value->second_followup_dt)));?></div>
                       
                       </div>
                       </div>
                     
                     </div>
-                  </li>
-              <?php }
-                 }
+                  </li> -->
+              <?php 
+            // }
+                 //}
 
-                } //end of treatment start check
+                // } //end of treatment start check
 
 
-              }else if($value->cbnaat_pstv=='N') { 
+              // }
+              // else if($value->cbnaat_pstv=='N') { 
 
               ?>
-              <li class="time-label">
+              <!-- <li class="time-label">
                         <span class="bg-green">
                           Patient is Okay 
                         </span>
-                  </li>
+                  </li> -->
 
             <?php
-              }
+              // }
 
               ?>
 

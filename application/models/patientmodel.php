@@ -214,6 +214,8 @@ class patientmodel extends CI_Model{
 							 patient.is_ptb_trtmnt_done,
 							 patient.trtmnt_start_date,
 							 patient.trtmnt_duration,
+							 patient.is_tb_diagnosed,
+							 patient.rif_value,
 
 							 patient.cbnaat_rslt,
 							 state.state as statename,
