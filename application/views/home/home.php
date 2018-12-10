@@ -215,13 +215,13 @@
       // changed-on : 10/12/18
       // changed-by : Sandipan Sarkar 
       
-    //     var table = $('#example1').DataTable( 
-    //         {
-    //     dom: 'Bfrtip',
-    //     buttons: [
-    //         'excel'
-    //     ]
-    // } );
+        var table = $('#example1').DataTable( 
+            {
+        //dom: 'Bfrtip',
+        // buttons: [
+        //     'excel'
+        // ]
+    } );
     
     $('.selectpicker').selectpicker();
          $('.datepicker').datepicker({
@@ -258,13 +258,13 @@
       // changed-on : 10/12/18
       // changed-by : Sandipan Sarkar
        
-    //      var table = $('#example1').DataTable(
-    //         {
-    //     dom: 'Bfrtip',
-    //     buttons: [
-    //         'excel'
-    //     ]
-    // } );
+         var table = $('#example1').DataTable(
+            {
+        //dom: 'Bfrtip',
+        // buttons: [
+        //     'excel'
+        // ]
+    } );
     },
     error: function (jqXHR, exception) {
                   var msg = '';
