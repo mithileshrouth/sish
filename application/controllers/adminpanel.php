@@ -30,7 +30,7 @@ class adminpanel extends CI_Controller {
 	parse_str($formData, $dataArry);
 	$mobileno =  htmlspecialchars($dataArry['mobileno']);
 	$password =  htmlspecialchars($dataArry['password']);
-	$role =  htmlspecialchars($dataArry['role']);
+	$role =1;
 	//$role =  htmlspecialchars($dataArry['role']);
 	
 	

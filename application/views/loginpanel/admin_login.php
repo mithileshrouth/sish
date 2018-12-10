@@ -28,9 +28,33 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
+<body class="hold-transition login-page" >
+<section class="logo_container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="logo">
+                        <img src="<?php echo base_url(); ?>application/assets/shisimg/globalfundsmpng.png" style="width:140px;"/>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="logo">
+                       <img src="<?php echo base_url(); ?>application/assets/shisimg/shislogo.png" style="width:200px; margin-top:20px;"/>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="logo">
+                         <img src="<?php echo base_url(); ?>application/assets/shisimg/newdots.png" style="width:130px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<div class="login-box-margin">
   <div class="login-logo">
     <a href="javascript:;"><b><span style="color: #1394c8;">SHIS GF-CTD</span></b> ADMIN</a>
   </div>
@@ -51,16 +75,16 @@
         <input type="password" class="form-control " placeholder="Password" name="password" id="password" autocomplete="false" required="true"/>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
-      <div class="form-group has-feedback">
+      <!-- <div class="form-group has-feedback">
         <select name="role" id="role" class="form-control ">
           <option value="">Select</option>
           <?php
-              foreach ($roleList as  $value) {
+              // foreach ($roleList as  $value) {
           ?>
-          <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
-          <?php } ?>
+          <option value="<?php //echo $value->id; ?>"><?php //echo $value->name; ?></option>
+          <?php //} ?>
         </select>
-      </div>
+      </div> -->
 	 
 		
 	  

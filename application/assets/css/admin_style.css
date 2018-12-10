@@ -39,3 +39,14 @@
 .btnview{
   text-align: center;
 }
+
+.logo_container{
+    text-align: center;
+    padding-top: 15px;
+        /*background-color: #f3f3f3  !important;*/
+        /*border-bottom: 1px solid #c2c2c2;*/
+    }
+.login-box-margin{
+        margin: 2% auto;
+        width: 360px;
+    }
