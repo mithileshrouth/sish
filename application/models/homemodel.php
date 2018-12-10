@@ -75,7 +75,7 @@ class homemodel extends CI_Model
                 $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
             }
             else{
-                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') = '".date('Y-m-d')."'";
             }
             $sql = "SELECT COUNT(patient_id) AS registered,patient.patient_district,patient.patient_block
                     FROM patient
@@ -107,7 +107,7 @@ class homemodel extends CI_Model
                 $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
             }
             else{
-                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') = '".date('Y-m-d')."'";
             }
             
             
@@ -145,7 +145,7 @@ class homemodel extends CI_Model
                 $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
             }
             else{
-                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') = '".date('Y-m-d')."'";
             }
             $sql="SELECT COUNT(patient.xray_is_done) AS no_of_xaray,
                     patient.patient_district,
@@ -179,7 +179,7 @@ class homemodel extends CI_Model
                 $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
             }
             else{
-                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') = '".date('Y-m-d')."'";
             }
             $sql="SELECT COUNT(patient.is_cbnaat_done) AS no_of_cbnat,
                     patient.patient_district,
@@ -215,7 +215,7 @@ class homemodel extends CI_Model
                 $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".$todate."'";
             }
             else{
-                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') <= '".date('Y-m-d')."'";
+                $whereClause=" WHERE DATE_FORMAT (patient.patient_reg_date,'%Y-%m-%d') = '".date('Y-m-d')."'";
             }
             $sql="SELECT COUNT(patient.is_tb_diagnosed) AS no_of_tb,
                     patient.patient_district,
