@@ -9,7 +9,10 @@
 
  <div class="" style="border: 1px solid #CCC;border-radius: 5px;width:96%;margin:0 auto;">
             <div class="box-header header" style="background:transparent;color: #6F6F6F;font-size: 16px;letter-spacing: 1px;">
-                <h3 class="box-title">Periodical observation's (<?php echo ($fromDate.' - '.$toDate); ?>)</h3>
+
+              <!-- Changed-on : 10/12/18 , Changed-by : Sandipan Sarkar -->
+              
+                <h3 class="box-title">Periodical observation's (<?php echo ($fromDate.' To '.$toDate); ?>)</h3>
             </div>
             <div class="box-body">
                 <table id="example1" class="table table-bordered table-striped">

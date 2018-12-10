@@ -449,13 +449,16 @@
                 </div>
 	 
             <div class="row searchrow">
+
+              <!-- Changed-on : 10/12/18 , Changed-by : Sandipan Sarkar -->
+
                      <div class="col-md-2">
                      <label> From </label> 
-                     <input type="text" readonly="" class="form-control custom_frm_input datepicker" id="asondate" name="asondate" placeholder="" value="">
+                     <input type="text" readonly="" class="form-control custom_frm_input datepicker" id="asondate" name="asondate" placeholder="" value="<?php echo(date('d-m-Y'));?>">
                    </div>
                  <div class="col-md-2">
                      <label> To </label> 
-                     <input type="text" readonly="" class="form-control custom_frm_input datepicker" id="todate" name="todate" placeholder="" value="">
+                     <input type="text" readonly="" class="form-control custom_frm_input datepicker" id="todate" name="todate" placeholder="" value="<?php echo(date('d-m-Y'));?>">
                    </div>
                 
                 
@@ -495,7 +498,10 @@
              <!-- result -->
              <div class="" style="border: 1px solid #CCC;border-radius: 5px;width:96%;margin:0 auto;">
             <div class="box-header header" style="background:transparent;color: #6F6F6F;font-size: 16px;letter-spacing: 1px;">
-              <h3 class="box-title">Periodical observation's as on <?php echo(date('d-m-Y')); ?></h3>
+
+            <!-- Changed-on : 10/12/18 , Changed-by : Sandipan Sarkar -->
+            
+              <h3 class="box-title">Periodical observation's (<?php echo(date('d-m-Y')." To ".date('d-m-Y')); ?>)</h3>
             </div>
             <div class="box-body">
                 <table id="example1" class="table table-bordered table-striped">
