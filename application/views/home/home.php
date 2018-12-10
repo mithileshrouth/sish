@@ -212,13 +212,16 @@
 </style>
 <script>
     $(document).ready(function(){
-        var table = $('#example1').DataTable(
-            {
-        dom: 'Bfrtip',
-        buttons: [
-            'excel'
-        ]
-    } );
+      // changed-on : 10/12/18
+      // changed-by : Sandipan Sarkar 
+      
+    //     var table = $('#example1').DataTable( 
+    //         {
+    //     dom: 'Bfrtip',
+    //     buttons: [
+    //         'excel'
+    //     ]
+    // } );
     
     $('.selectpicker').selectpicker();
          $('.datepicker').datepicker({
@@ -250,13 +253,18 @@
     success: function(data){
         $("#rslt").html(data);
         //$('.selectpicker').selectpicker({dropupAuto: false});
-         var table = $('#example1').DataTable(
-            {
-        dom: 'Bfrtip',
-        buttons: [
-            'excel'
-        ]
-    } );
+      
+      
+      // changed-on : 10/12/18
+      // changed-by : Sandipan Sarkar
+       
+    //      var table = $('#example1').DataTable(
+    //         {
+    //     dom: 'Bfrtip',
+    //     buttons: [
+    //         'excel'
+    //     ]
+    // } );
     },
     error: function (jqXHR, exception) {
                   var msg = '';
