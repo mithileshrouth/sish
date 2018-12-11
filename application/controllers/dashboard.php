@@ -19,6 +19,10 @@ class dashboard extends CI_Controller
 			$result = "";
 			$header = "";
 			$result['patient']=$this->commondatamodel->rowcount('patient');
+// changed on 11/12/18 by sandipan sarkar //
+			$result['nqpp']=$this->dashboardmodel->nqppCountWithBlockIdNotNull('nqpp','block_id');
+			$result['coordinator']=$this->commondatamodel->rowcount('coordinator');
+			$result['is_tb_diagnosed']=$this->dashboardmodel->TBDiagnosedRowCount('patient','is_tb_diagnosed');
 
 			createbody_method($result, $page, $header, $session);
 		}

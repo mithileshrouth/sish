@@ -21,6 +21,46 @@ class dashboardmodel extends CI_Model{
 		}
 		
 	}
+// created on 11/12/18 by sandipan sarkar //
+	public function TBDiagnosedRowCount($table,$column)
+	{
+		
+			$this->db->select($column)
+				->from($table)
+				->where($column,'Y');
+		
+
+		$query = $this->db->get();
+		$rowcount = $query->num_rows();
+	
+		if($query->num_rows()>0){
+			return $rowcount;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public function nqppCountWithBlockIdNotNull($table,$column)
+	{
+		$this->db->select('*')
+				->from($table)
+				->where($column.' IS NOT NULL');
+		
+
+		$query = $this->db->get();
+
+		$rowcount = $query->num_rows();
+	
+		if($query->num_rows()>0){
+			return $rowcount;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 
 
 }
