@@ -233,7 +233,7 @@
             <div class="box-body">
                    
                        <div class="row">
-                               <div class="col-xs-3">
+                               <div class="col-xs-2">
                                     <div class="form-group">
                                     <label for="sputum_test_date">Test date</label>
                                     <input type="text" class="form-control custom_frm_input datepicker" 
@@ -250,7 +250,7 @@
                                     </div>
                                </div>
                            
-                               <div class="col-xs-3">
+                               <div class="col-xs-2">
                                     <div class="form-group">
                                     <label for="sputum_test_date">Collection Date</label>
                                     <input type="text" class="form-control custom_frm_input datepicker" 
@@ -313,6 +313,17 @@
                                     </div>
                            </div>
                            
+                           <div class="col-xs-2">
+                                    <div class="form-group">
+                                        <label>TB Diagnosed</label>
+                                        <select class="form-control" id="tbdignosed" name="tbdignosed">
+                                            <option value="">Not yet diagnosed</option>
+                                            <option value="Y" <?php if($bodycontent['patientStaticHeader']->is_tb_diagnosed=='Y'){echo('selected');} ?>>Diagnosed</option>
+                                          <option value="N"<?php if($bodycontent['patientStaticHeader']->is_tb_diagnosed=='N'){echo('selected');} ?>>Not Diagnosed</option>
+                                        </select>
+                                    </div>
+                           </div>
+                           
                   </div>
                 <div class="row">
                     <div class="col-sm-2">
@@ -333,6 +344,7 @@
           <!-- /.box -->
         </div>
        </div>
+    
     
 </section>
 <script>
@@ -377,6 +389,7 @@ function update(btn){
                         "cbnaat_id":$("#cbnaat_center").val(),
                         "cbnaat_pstv":$("#cbnaat_rslt").val(),
                         "rif_value":$("#rif").val(),
+                        "tbdignosed":$("#tbdignosed").val()||"",
                         "from":"cbnaat"
                     }; 
     }

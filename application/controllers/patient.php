@@ -137,6 +137,7 @@ class patient extends CI_Controller {
                        
                    }else if($Data["from"]=="cbnaat"){
                        $rif=NULL;
+                       $tbdignosed = "NULL";
                        if($Data["cbnaat_pstv"]=="Y"){
                            $rif=$Data["rif_value"];
                        }
@@ -147,7 +148,8 @@ class patient extends CI_Controller {
                            "cbnaat_date"=>($Data["cbnaat_date"]!=""? date('Y-m-d', strtotime(str_replace('/', '-', $Data["cbnaat_date"]))):NULL),
                            "cbnaat_id"=>$Data["cbnaat_id"],
                            "cbnaat_pstv"=>$Data["cbnaat_pstv"],
-                           "rif_value"=>$rif
+                           "rif_value"=>$rif,
+                           "is_tb_diagnosed"=>($Data["tbdignosed"]==""?NULL:$Data["tbdignosed"])
                         ];
                    }
                    $updt=$this->patientmodel->testObservationUpdate($update,$patientId) ;
